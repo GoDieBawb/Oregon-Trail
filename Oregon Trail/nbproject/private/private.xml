@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/Main.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/util/MaterialManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/trail/TrailSceneManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/util/UtilityManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/player/Player.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/player/PlayerManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/player/Wagon.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/trail/TrailInteractionManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/town/TownInteractionManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/hunt/HuntInteractionManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/town/TownSceneManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/hunt/HuntSceneManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/util/InputManager.java</file>
-        <file>file:/C:/Users/Bawb/Documents/Oregon%20Trail/src/mygame/GameManager.java</file>
-    </open-files>
 </project-private>
