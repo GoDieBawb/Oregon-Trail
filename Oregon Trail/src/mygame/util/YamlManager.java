@@ -21,6 +21,8 @@ public class YamlManager {
     
     public HashMap loadYaml(String path) {
         
+        System.out.println("Attempting to load Yaml");
+        
         HashMap map;
         File    file;
         Yaml    yaml = new Yaml();
@@ -56,7 +58,7 @@ public class YamlManager {
         }
         
         catch (Exception e) {
-        
+            System.out.println(e);
         }
         
     }

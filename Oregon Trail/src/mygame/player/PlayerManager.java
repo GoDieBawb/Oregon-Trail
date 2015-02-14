@@ -21,17 +21,18 @@ public class PlayerManager extends AbstractAppState {
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
         this.app = (SimpleApplication) app;
         createPlayer();
+    }
+    
+    private void createPlayer() {
+        player = new Player(app.getStateManager());
     }
     
     public void initTownPlayer(BulletAppState physics) {
         app.getRootNode().attachChild(player);
         physics.getPhysicsSpace().add(player.getPhys());
-    }      
-    
-    private void createPlayer() {
-        player = new Player(app.getStateManager());
     }
     
     public Player getPlayer() {

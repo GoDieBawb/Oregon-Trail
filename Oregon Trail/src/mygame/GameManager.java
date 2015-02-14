@@ -25,27 +25,28 @@ public class GameManager extends AbstractAppState {
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
-        createUtilityManager();
         this.app = (SimpleApplication) app;
-        createTownState();
         createPlayerManager();
+        createUtilityManager();
+        createTownState();
         loadSituation();
     }
 
     private void loadSituation() {
+        System.out.println("Player Manager is: " + playerManager);
         String setting = (String) playerManager.getPlayer().getSituation().get("Setting");
         if (setting.equals("Town"))
         initTown();
     }
     
     private void createPlayerManager() {
-        playerManager = new PlayerManager();
-        app.getStateManager().attach(playerManager);
+        app.getStateManager().attach(new PlayerManager());
+        playerManager = app.getStateManager().getState(PlayerManager.class);
     }
     
     private void createTownState() {
-        townState = new TownState();
-        app.getStateManager().attach(townState);
+        app.getStateManager().attach(new TownState());
+        townState = app.getStateManager().getState(TownState.class);
     }
     
     public void initTown() {
