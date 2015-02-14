@@ -39,10 +39,10 @@ public class Wagon extends Node {
         upgrades      = (String)  wagonInfo.get("Upgrades");
         
         if (type.equals("Basic")) 
-        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models");
+        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/CoveredWagon/CoveredWagon.j3o");
         
         else
-        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models");
+        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/CoveredWagon/CoveredWagon.j3o");
         
     }
     

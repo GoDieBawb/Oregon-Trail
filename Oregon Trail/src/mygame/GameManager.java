@@ -29,32 +29,36 @@ public class GameManager extends AbstractAppState {
         createPlayerManager();
         createUtilityManager();
         createTownState();
+        playerManager.loadPlayerInfo();
         loadSituation();
     }
 
     private void loadSituation() {
-        System.out.println("Player Manager is: " + playerManager);
         String setting = (String) playerManager.getPlayer().getSituation().get("Setting");
-        if (setting.equals("Town"))
-        initTown();
+        
+        if (setting.equals("Town")) {
+            initTown();
+            playerManager.initTownPlayer(utilityManager.getPhysicsManager().getPhysics());
+        }
+        
     }
     
     private void createPlayerManager() {
-        app.getStateManager().attach(new PlayerManager());
+        app.getStateManager().attach(new PlayerManager(app));
         playerManager = app.getStateManager().getState(PlayerManager.class);
     }
     
     private void createTownState() {
-        app.getStateManager().attach(new TownState());
+        app.getStateManager().attach(new TownState(app));
         townState = app.getStateManager().getState(TownState.class);
     }
     
     public void initTown() {
         clearAll();
         townState.initTown();
-        utilityManager.getMaterialManager().makeUnshaded(app.getRootNode());
         utilityManager.getPhysicsManager().addToPhysics(townState.getTownSceneManager().getScene());
         app.getStateManager().getState(PlayerManager.class).initTownPlayer(utilityManager.getPhysicsManager().getPhysics());
+        utilityManager.getMaterialManager().makeUnshaded(app.getRootNode());
     }
     
     private void createUtilityManager() {

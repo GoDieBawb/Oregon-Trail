@@ -32,14 +32,19 @@ public class Player extends Node {
     private HashMap         situation;
     
     public Player(AppStateManager stateManager) {
+        this.stateManager = stateManager;
         setFilePath();
-        loadInventory();
-        loadWagon();
-        loadSituation();
+        setModel();
         createPhys();
         createAnimControl();
         setSpeedMult(.8f);
         setStrafeMult(.5f);
+    }
+    
+    public void load() {
+        loadInventory();
+        loadWagon();
+        loadSituation();
     }
     
     public void setSpeedMult(float mult) {
@@ -59,11 +64,11 @@ public class Player extends Node {
     }
     
     private void createAnimControl() {
-        animControl = model.getControl(AnimControl.class);
+        animControl = model.getChild("Body").getControl(AnimControl.class);
         armChannel  = animControl.createChannel();
         legChannel  = animControl.createChannel();
-        armChannel.addFromRootBone("TopSpine");
-        legChannel.addFromRootBone("BottomSpine");
+        //armChannel.addFromRootBone("TopSpine");
+        //legChannel.addFromRootBone("BottomSpine");
     }
     
     public void run() {
@@ -72,9 +77,10 @@ public class Player extends Node {
     public void idle() {
     }
     
-    public void setModel(AppStateManager stateManager, boolean isWagon) {
+    public void setModel() {
         
-        if (isWagon) {
+        if(situation != null) {
+            if (situation.get("Setting").equals("Trail")) 
             model = wagon.getModel();
         }
         
@@ -82,6 +88,8 @@ public class Player extends Node {
             model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Truman/Truman.j3o");
             model.setLocalScale(.125f);
         }
+        
+        attachChild(model);
         
     }
     
@@ -139,7 +147,7 @@ public class Player extends Node {
     
     private void createPhys() {
         phys = new BetterCharacterControl(.3f, 1.1f, 100);
-        model.addControl(phys);
+        addControl(phys);
     }
     
     public BetterCharacterControl getPhys() {

@@ -7,6 +7,7 @@ package mygame.util;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Node;
 
 /**
@@ -27,6 +28,8 @@ public class PhysicsManager {
     }
     
     public void addToPhysics(Node node) {
+        RigidBodyControl rbc = new RigidBodyControl(0f);
+        node.addControl(rbc);
         physics.getPhysicsSpace().add(node);
     }
     

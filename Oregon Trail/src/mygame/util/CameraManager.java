@@ -29,10 +29,11 @@ public class CameraManager {
   public CameraManager(SimpleApplication app) {
      this.app   = app;
      player     = app.getStateManager().getState(PlayerManager.class).getPlayer();
+     initCamera();
   }
   
   //Creates camera
-  public void initCamera() {
+  private void initCamera() {
       
     //Creates a new chase cam and attached it to the player.getModel() for the game
     app.getFlyByCamera().setEnabled(false);
@@ -54,14 +55,14 @@ public class CameraManager {
       //cam.lookAt(cameraLook, new Vector3f(0,1,0));
       slerpLookAt(cameraLook, tpf);
  
-      if (cam.getLocation().distance(player.getWorldTranslation()) > 4 && !isPan) {
+      if (cam.getLocation().distance(player.getModel().getWorldTranslation()) > 4 && !isPan) {
           
           panDir = cameraSpot.subtract(cam.getLocation()).mult(2);
           cam.setLocation(cam.getLocation().addLocal(panDir.mult(tpf)));
           
       }
       
-      else if (cam.getLocation().distance(player.getWorldTranslation()) < 3f && !isPan) {
+      else if (cam.getLocation().distance(player.getModel().getWorldTranslation()) < 3f && !isPan) {
           
           panDir = cameraSpot.subtract(cam.getLocation());
           cam.setLocation(cam.getLocation().addLocal(panDir.mult(tpf)));
@@ -107,7 +108,7 @@ public class CameraManager {
 
      slerpTo(airRotation, amount*5);
 
-       vars.release();
+     vars.release();
 
     }
   
@@ -116,5 +117,9 @@ public class CameraManager {
         rotation.slerp(quaternion, amount);
         cam.setRotation(rotation);
     }  
+    
+    public void update(float tpf) {
+        chaseCamMove(tpf);
+    }
     
 }

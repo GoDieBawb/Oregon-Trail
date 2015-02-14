@@ -4,10 +4,9 @@
  */
 package mygame.town;
 
-import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
+import mygame.GameManager;
 
 /**
  *
@@ -19,9 +18,8 @@ public class TownState extends AbstractAppState {
     private TownSceneManager       townSceneManager;
     private SimpleApplication      app;
     
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        this.app = (SimpleApplication) app;
+    public TownState(SimpleApplication app) {
+        this.app = app;
         createTownInteractionManager();
         createTownSceneManager();
     }
@@ -46,6 +44,7 @@ public class TownState extends AbstractAppState {
     public void update(float tpf) {
         townInteractionManager.update(tpf);
         townSceneManager.update(tpf);
+        app.getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager().update(tpf);
     }
     
 }

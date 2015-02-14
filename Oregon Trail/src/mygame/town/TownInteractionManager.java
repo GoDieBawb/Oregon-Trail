@@ -27,6 +27,7 @@ public class TownInteractionManager {
     public TownInteractionManager(AppStateManager stateManager) {
         this.stateManager = stateManager;
         player            = stateManager.getState(PlayerManager.class).getPlayer();
+        app               = (SimpleApplication) stateManager.getApplication();
     } 
     
     public void updateKeys() {

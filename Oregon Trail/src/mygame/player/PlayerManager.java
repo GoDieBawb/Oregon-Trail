@@ -7,7 +7,6 @@ package mygame.player;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 
 /**
@@ -19,9 +18,7 @@ public class PlayerManager extends AbstractAppState {
     private Player            player;
     private SimpleApplication app;
     
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        super.initialize(stateManager, app);
+    public PlayerManager(Application app) {
         this.app = (SimpleApplication) app;
         createPlayer();
     }
@@ -33,6 +30,10 @@ public class PlayerManager extends AbstractAppState {
     public void initTownPlayer(BulletAppState physics) {
         app.getRootNode().attachChild(player);
         physics.getPhysicsSpace().add(player.getPhys());
+    }
+    
+    public void loadPlayerInfo() {
+        player.load();
     }
     
     public Player getPlayer() {

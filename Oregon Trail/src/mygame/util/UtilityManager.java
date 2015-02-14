@@ -21,11 +21,13 @@ public class UtilityManager {
     private PhysicsManager     physicsManager;
 
     public UtilityManager(Application app) {
+        System.out.println("Creating Utility Manager");
         this.app = (SimpleApplication) app;
         createInteractionManager();
         createMaterialManager();
         createYamlManager();
         createCameraManager();
+        createPhysicsManager();
     }
 
     private void createCameraManager() {
