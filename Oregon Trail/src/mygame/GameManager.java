@@ -20,6 +20,7 @@ public class GameManager extends AbstractAppState {
     
     private UtilityManager    utilityManager;
     private SimpleApplication app;
+    private PlayerManager     playerManager;
     private TownState         townState;
     
     @Override
@@ -27,10 +28,24 @@ public class GameManager extends AbstractAppState {
         createUtilityManager();
         this.app = (SimpleApplication) app;
         createTownState();
+        createPlayerManager();
+        loadSituation();
     }
 
+    private void loadSituation() {
+        String setting = (String) playerManager.getPlayer().getSituation().get("Setting");
+        if (setting.equals("Town"))
+        initTown();
+    }
+    
+    private void createPlayerManager() {
+        playerManager = new PlayerManager();
+        app.getStateManager().attach(playerManager);
+    }
+    
     private void createTownState() {
-        app.getStateManager().attach(new TownState());
+        townState = new TownState();
+        app.getStateManager().attach(townState);
     }
     
     public void initTown() {

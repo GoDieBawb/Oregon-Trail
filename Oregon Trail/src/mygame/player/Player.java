@@ -35,6 +35,7 @@ public class Player extends Node {
         setFilePath();
         loadInventory();
         loadWagon();
+        loadSituation();
         createPhys();
         createAnimControl();
         setSpeedMult(.8f);
@@ -137,7 +138,7 @@ public class Player extends Node {
     }
     
     private void createPhys() {
-        phys = new BetterCharacterControl();
+        phys = new BetterCharacterControl(.3f, 1.1f, 100);
         model.addControl(phys);
     }
     
@@ -145,6 +146,33 @@ public class Player extends Node {
         return phys;
     }
     
+    private void loadSituation() {
+        
+        situation = stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "SituationSave.yml");
+        
+        if (situation == null) {
+            createSituation();
+        }
+        
+    }
     
+    public void saveSituation() {
+        stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().saveYaml(filePath + "SituationSave.yml", situation);
+    }
+    
+    private void createSituation() {
+        situation = new HashMap();
+        situation.put("Setting", "Town");
+        situation.put("Setting Name", "Starting Town");
+        situation.put("Total Distance", 0);
+        situation.put("Distance Remaining", 0);
+        situation.put("Day Number", 1);
+        situation.put("Weather", "Hot");
+        saveSituation();
+    }
+    
+    public HashMap getSituation() {
+        return situation;
+    }
     
 }
