@@ -18,6 +18,7 @@ public class UtilityManager {
     private MaterialManager    materialManager;
     private YamlManager        yamlManager;
     private CameraManager      cameraManager;
+    private PhysicsManager     physicsManager;
 
     public UtilityManager(Application app) {
         this.app = (SimpleApplication) app;
@@ -57,6 +58,14 @@ public class UtilityManager {
     
     public InteractionManager getInteractionManager() {
         return interactionManager;
+    }
+    
+    private void createPhysicsManager() {
+        physicsManager = new PhysicsManager(app.getStateManager());
+    }
+    
+    public PhysicsManager getPhysicsManager() {
+        return physicsManager;
     }
     
 }

@@ -29,6 +29,7 @@ public class Player extends Node {
     private BetterCharacterControl phys;
     private float           speedMult;
     private float           strafeMult;
+    private HashMap         situation;
     
     public Player(AppStateManager stateManager) {
         setFilePath();
@@ -71,10 +72,16 @@ public class Player extends Node {
     }
     
     public void setModel(AppStateManager stateManager, boolean isWagon) {
-        if (isWagon)
-        model = wagon.getModel();
-        else
-        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Truman/Truman.j3o");
+        
+        if (isWagon) {
+            model = wagon.getModel();
+        }
+        
+        else {
+            model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Truman/Truman.j3o");
+            model.setLocalScale(.125f);
+        }
+        
     }
     
     private void setFilePath() {

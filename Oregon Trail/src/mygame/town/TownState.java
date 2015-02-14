@@ -23,6 +23,11 @@ public class TownState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         this.app = (SimpleApplication) app;
         createTownInteractionManager();
+        createTownSceneManager();
+    }
+    
+    public void initTown() {
+        townSceneManager.initScene(app);
     }
     
     private void createTownInteractionManager() {
@@ -33,9 +38,14 @@ public class TownState extends AbstractAppState {
         townSceneManager = new TownSceneManager();
     }
     
+    public TownSceneManager getTownSceneManager() {
+        return townSceneManager;
+    }
+    
     @Override
     public void update(float tpf) {
         townInteractionManager.update(tpf);
+        townSceneManager.update(tpf);
     }
     
 }

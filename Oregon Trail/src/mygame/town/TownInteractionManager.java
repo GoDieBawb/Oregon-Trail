@@ -79,6 +79,7 @@ public class TownInteractionManager {
     
     public void update(float tpf) {
         chaseMove();
+        updateKeys();
     }
     
 }
