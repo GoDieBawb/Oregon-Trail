@@ -44,25 +44,26 @@ public class CameraManager {
   
   public void chaseCamMove(float tpf) {
       
+      float minDistance = 2f;
+      
       cameraLook = cameraLook.mult(.7f).add
                     (player.getModel().getWorldTranslation().add(0,1f,0).mult(.3f));
       
       cameraSpot = player.getModel().getWorldTranslation()
                       .add(player.getPhys().getViewDirection()
                           .normalize()
-                            .negate().mult(4)).add(0,1f,0);
+                            .negate().mult(minDistance)).add(0,1f,0);
       
-      //cam.lookAt(cameraLook, new Vector3f(0,1,0));
       slerpLookAt(cameraLook, tpf);
  
-      if (cam.getLocation().distance(player.getModel().getWorldTranslation()) > 4 && !isPan) {
+      if (cam.getLocation().distance(player.getModel().getWorldTranslation()) > minDistance && !isPan) {
           
           panDir = cameraSpot.subtract(cam.getLocation()).mult(2);
           cam.setLocation(cam.getLocation().addLocal(panDir.mult(tpf)));
           
       }
       
-      else if (cam.getLocation().distance(player.getModel().getWorldTranslation()) < 3f && !isPan) {
+      else if (cam.getLocation().distance(player.getModel().getWorldTranslation()) < minDistance && !isPan) {
           
           panDir = cameraSpot.subtract(cam.getLocation());
           cam.setLocation(cam.getLocation().addLocal(panDir.mult(tpf)));
@@ -76,7 +77,7 @@ public class CameraManager {
           
           if (cam.getLocation().distance(cameraSpot) < .05f)
           isPan = false; 
-          else if (cam.getLocation().distance(cameraSpot) > 4f)
+          else if (cam.getLocation().distance(cameraSpot) > 2f)
           isPan = false;    
       
       }

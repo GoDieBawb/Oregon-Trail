@@ -43,6 +43,8 @@ public class YamlManager {
     
     public void saveYaml(String path, HashMap map) {
         
+        System.out.println("Attemping to save to: " + path);
+        
         DumperOptions options = new DumperOptions();
         File file             = new File(path);
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);

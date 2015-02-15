@@ -67,35 +67,55 @@ public class Player extends Node {
         animControl = model.getChild("Body").getControl(AnimControl.class);
         armChannel  = animControl.createChannel();
         legChannel  = animControl.createChannel();
-        //armChannel.addFromRootBone("TopSpine");
-        //legChannel.addFromRootBone("BottomSpine");
+        armChannel.addFromRootBone("TopSPine");
+        legChannel.addFromRootBone("BottomSpine");
+        armChannel.setAnim("StillArms");
+        legChannel.setAnim("StillLegs");
     }
     
     public void run() {
+  
+        if (!armChannel.getAnimationName().equals("UnarmedRun")) {
+            armChannel.setAnim("UnarmedRun");
+        }
+      
+        if (!legChannel.getAnimationName().equals("RunAction")) {
+            legChannel.setAnim("RunAction");
+        }    
+      
     }
-    
+  
     public void idle() {
+  
+        if (!armChannel.getAnimationName().equals("StillArms")) {
+            armChannel.setAnim("StillArms");
+        }
+      
+        if (!legChannel.getAnimationName().equals("StillLegs")) {
+            legChannel.setAnim("StillLegs");
+        }
+        
     }
     
-    public void setModel() {
+      public void setModel() {
         
-        if(situation != null) {
-            if (situation.get("Setting").equals("Trail")) 
-            model = wagon.getModel();
-        }
+          if(situation != null) {
+              if (situation.get("Setting").equals("Trail")) 
+              model = wagon.getModel();
+          }
         
-        else {
-            model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Truman/Truman.j3o");
-            model.setLocalScale(.125f);
-        }
+          else {
+              model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Truman/Truman.j3o");
+              model.setLocalScale(.125f);
+          }
         
-        attachChild(model);
+          attachChild(model);
         
-    }
+      }
     
     private void setFilePath() {
         
-        filePath = System.getProperty("user.home") + "/OregonTrail/";
+        filePath = System.getProperty("user.home") + "/Oregon Trail/";
         
         if ("Dalvik".equals(System.getProperty("java.vm.name"))) {
             filePath = stateManager.getState(AndroidManager.class).filePath;

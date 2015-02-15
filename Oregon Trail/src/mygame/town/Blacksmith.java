@@ -4,11 +4,13 @@
  */
 package mygame.town;
 
+import com.jme3.scene.Node;
+
 /**
  *
  * @author Bawb
  */
-public class Blacksmith implements Interactable {
+public class Blacksmith extends Node implements Interactable {
     
     @Override
     public void proximityAct() {

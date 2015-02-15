@@ -4,11 +4,13 @@
  */
 package mygame.town;
 
+import com.jme3.scene.Node;
+
 /**
  *
  * @author Bawb
  */
-public class WagonModel implements Interactable {
+public class WagonModel extends Node implements Interactable {
     
     @Override
     public void proximityAct(){

@@ -28,7 +28,7 @@ public class Wagon extends Node {
         
         if (wagonInfo == null) {
            wagonInfo = makeNewWagon();
-           save(stateManager, filePath, wagonInfo);
+           save(stateManager, filePath + "WagonInfo.yml", wagonInfo);
         }
         
         String type   = (String)  wagonInfo.get("Model"); 
