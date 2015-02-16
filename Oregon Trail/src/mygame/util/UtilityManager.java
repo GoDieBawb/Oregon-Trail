@@ -19,6 +19,7 @@ public class UtilityManager {
     private YamlManager        yamlManager;
     private CameraManager      cameraManager;
     private PhysicsManager     physicsManager;
+    private GuiManager         guiManager;
 
     public UtilityManager(Application app) {
         System.out.println("Creating Utility Manager");
@@ -28,8 +29,17 @@ public class UtilityManager {
         createYamlManager();
         createCameraManager();
         createPhysicsManager();
+        createGuiManager();
     }
 
+    private void createGuiManager() {
+        guiManager = new GuiManager(app);
+    }
+    
+    public GuiManager getGuiManager() {
+        return guiManager;
+    }
+    
     private void createCameraManager() {
         cameraManager = new CameraManager(app);
     }

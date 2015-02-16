@@ -4,20 +4,28 @@
  */
 package mygame.town;
 
-import com.jme3.scene.Node;
+import com.jme3.app.state.AppStateManager;
+import mygame.town.gui.BlacksmithGui;
 
 /**
  *
  * @author Bawb
  */
-public class WagonModel extends Node implements Interactable {
+public class WagonModel extends Interactable {
+    
+    public WagonModel(AppStateManager stateManager) {
+        super(stateManager);
+        //gui = new BlacksmithGui(getStateManager());
+    }    
     
     @Override
-    public void proximityAct(){
+    public void enterProximity() {
+        super.enterProximity();
     }
     
-    @Override
-    public void interact() {
+    @Override 
+    public void exitProximity() {
+        super.exitProximity();
     }
     
 }

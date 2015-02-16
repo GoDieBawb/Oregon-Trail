@@ -4,14 +4,40 @@
  */
 package mygame.town;
 
+import com.jme3.app.state.AppStateManager;
+import com.jme3.scene.Node;
+
 /**
  *
  * @author Bawb
  */
-public interface Interactable {
+public abstract class Interactable extends Node {
     
-    public void proximityAct();
+    private boolean         inProx;
+    private AppStateManager stateManager;
     
-    public void interact();
+    public Interactable(AppStateManager stateManager) {
+        this.stateManager = stateManager;
+    }
+    
+    public AppStateManager getStateManager() {
+        return stateManager;
+    }
+    
+    public void enterProximity() {
+        inProx = true;
+    };
+    
+    public void exitProximity() {
+        inProx = false;
+    };
+    
+    public void setInProx(boolean inProx) {
+        this.inProx = inProx;
+    }
+    
+    public boolean inProx() {
+        return inProx;
+    }
     
 }

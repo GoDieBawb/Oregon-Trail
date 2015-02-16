@@ -30,6 +30,7 @@ public class Player extends Node {
     private float           speedMult;
     private float           strafeMult;
     private HashMap         situation;
+    private boolean         noMove;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -39,6 +40,7 @@ public class Player extends Node {
         createAnimControl();
         setSpeedMult(.8f);
         setStrafeMult(.5f);
+        setName("Player");
     }
     
     public void load() {
@@ -97,7 +99,13 @@ public class Player extends Node {
         
     }
     
-      public void setModel() {
+    public void setModel(Node model) {
+    
+        this.model = model;
+        
+    }
+      
+    public void setModel() {
         
           if(situation != null) {
               if (situation.get("Setting").equals("Trail")) 
@@ -201,6 +209,14 @@ public class Player extends Node {
     
     public HashMap getSituation() {
         return situation;
+    }
+    
+    public void setNoMove(boolean noMove) {
+        this.noMove = noMove;
+    }
+    
+    public boolean getNoMove() {
+        return noMove;
     }
     
 }

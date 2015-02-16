@@ -4,6 +4,7 @@
  */
 package mygame.town;
 
+import mygame.util.PersonInteractionManager;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import mygame.GameManager;
@@ -14,7 +15,7 @@ import mygame.GameManager;
  */
 public class TownState extends AbstractAppState {
     
-    private TownInteractionManager townInteractionManager;
+    private PersonInteractionManager townInteractionManager;
     private TownSceneManager       townSceneManager;
     private SimpleApplication      app;
     
@@ -29,7 +30,7 @@ public class TownState extends AbstractAppState {
     }
     
     private void createTownInteractionManager() {
-        townInteractionManager = new TownInteractionManager(app.getStateManager());
+        townInteractionManager = new PersonInteractionManager(app.getStateManager());
     }
     
     private void createTownSceneManager() {

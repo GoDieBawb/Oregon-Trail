@@ -26,18 +26,18 @@ public class TownSceneManager {
         player           = app.getStateManager().getState(PlayerManager.class).getPlayer();
         app.getRootNode().attachChild(scene);
         wagonSpot.attachChild(player.getWagon().getModel());
-        initInteractables();
+        initInteractables(app);
     }
     
-    private void initInteractables() {
+    private void initInteractables(SimpleApplication app) {
         
         Node a = (Node) interactableNode.getChild(0);
         Node b = (Node) interactableNode.getChild(1);
         Node c = (Node) interactableNode.getChild(2);
         
-        ShopKeeper sk = new ShopKeeper();
-        Blacksmith bs = new Blacksmith();
-        WagonModel wm = new WagonModel();
+        ShopKeeper sk = new ShopKeeper(app.getStateManager());
+        Blacksmith bs = new Blacksmith(app.getStateManager());
+        WagonModel wm = new WagonModel(app.getStateManager());
         
         sk.setLocalTranslation(a.getWorldTranslation());
         bs.setLocalTranslation(b.getWorldTranslation());
@@ -62,10 +62,20 @@ public class TownSceneManager {
         return scene;
     }
     
-    private void checkProximity(Node actor) {
+    private void checkProximity(Interactable actor) {
 
-        if (actor.getLocalTranslation().distance(player.getLocalTranslation()) < 5) {
-            ((Interactable) actor).proximityAct();
+        if (actor.getLocalTranslation().distance(player.getLocalTranslation()) < 2.5f) {
+            
+            if(!actor.inProx()) 
+            actor.enterProximity();
+            
+        }
+        
+        else {
+        
+            if(actor.inProx())
+            actor.exitProximity();
+            
         }
         
     }
@@ -74,7 +84,7 @@ public class TownSceneManager {
     
         for (int i = 0; i < interactableNode.getQuantity(); i++) {
             
-            Node currentActor =  (Node) interactableNode.getChild(i);
+            Interactable currentActor =  (Interactable) interactableNode.getChild(i);
             checkProximity(currentActor);
             
         }

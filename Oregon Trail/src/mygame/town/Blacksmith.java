@@ -4,20 +4,33 @@
  */
 package mygame.town;
 
-import com.jme3.scene.Node;
+import com.jme3.app.state.AppStateManager;
+import mygame.town.gui.BlacksmithGui;
+
 
 /**
  *
  * @author Bawb
  */
-public class Blacksmith extends Node implements Interactable {
+public class Blacksmith extends Interactable {
     
-    @Override
-    public void proximityAct() {
+    private BlacksmithGui gui;
+    
+    public Blacksmith(AppStateManager stateManager) {
+        super(stateManager);
+        gui = new BlacksmithGui(getStateManager());
     }
     
     @Override
-    public void interact() {
+    public void enterProximity() {
+        super.enterProximity();
+        gui.getInteractButton().show();
+    }
+    
+    @Override 
+    public void exitProximity() {
+        super.exitProximity();
+        gui.getInteractButton().hide();
     }
     
 }
