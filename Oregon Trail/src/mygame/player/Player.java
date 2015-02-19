@@ -38,8 +38,8 @@ public class Player extends Node {
         setModel();
         createPhys();
         createAnimControl();
-        setSpeedMult(.8f);
-        setStrafeMult(.5f);
+        setSpeedMult(3f);
+        setStrafeMult(1f);
         setName("Player");
     }
     

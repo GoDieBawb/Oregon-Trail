@@ -72,7 +72,7 @@ public class PersonInteractionManager {
         
         float speedMult;
         speedMult = player.getSpeedMult()*.8f + player.getStrafeMult()*.2f;
-        player.getPhys().setWalkDirection(walkDirection.mult(speedMult*.7f));
+        player.getPhys().setWalkDirection(walkDirection.mult(.5f));
         if (!up && !down && !left && !right)
         player.getPhys().setViewDirection(camDir);
         else
