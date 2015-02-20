@@ -7,32 +7,25 @@ package mygame.town.gui;
 import mygame.util.Gui;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.font.BitmapFont.Align;
-import com.jme3.font.BitmapFont.VAlign;
-import com.jme3.font.LineWrapMode;
 import com.jme3.input.event.MouseButtonEvent;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
-import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
-import mygame.player.Wagon;
 import tonegod.gui.controls.buttons.ButtonAdapter;
-import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.core.Element;
 
 /**
  *
  * @author Bawb
  */
-public class BlacksmithGui extends Gui {
+public class StoreGui extends Gui {
     
     private ButtonAdapter interactButton;
     private ButtonAdapter endInteractButton;
-    private Indicator     wagonHealth;
+    private String        selectedItem;
     
-    public BlacksmithGui(AppStateManager stateManager) {
+    public StoreGui(AppStateManager stateManager) {
         super(stateManager);
     }
     
@@ -40,7 +33,7 @@ public class BlacksmithGui extends Gui {
     public void createElements(){
         createInteractButton();
         createEndInteractButton();
-        createWagonHealth();
+        selectedItem = "Food";
     }
     
     public Element getInteractButton() {
@@ -49,18 +42,19 @@ public class BlacksmithGui extends Gui {
     
     private void createInteractButton() {
     
-        interactButton = new ButtonAdapter(getScreen(), "Blacksmith Interact Button", new Vector2f(12,12)) {
+        interactButton = new ButtonAdapter(getScreen(), "Store Interact Button", new Vector2f(12,12)) {
         
             @Override
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                Node   inter  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Interactable");
-                Node   wagon  = (Node) inter.getChild("Wagon");
+                Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Scene");
+                Node   items  = (Node) scene.getChild("Items");
+                Node   currentItem = (Node) items.getChild(selectedItem);
                 player.setNoMove(true);
-                player.setModel(wagon);
+                player.getModel().scale(.1f);
+                player.setModel((Node)(currentItem.getChild(0)));
                 endInteractButton.show();
-                wagonHealth.show();
                 interactButton.hide();
                 
             }
@@ -70,15 +64,15 @@ public class BlacksmithGui extends Gui {
         getScreen().addElement(interactButton);
         interactButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
         interactButton.setPosition(getScreen().getWidth()/2 - interactButton.getWidth()/2, getScreen().getHeight()/10);
-        interactButton.hide();
         interactButton.setText("Trade");
+        interactButton.hide();
         getElements().add(interactButton);
         
     }
     
     private void createEndInteractButton() {
     
-        endInteractButton = new ButtonAdapter(getScreen(), "Blacksmith End Interact Butotn", new Vector2f(12,12)) {
+        endInteractButton = new ButtonAdapter(getScreen(), "Store End Interact Butotn", new Vector2f(12,12)) {
         
             @Override
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
@@ -88,7 +82,7 @@ public class BlacksmithGui extends Gui {
                 player.setNoMove(false);
                 player.setModel((Node)model.getChild(0));
                 endInteractButton.hide();
-                wagonHealth.hide();
+                player.getModel().scale(10f);
                 
             }
             
@@ -101,35 +95,6 @@ public class BlacksmithGui extends Gui {
         endInteractButton.setText("Finish");
         getElements().add(endInteractButton);
         
-    }
-    
-    private void createWagonHealth() {
-    
-        wagonHealth = new Indicator(getScreen(), "Wagon Health", new Vector2f(12,12), Indicator.Orientation.HORIZONTAL) {
-        
-            @Override
-            public void onChange(float currentValue, float currentPercentage) {
-            }
-        
-        };
-        
-        Wagon wagon = getStateManager().getState(PlayerManager.class).getPlayer().getWagon();
-        
-        getScreen().addElement(wagonHealth);
-        wagonHealth.setIndicatorColor(ColorRGBA.Red);
-        //wagonHealth.setText("Wagon Health");
-        wagonHealth.getTextDisplayElement().setText(wagon.getCurrentHealth() + " / " + wagon.getMaxHealth());
-        wagonHealth.setTextWrap(LineWrapMode.NoWrap);
-        wagonHealth.setTextVAlign(VAlign.Center);
-        wagonHealth.setTextAlign(Align.Center);
-        wagonHealth.setBaseImage(getScreen().getStyle("Window").getString("defaultImg"));
-        wagonHealth.setIndicatorPadding(new Vector4f(7,7,7,7));
-        wagonHealth.setX(getScreen().getWidth()/2 - wagonHealth.getWidth()/2);
-        wagonHealth.setY(getScreen().getHeight() * .9f);
-        wagonHealth.hide();
-        wagonHealth.setMaxValue(wagon.getMaxHealth());
-        wagonHealth.setCurrentValue(wagon.getCurrentHealth());
-        
-    }
+    }    
     
 }

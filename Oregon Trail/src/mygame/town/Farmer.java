@@ -4,22 +4,21 @@
  */
 package mygame.town;
 
-import mygame.util.Interactable;
 import com.jme3.app.state.AppStateManager;
-import mygame.town.gui.BlacksmithGui;
-
+import mygame.town.gui.FarmerGui;
+import mygame.util.Interactable;
 
 /**
  *
  * @author Bawb
  */
-public class Blacksmith extends Interactable {
+public class Farmer extends Interactable {
     
-    private BlacksmithGui gui;
+    private FarmerGui gui;
     
-    public Blacksmith(AppStateManager stateManager) {
+    public Farmer(AppStateManager stateManager) {
         super(stateManager);
-        gui = new BlacksmithGui(getStateManager());
+        gui = new FarmerGui(getStateManager());
     }
     
     @Override
@@ -32,6 +31,6 @@ public class Blacksmith extends Interactable {
     public void exitProximity() {
         super.exitProximity();
         gui.getInteractButton().hide();
-    }
+    }    
     
 }

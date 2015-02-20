@@ -20,6 +20,7 @@ public class UtilityManager {
     private CameraManager      cameraManager;
     private PhysicsManager     physicsManager;
     private GuiManager         guiManager;
+    private SkeletonFinder     skeletonFinder;
 
     public UtilityManager(Application app) {
         System.out.println("Creating Utility Manager");
@@ -30,8 +31,17 @@ public class UtilityManager {
         createCameraManager();
         createPhysicsManager();
         createGuiManager();
+        createSkeletonFinder();
     }
 
+    private void createSkeletonFinder() {
+        skeletonFinder = new SkeletonFinder();
+    }
+    
+    public SkeletonFinder getSkeletonFinder() {
+        return skeletonFinder;
+    }
+    
     private void createGuiManager() {
         guiManager = new GuiManager(app);
     }
