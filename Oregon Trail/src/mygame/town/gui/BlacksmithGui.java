@@ -20,6 +20,7 @@ import mygame.player.PlayerManager;
 import mygame.player.Wagon;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
+import tonegod.gui.controls.text.TextElement;
 import tonegod.gui.core.Element;
 
 /**
@@ -31,17 +32,61 @@ public class BlacksmithGui extends Gui {
     private ButtonAdapter interactButton;
     private ButtonAdapter endInteractButton;
     private Indicator     wagonHealth;
+    private ButtonAdapter nextButton;
+    private ButtonAdapter buyButton;
+    private TextElement   infoText;
+    private Node          selectedItem;
+    private String        itemName;
     
     public BlacksmithGui(AppStateManager stateManager) {
         super(stateManager);
+        setSelectedItem("Fix");
     }
+    
+    private void setSelectedItem(String newItem) {
+        itemName = newItem; 
+        if (newItem.equals("Fix")){}
+        else{};
+        
+    }        
     
     @Override
     public void createElements(){
         createInteractButton();
         createEndInteractButton();
         createWagonHealth();
+        createNextButton();
     }
+    
+    private void createNextButton() {
+        
+        nextButton = new ButtonAdapter(getScreen(), "Blacksmith Next Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                if (itemName.equals("Fix")) {
+                    setSelectedItem("Upgrade");
+                    wagonHealth.hide();
+                }
+                
+                else if (itemName.equals("Upgrade")) {
+                    setSelectedItem("Fix");
+                    wagonHealth.show();
+                }
+                
+            }
+            
+        };
+        
+        getScreen().addElement(nextButton);
+        nextButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
+        nextButton.setPosition(getScreen().getWidth() * .75f, getScreen().getHeight()/2 - nextButton.getHeight()/2);
+        nextButton.hide();
+        nextButton.setText("Next");
+        getElements().add(nextButton);        
+    
+    }        
     
     public Element getInteractButton() {
         return interactButton;
@@ -62,6 +107,7 @@ public class BlacksmithGui extends Gui {
                 endInteractButton.show();
                 wagonHealth.show();
                 interactButton.hide();
+                nextButton.show();
                 
             }
             
@@ -89,6 +135,7 @@ public class BlacksmithGui extends Gui {
                 player.setModel((Node)model.getChild(0));
                 endInteractButton.hide();
                 wagonHealth.hide();
+                nextButton.hide();
                 
             }
             

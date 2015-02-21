@@ -5,6 +5,8 @@
 package mygame.town;
 
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.Vector3f;
+import mygame.player.PlayerManager;
 import mygame.town.gui.FarmerGui;
 import mygame.util.Interactable;
 
@@ -31,6 +33,11 @@ public class Farmer extends Interactable {
     public void exitProximity() {
         super.exitProximity();
         gui.getInteractButton().hide();
+    } 
+    
+    @Override
+    public void whileInProx() {
+        lookAt(getStateManager().getState(PlayerManager.class).getPlayer().getModel().getWorldTranslation(), new Vector3f(0,1,0));
     }    
     
 }

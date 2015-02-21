@@ -33,6 +33,9 @@ public abstract class Interactable extends Node {
         inProx = false;
     };
     
+    public void whileInProx() {
+    }
+    
     public void setInProx(boolean inProx) {
         this.inProx = inProx;
     }

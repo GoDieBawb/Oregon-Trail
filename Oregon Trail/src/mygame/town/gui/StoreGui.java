@@ -13,6 +13,7 @@ import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.text.TextElement;
 import tonegod.gui.core.Element;
 
 /**
@@ -23,18 +24,73 @@ public class StoreGui extends Gui {
     
     private ButtonAdapter interactButton;
     private ButtonAdapter endInteractButton;
-    private String        selectedItem;
+    private Node          selectedItem;
+    private ButtonAdapter nextButton;
+    private String        itemName;
+    private ButtonAdapter buyButton;
+    private TextElement   infoText;
     
     public StoreGui(AppStateManager stateManager) {
         super(stateManager);
-    }
+    } 
     
     @Override
     public void createElements(){
         createInteractButton();
         createEndInteractButton();
-        selectedItem = "Food";
+        setSelectedItem("Food");
+        createNextButton();
     }
+    
+    private void setSelectedItem(String newItem) {
+        
+         Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Scene");
+         Node   items  = (Node) scene.getChild("Items");
+         itemName = newItem;
+         
+        if (newItem.equals("Food"))
+        selectedItem = (Node) items.getChild(0);
+        else if (newItem.equals("Bullets"))
+        selectedItem = (Node) items.getChild(1);
+        else
+        selectedItem = (Node) items.getChild(2);
+        
+    }    
+    
+    private void createNextButton() {
+        
+        nextButton = new ButtonAdapter(getScreen(), "Store Next Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                if (itemName.equals("Food")) {
+                    setSelectedItem("Tools");
+                }
+                
+                else if (itemName.equals("Tools")) {
+                    setSelectedItem("Bullets");
+                }
+                
+                else if (itemName.equals("Bullets")) {
+                    setSelectedItem("Food");
+                }
+                
+                Player player = getStateManager().getState(PlayerManager.class).getPlayer();
+                player.setModel((Node)selectedItem.getChild(0));
+                
+            }
+            
+        };
+        
+        getScreen().addElement(nextButton);
+        nextButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
+        nextButton.setPosition(getScreen().getWidth() * .75f, getScreen().getHeight()/2 - nextButton.getHeight()/2);
+        nextButton.hide();
+        nextButton.setText("Next");
+        getElements().add(nextButton);        
+    
+    }    
     
     public Element getInteractButton() {
         return interactButton;
@@ -48,14 +104,12 @@ public class StoreGui extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Scene");
-                Node   items  = (Node) scene.getChild("Items");
-                Node   currentItem = (Node) items.getChild(selectedItem);
                 player.setNoMove(true);
                 player.getModel().scale(.1f);
-                player.setModel((Node)(currentItem.getChild(0)));
+                player.setModel((Node)selectedItem.getChild(0));
                 endInteractButton.show();
                 interactButton.hide();
+                nextButton.show();
                 
             }
             
@@ -82,6 +136,7 @@ public class StoreGui extends Gui {
                 player.setNoMove(false);
                 player.setModel((Node)model.getChild(0));
                 endInteractButton.hide();
+                nextButton.hide();
                 player.getModel().scale(10f);
                 
             }

@@ -105,8 +105,10 @@ public class TownSceneManager {
 
         if (actor.getLocalTranslation().distance(player.getLocalTranslation()) < 2.5f) {
             
+            actor.whileInProx();
+            
             if(!actor.inProx()) 
-            actor.enterProximity();
+            actor.enterProximity(); 
             
         }
         

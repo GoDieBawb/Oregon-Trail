@@ -6,6 +6,8 @@ package mygame.town;
 
 import mygame.util.Interactable;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.Vector3f;
+import mygame.player.PlayerManager;
 import mygame.town.gui.BlacksmithGui;
 
 
@@ -33,5 +35,10 @@ public class Blacksmith extends Interactable {
         super.exitProximity();
         gui.getInteractButton().hide();
     }
+    
+    @Override
+    public void whileInProx() {
+        lookAt(getStateManager().getState(PlayerManager.class).getPlayer().getModel().getWorldTranslation(), new Vector3f(0,1,0));
+    }    
     
 }

@@ -13,6 +13,7 @@ import mygame.player.Player;
 import mygame.player.PlayerManager;
 import mygame.util.Gui;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.text.TextElement;
 import tonegod.gui.core.Element;
 
 /**
@@ -22,7 +23,12 @@ import tonegod.gui.core.Element;
 public class FarmerGui extends Gui {
     
     private ButtonAdapter interactButton;
-    private ButtonAdapter endInteractButton;    
+    private ButtonAdapter endInteractButton;
+    private ButtonAdapter nextButton;
+    private ButtonAdapter buyButton;
+    private TextElement   infoText;
+    private Node          selectedItem;
+    private String        itemName;
     
     public FarmerGui(AppStateManager stateManager) {
         super(stateManager);
@@ -32,7 +38,54 @@ public class FarmerGui extends Gui {
     public void createElements() {
         createInteractButton();
         createEndInteractButton();
+        createNextButton();
+        setSelectedItem("Ox");
     }    
+    
+    private void setSelectedItem(String newItem) {
+        
+         Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Scene");
+         Node   ox     = (Node) scene.getChild("Oxen");
+         Node   hay    = (Node) scene.getChild("Hay");
+         itemName      = newItem;
+         
+        if (newItem.equals("Ox"))
+        selectedItem = ox;
+        else if (newItem.equals("Hay"))
+        selectedItem = (Node) hay;
+        
+    }        
+    
+    private void createNextButton() {
+        
+        nextButton = new ButtonAdapter(getScreen(), "Farmer Next Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                if (itemName.equals("Ox")) {
+                    setSelectedItem("Hay");
+                }
+                
+                else if (itemName.equals("Hay")) {
+                    setSelectedItem("Ox");
+                }
+                
+                Player player = getStateManager().getState(PlayerManager.class).getPlayer();
+                player.setModel(selectedItem);
+                
+            }
+            
+        };
+        
+        getScreen().addElement(nextButton);
+        nextButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
+        nextButton.setPosition(getScreen().getWidth() * .75f, getScreen().getHeight()/2 - nextButton.getHeight()/2);
+        nextButton.hide();
+        nextButton.setText("Next");
+        getElements().add(nextButton);        
+    
+    }
     
     public Element getInteractButton() {
         return interactButton;
@@ -46,10 +99,10 @@ public class FarmerGui extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                Node  oxNode  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Oxen");
                 player.setNoMove(true);
-                player.setModel(oxNode);
+                player.setModel(selectedItem);
                 endInteractButton.show();
+                nextButton.show();
                 interactButton.hide();
                 
             }
@@ -77,6 +130,7 @@ public class FarmerGui extends Gui {
                 player.setNoMove(false);
                 player.setModel((Node)model.getChild(0));
                 endInteractButton.hide();
+                nextButton.hide();
                 
             }
             
