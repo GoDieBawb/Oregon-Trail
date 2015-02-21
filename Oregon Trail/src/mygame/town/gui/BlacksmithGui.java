@@ -33,9 +33,6 @@ public class BlacksmithGui extends Gui {
     private ButtonAdapter endInteractButton;
     private Indicator     wagonHealth;
     private ButtonAdapter nextButton;
-    private ButtonAdapter buyButton;
-    private TextElement   infoText;
-    private Node          selectedItem;
     private String        itemName;
     
     public BlacksmithGui(AppStateManager stateManager) {

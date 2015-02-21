@@ -13,7 +13,6 @@ import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
 import tonegod.gui.controls.buttons.ButtonAdapter;
-import tonegod.gui.controls.text.TextElement;
 import tonegod.gui.core.Element;
 
 /**
@@ -28,7 +27,6 @@ public class StoreGui extends Gui {
     private ButtonAdapter nextButton;
     private String        itemName;
     private ButtonAdapter buyButton;
-    private TextElement   infoText;
     
     public StoreGui(AppStateManager stateManager) {
         super(stateManager);

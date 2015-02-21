@@ -12,6 +12,7 @@ import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
 import mygame.util.AndroidManager;
+import mygame.util.Gui;
 
 /**
  *
@@ -31,6 +32,7 @@ public class Player extends Node {
     private float           strafeMult;
     private HashMap         situation;
     private boolean         noMove;
+    private Gui             hud;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -41,6 +43,15 @@ public class Player extends Node {
         setSpeedMult(3f);
         setStrafeMult(1f);
         setName("Player");
+        
+    }
+    
+    public void createHud() {
+        hud = new Hud(stateManager);
+    }
+    
+    public Hud getHud() {
+        return (Hud) hud;
     }
     
     public void load() {
@@ -199,7 +210,7 @@ public class Player extends Node {
     private void createSituation() {
         situation = new HashMap();
         situation.put("Setting", "Town");
-        situation.put("Setting Name", "Starting Town");
+        situation.put("Setting Name", "Independence");
         situation.put("Total Distance", 0);
         situation.put("Distance Remaining", 0);
         situation.put("Day Number", 1);

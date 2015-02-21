@@ -30,6 +30,7 @@ public class GameManager extends AbstractAppState {
         createUtilityManager();
         createTownState();
         playerManager.loadPlayerInfo();
+        playerManager.getPlayer().createHud();
         loadSituation();
     }
 

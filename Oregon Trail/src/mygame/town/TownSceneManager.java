@@ -32,6 +32,26 @@ public class TownSceneManager {
         wagonSpot.attachChild(player.getWagon().getModel());
         initInteractables(app);
         animateTown(app.getStateManager());
+        player.getPhys().warp(scene.getChild("PlayerSpot").getLocalTranslation());
+        informPlayer();
+    }
+    
+    private void informPlayer() {
+        
+        int day           = (Integer) player.getSituation().get("Day Number");
+        int milesTraveled = (Integer) player.getSituation().get("Total Distance");
+        String name       = (String) player.getSituation().get("Setting Name");
+        String weather    = (String) player.getSituation().get("Weather");
+        
+        String info = "Welcome to " + name + ". You have traveled a total of " + milesTraveled + " miles in " + day + " days and the weather is " + weather;
+        
+        if (day == 1)
+        player.getHud().showAlert("Welcome", player.getHud().getScripts().get("Start").toString());
+        
+        else
+        player.getHud().showAlert("Welcome", info);   
+        
+        
     }
     
     private void animateTown(AppStateManager stateManager) {

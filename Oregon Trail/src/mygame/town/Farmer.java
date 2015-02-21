@@ -27,6 +27,7 @@ public class Farmer extends Interactable {
     public void enterProximity() {
         super.enterProximity();
         gui.getInteractButton().show();
+        getStateManager().getState(PlayerManager.class).getPlayer().getHud().showAlert("Farmer", "Buy Oxen to pull your wagon and Hay to feed them at the farmer.");
     }
     
     @Override 

@@ -25,6 +25,7 @@ public class ShopKeeper extends Interactable {
     public void enterProximity() {
         super.enterProximity();
         ((StoreGui)getGui()).getInteractButton().show();
+        getStateManager().getState(PlayerManager.class).getPlayer().getHud().showAlert("General Store", "Buy the items you need to survive at the General Store.");
     }
     
     @Override 

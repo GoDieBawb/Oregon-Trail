@@ -13,7 +13,6 @@ import mygame.player.Player;
 import mygame.player.PlayerManager;
 import mygame.util.Gui;
 import tonegod.gui.controls.buttons.ButtonAdapter;
-import tonegod.gui.controls.text.TextElement;
 import tonegod.gui.core.Element;
 
 /**
@@ -26,7 +25,6 @@ public class FarmerGui extends Gui {
     private ButtonAdapter endInteractButton;
     private ButtonAdapter nextButton;
     private ButtonAdapter buyButton;
-    private TextElement   infoText;
     private Node          selectedItem;
     private String        itemName;
     

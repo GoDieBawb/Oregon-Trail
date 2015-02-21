@@ -28,6 +28,7 @@ public class Blacksmith extends Interactable {
     public void enterProximity() {
         super.enterProximity();
         gui.getInteractButton().show();
+        getStateManager().getState(PlayerManager.class).getPlayer().getHud().showAlert("Blacksmith", "Repair and Upgrade your Wagon at the Blacksmith.");
     }
     
     @Override 
