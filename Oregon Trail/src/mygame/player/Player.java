@@ -165,10 +165,10 @@ public class Player extends Node {
         inventory = new HashMap();
         inventory.put("Money", 500);
         inventory.put("Oxen", 0);
-        inventory.put("Wheels", 0);
-        inventory.put("Axels", 0);
         inventory.put("Food", 0);
+        inventory.put("Tools", 0);
         inventory.put("Bullets", 0);
+        inventory.put("Hay", 0);
         saveInventory();
     }
     
@@ -215,6 +215,7 @@ public class Player extends Node {
         situation.put("Distance Remaining", 0);
         situation.put("Day Number", 1);
         situation.put("Weather", "Hot");
+        situation.put("Biome", "Plains");
         saveSituation();
     }
     

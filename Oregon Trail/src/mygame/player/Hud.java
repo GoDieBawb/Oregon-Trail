@@ -39,6 +39,7 @@ public class Hud extends Gui {
                 hideWithEffect();
             }
         };
+        
         infoText.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
         infoText.setFont("Interface/Fonts/UnrealTournament.fnt");
         infoText.setWindowTitle("Welcome");

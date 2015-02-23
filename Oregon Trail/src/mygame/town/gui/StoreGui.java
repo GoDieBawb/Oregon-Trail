@@ -27,9 +27,11 @@ public class StoreGui extends Gui {
     private ButtonAdapter nextButton;
     private String        itemName;
     private ButtonAdapter buyButton;
+    private Player        player;
     
     public StoreGui(AppStateManager stateManager) {
         super(stateManager);
+        player = getStateManager().getState(PlayerManager.class).getPlayer();
     } 
     
     @Override
@@ -38,6 +40,7 @@ public class StoreGui extends Gui {
         createEndInteractButton();
         setSelectedItem("Food");
         createNextButton();
+        createBuyButton();
     }
     
     private void setSelectedItem(String newItem) {
@@ -83,7 +86,7 @@ public class StoreGui extends Gui {
         
         getScreen().addElement(nextButton);
         nextButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
-        nextButton.setPosition(getScreen().getWidth() * .75f, getScreen().getHeight()/2 - nextButton.getHeight()/2);
+        nextButton.setPosition(getScreen().getWidth()/2 - nextButton.getWidth()/2 + nextButton.getWidth() * 2, getScreen().getHeight()/10);
         nextButton.hide();
         nextButton.setText("Next");
         getElements().add(nextButton);        
@@ -108,6 +111,7 @@ public class StoreGui extends Gui {
                 endInteractButton.show();
                 interactButton.hide();
                 nextButton.show();
+                buyButton.show();
                 
             }
             
@@ -135,6 +139,7 @@ public class StoreGui extends Gui {
                 player.setModel((Node)model.getChild(0));
                 endInteractButton.hide();
                 nextButton.hide();
+                buyButton.hide();
                 player.getModel().scale(10f);
                 
             }
@@ -148,6 +153,28 @@ public class StoreGui extends Gui {
         endInteractButton.setText("Finish");
         getElements().add(endInteractButton);
         
-    }    
+    }
+    
+    private void createBuyButton () {
+    
+        buyButton = new ButtonAdapter(getScreen(), "Store Buy Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                
+                
+            }
+            
+        };
+        
+        getScreen().addElement(buyButton);        
+        buyButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
+        buyButton.setPosition(getScreen().getWidth()/2 - buyButton.getWidth()/2 - buyButton.getWidth() * 2, getScreen().getHeight()/10);
+        buyButton.hide();
+        buyButton.setText("Buy");
+        getElements().add(buyButton);
+        
+    }
     
 }

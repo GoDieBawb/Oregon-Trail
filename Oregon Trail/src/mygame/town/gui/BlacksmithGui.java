@@ -15,12 +15,12 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
+import mygame.player.Hud;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
 import mygame.player.Wagon;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
-import tonegod.gui.controls.text.TextElement;
 import tonegod.gui.core.Element;
 
 /**
@@ -34,29 +34,34 @@ public class BlacksmithGui extends Gui {
     private Indicator     wagonHealth;
     private ButtonAdapter nextButton;
     private String        itemName;
+    private ButtonAdapter buyButton;
+    private Player        player;
     
     public BlacksmithGui(AppStateManager stateManager) {
         super(stateManager);
         setSelectedItem("Fix");
+        player = getStateManager().getState(PlayerManager.class).getPlayer();
     }
     
     private void setSelectedItem(String newItem) {
         itemName = newItem; 
         if (newItem.equals("Fix")){}
-        else{};
+        else{}
         
     }        
     
     @Override
-    public void createElements(){
+    public void createElements() {
         createInteractButton();
         createEndInteractButton();
         createWagonHealth();
         createNextButton();
+        createBuyButton();
     }
     
     private void createNextButton() {
         
+        itemName = "Fix";
         nextButton = new ButtonAdapter(getScreen(), "Blacksmith Next Button", new Vector2f(12,12)) {
         
             @Override
@@ -65,11 +70,13 @@ public class BlacksmithGui extends Gui {
                 if (itemName.equals("Fix")) {
                     setSelectedItem("Upgrade");
                     wagonHealth.hide();
+                    buyButton.setText("Upgrade");
                 }
                 
                 else if (itemName.equals("Upgrade")) {
                     setSelectedItem("Fix");
                     wagonHealth.show();
+                    buyButton.setText("Fix");
                 }
                 
             }
@@ -78,7 +85,7 @@ public class BlacksmithGui extends Gui {
         
         getScreen().addElement(nextButton);
         nextButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
-        nextButton.setPosition(getScreen().getWidth() * .75f, getScreen().getHeight()/2 - nextButton.getHeight()/2);
+        nextButton.setPosition(getScreen().getWidth()/2 - nextButton.getWidth()/2  + nextButton.getWidth() * 2, getScreen().getHeight()/10);
         nextButton.hide();
         nextButton.setText("Next");
         getElements().add(nextButton);        
@@ -105,6 +112,7 @@ public class BlacksmithGui extends Gui {
                 wagonHealth.show();
                 interactButton.hide();
                 nextButton.show();
+                buyButton.show();
                 
             }
             
@@ -121,7 +129,7 @@ public class BlacksmithGui extends Gui {
     
     private void createEndInteractButton() {
     
-        endInteractButton = new ButtonAdapter(getScreen(), "Blacksmith End Interact Butotn", new Vector2f(12,12)) {
+        endInteractButton = new ButtonAdapter(getScreen(), "Blacksmith End Interact Button", new Vector2f(12,12)) {
         
             @Override
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
@@ -133,6 +141,7 @@ public class BlacksmithGui extends Gui {
                 endInteractButton.hide();
                 wagonHealth.hide();
                 nextButton.hide();
+                buyButton.hide();
                 
             }
             
@@ -161,7 +170,6 @@ public class BlacksmithGui extends Gui {
         
         getScreen().addElement(wagonHealth);
         wagonHealth.setIndicatorColor(ColorRGBA.Red);
-        //wagonHealth.setText("Wagon Health");
         wagonHealth.getTextDisplayElement().setText(wagon.getCurrentHealth() + " / " + wagon.getMaxHealth());
         wagonHealth.setTextWrap(LineWrapMode.NoWrap);
         wagonHealth.setTextVAlign(VAlign.Center);
@@ -169,10 +177,32 @@ public class BlacksmithGui extends Gui {
         wagonHealth.setBaseImage(getScreen().getStyle("Window").getString("defaultImg"));
         wagonHealth.setIndicatorPadding(new Vector4f(7,7,7,7));
         wagonHealth.setX(getScreen().getWidth()/2 - wagonHealth.getWidth()/2);
-        wagonHealth.setY(getScreen().getHeight() * .9f);
+        wagonHealth.setY(getScreen().getHeight()/2);
         wagonHealth.hide();
         wagonHealth.setMaxValue(wagon.getMaxHealth());
         wagonHealth.setCurrentValue(wagon.getCurrentHealth());
+        
+    }
+    
+    private void createBuyButton () {
+    
+        buyButton = new ButtonAdapter(getScreen(), "Blacksmith Buy Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                
+                
+            }
+            
+        };
+        
+        getScreen().addElement(buyButton);        
+        buyButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
+        buyButton.setPosition(getScreen().getWidth()/2 - buyButton.getWidth()/2 - buyButton.getWidth() * 2, getScreen().getHeight()/10);
+        buyButton.hide();
+        buyButton.setText(itemName);
+        getElements().add(buyButton);
         
     }
     
