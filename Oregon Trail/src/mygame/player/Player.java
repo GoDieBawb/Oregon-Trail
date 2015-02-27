@@ -142,6 +142,10 @@ public class Player extends Node {
         
     }
     
+    public String getFilePath() {
+        return filePath;
+    }
+    
     private void loadWagon() {
         wagon = new Wagon();
         wagon.load(stateManager, filePath);

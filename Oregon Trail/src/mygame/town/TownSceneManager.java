@@ -36,6 +36,10 @@ public class TownSceneManager {
         informPlayer();
     }
     
+    public Node getInteractableNode() {
+        return interactableNode;
+    }
+    
     private void informPlayer() {
         
         int day           = (Integer) player.getSituation().get("Day Number");

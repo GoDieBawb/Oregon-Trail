@@ -70,4 +70,8 @@ public class Hud extends Gui {
         return scripts;
     }
     
+    public AlertBox getInfoText(){
+        return infoText;
+    }
+    
 }

@@ -15,20 +15,20 @@ import mygame.GameManager;
  */
 public class Wagon extends Node {
  
-    private Node   model;
-    private int    moveSpeed;
-    private int    turnSpeed;
-    private int    currentHealth;
-    private int    maxHealth;
-    private String upgrades;
+    private Node    model;
+    private int     moveSpeed;
+    private int     turnSpeed;
+    private int     currentHealth;
+    private int     maxHealth;;
+    private HashMap wagonInfo;
     
     public void load(AppStateManager stateManager, String filePath) {
         
-        HashMap wagonInfo = stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "WagonSave.yml");
+        wagonInfo = stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "WagonSave.yml");
         
         if (wagonInfo == null) {
            wagonInfo = makeNewWagon();
-           save(stateManager, filePath + "WagonInfo.yml", wagonInfo);
+           save(stateManager, filePath + "WagonInfo.yml");
         }
         
         String type   = (String)  wagonInfo.get("Model"); 
@@ -36,7 +36,6 @@ public class Wagon extends Node {
         moveSpeed     = (Integer) wagonInfo.get("MoveSpeed");
         maxHealth     = (Integer) wagonInfo.get("MaxHealth");
         currentHealth = (Integer) wagonInfo.get("CurrentHealth");
-        upgrades      = (String)  wagonInfo.get("Upgrades");
         
         if (type.equals("Basic")) 
         model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/CoveredWagon/CoveredWagon.j3o");
@@ -46,19 +45,28 @@ public class Wagon extends Node {
         
     }
     
-    public void save(AppStateManager stateManager, String filePath, HashMap wagonInfo) {
+    public void save(AppStateManager stateManager, String filePath) {
+        wagonInfo.put("TurnSpeed", turnSpeed);
+        wagonInfo.put("MoveSpeed", moveSpeed);
+        wagonInfo.put("MaxHealth", maxHealth);
+        wagonInfo.put("CurrentHealth", currentHealth);
+        wagonInfo.put("Upgrades", "None");
         stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().saveYaml(filePath, wagonInfo);
     }
     
     private HashMap makeNewWagon() {
         
-        HashMap wagonInfo = new HashMap();
+        wagonInfo = new HashMap();
         wagonInfo.put("Model", "Basic");
         wagonInfo.put("TurnSpeed", 1);
         wagonInfo.put("MoveSpeed", 1);
         wagonInfo.put("MaxHealth", 20);
         wagonInfo.put("CurrentHealth", 20);
         wagonInfo.put("Upgrades", "None");
+        turnSpeed     = (Integer) wagonInfo.get("TurnSpeed");
+        moveSpeed     = (Integer) wagonInfo.get("MoveSpeed");
+        maxHealth     = (Integer) wagonInfo.get("MaxHealth");
+        currentHealth = (Integer) wagonInfo.get("CurrentHealth");
         return wagonInfo;
         
     }
@@ -79,12 +87,16 @@ public class Wagon extends Node {
         return maxHealth;
     }
     
+    public void setMaxHealth(int newHealth) {
+        maxHealth = newHealth;
+    }
+    
     public int getCurrentHealth() {
         return currentHealth;
     }
     
-    public String getUpgrades() {
-        return upgrades;
+    public void setCurrentHealth(int newHealth) {
+        currentHealth = newHealth;
     }
     
 }

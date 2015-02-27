@@ -6,6 +6,7 @@ package mygame.util;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
+import mygame.player.PlayerManager;
 
 /**
  *
@@ -31,6 +32,7 @@ public abstract class Interactable extends Node {
     
     public void exitProximity() {
         inProx = false;
+        stateManager.getState(PlayerManager.class).getPlayer().getHud().getInfoText().hide();
     };
     
     public void whileInProx() {

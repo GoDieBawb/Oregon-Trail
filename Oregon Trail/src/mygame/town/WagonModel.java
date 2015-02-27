@@ -19,20 +19,29 @@ public class WagonModel extends Interactable {
     public WagonModel(AppStateManager stateManager) {
         super(stateManager);
         setGui(new WagonGui(getStateManager()));
+        setName("Wagon");
     }    
     
     public void checkOxen() {
         
         int oxCount = (Integer) getStateManager().getState(PlayerManager.class).getPlayer().getInventory().get("Oxen");
+        Node leftOx  = ((Node) ((Node) getChild("Wagon")).getChild("LeftCow"));
+        Node rightOx = ((Node) ((Node) getChild("Wagon")).getChild("RightCow"));
         
         if (oxCount == 0) {
-            ((Node) ((Node) getChild("Wagon")).getChild("LeftCow")).getChild(0).setLocalTranslation(0,-5,0);
-            ((Node) ((Node) getChild("Wagon")).getChild("RightCow")).getChild(0).setLocalTranslation(0,-5,0);        
+            leftOx.getChild(0).setLocalTranslation(0,-5,0);
+            rightOx.getChild(0).setLocalTranslation(0,-5,0);        
         }
         
         else if (oxCount == 1) {
-            ((Node) ((Node) getChild("Wagon")).getChild("LeftCow")).getChild(0).setLocalTranslation(0,-5,0);
+            leftOx.getChild(0).setLocalTranslation(0,-5,0);
+            rightOx.getChild(0).setLocalTranslation(0,0,0);
         }
+        
+        else {
+            leftOx.getChild(0).setLocalTranslation(0,0,0);
+            rightOx.getChild(0).setLocalTranslation(0,0,0);
+        } 
         
     }
     

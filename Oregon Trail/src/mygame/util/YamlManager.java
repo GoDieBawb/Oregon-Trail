@@ -21,8 +21,6 @@ public class YamlManager {
     
     public HashMap loadYaml(String path) {
         
-        System.out.println("Attempting to load Yaml");
-        
         HashMap map;
         File    file;
         Yaml    yaml = new Yaml();
@@ -39,11 +37,10 @@ public class YamlManager {
         }
         
         return map;
+       
     }
     
     public void saveYaml(String path, HashMap map) {
-        
-        System.out.println("Attemping to save to: " + path);
         
         DumperOptions options = new DumperOptions();
         File file             = new File(path);

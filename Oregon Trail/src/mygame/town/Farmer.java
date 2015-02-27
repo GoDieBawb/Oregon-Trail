@@ -21,6 +21,7 @@ public class Farmer extends Interactable {
     public Farmer(AppStateManager stateManager) {
         super(stateManager);
         gui = new FarmerGui(getStateManager());
+        setName("Farmer");
     }
     
     @Override

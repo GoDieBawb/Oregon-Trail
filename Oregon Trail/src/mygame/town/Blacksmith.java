@@ -22,6 +22,7 @@ public class Blacksmith extends Interactable {
     public Blacksmith(AppStateManager stateManager) {
         super(stateManager);
         gui = new BlacksmithGui(getStateManager());
+        setName("Blacksmith");
     }
     
     @Override

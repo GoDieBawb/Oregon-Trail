@@ -19,6 +19,7 @@ public class ShopKeeper extends Interactable {
     public ShopKeeper(AppStateManager stateManager) {
         super(stateManager);
         setGui(new StoreGui(getStateManager()));
+        setName("Shop Keeper");
     }    
     
     @Override
