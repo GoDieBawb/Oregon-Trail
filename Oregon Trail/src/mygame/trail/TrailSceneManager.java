@@ -6,8 +6,6 @@ package mygame.trail;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
@@ -16,19 +14,18 @@ import mygame.player.PlayerManager;
  *
  * @author Bawb
  */
-public class TrailSceneManager extends AbstractAppState {
+public class TrailSceneManager {
     
     private SimpleApplication       app;
     private Node                    scene;
     private float                   sceneMult;
     private Player                  player;
-    private TrailInteractionManager trailIntMan;
+    private WagonInteractionManager trailIntMan;
     
-    @Override
-    public void initialize(AppStateManager stateManager, Application app) {
+    public void TrailSceneManager(Application app) {
     
-        this.app          = (SimpleApplication) app;
-        sceneMult         = 3;
+        this.app  = (SimpleApplication) app;
+        sceneMult = 3;
         createInteractionManager();
         initScene();
         setPlayer();
@@ -36,7 +33,7 @@ public class TrailSceneManager extends AbstractAppState {
     }
     
     private void createInteractionManager() {
-        app.getStateManager().attach(new TrailInteractionManager());
+        trailIntMan = new WagonInteractionManager(app.getStateManager());
     }
     
     private void setPlayer() {
@@ -45,14 +42,12 @@ public class TrailSceneManager extends AbstractAppState {
     
     private void initScene() {
     
-        scene               = (Node) app.getAssetManager().loadModel("Scenes/Terrain.j3o");
+        scene = (Node) app.getAssetManager().loadModel("Scenes/Terrain.j3o");
         scene.scale(sceneMult);
-        //make unshadedhere
     
     }
     
-    @Override
-    public void update(float tpf) {
+    private void wagonMove(float tpf) {
     
         Node sn = ((Node) scene.getChild("Scene Node"));
         Node t1 = (Node)  sn.getChild("t1");
@@ -84,7 +79,14 @@ public class TrailSceneManager extends AbstractAppState {
           float correction = 128 - distance;
           t1.move(-correction,0,0);
           
-        }
+        }        
+        
+    }
+    
+    public void update(float tpf) {
+    
+        trailIntMan.update(tpf);
+        wagonMove(tpf);
         
     }
     

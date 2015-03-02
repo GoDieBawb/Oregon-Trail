@@ -4,6 +4,7 @@
  */
 package mygame.util;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -17,11 +18,13 @@ import com.jme3.input.controls.MouseButtonTrigger;
  */
 public class InteractionManager implements ActionListener {
     
-    private InputManager inputManager;
+    private InputManager      inputManager;
+    private SimpleApplication app;
     private boolean      up = false, down = false, left = false, right = false, click = false;
     
-    public InteractionManager(InputManager inputManager) {
-        this.inputManager = inputManager;
+    public InteractionManager(SimpleApplication app) {
+        this.app     = app;
+        inputManager = app.getInputManager();
         setUpKeys();
     }
     
@@ -57,7 +60,9 @@ public class InteractionManager implements ActionListener {
         }
         
         else if (binding.equals("Click")) {
+            
             click = isPressed;
+            
         }
         
     }

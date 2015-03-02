@@ -75,7 +75,7 @@ public class UtilityManager {
     }
     
     private void createInteractionManager() {
-        interactionManager = new InteractionManager(app.getInputManager());
+        interactionManager = new InteractionManager(app);
     }
     
     public InteractionManager getInteractionManager() {

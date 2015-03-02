@@ -17,8 +17,8 @@ import mygame.player.PlayerManager;
  */
 public class PersonInteractionManager {
     
-    private boolean left, right, up, down;
-    private AppStateManager stateManager;
+    private boolean           left, right, up, down;
+    private AppStateManager   stateManager;
     private Player            player;
     private SimpleApplication app;
     private Vector3f          camDir = new Vector3f(), camLeft = new Vector3f(), walkDirection = new Vector3f();

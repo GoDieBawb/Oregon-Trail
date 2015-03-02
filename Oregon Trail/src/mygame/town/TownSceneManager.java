@@ -36,6 +36,13 @@ public class TownSceneManager {
         informPlayer();
     }
     
+    public void removeScene() {
+        scene.removeFromParent();
+        scene.detachAllChildren();
+        interactableNode.removeFromParent();
+        interactableNode.detachAllChildren();
+    }
+    
     public Node getInteractableNode() {
         return interactableNode;
     }

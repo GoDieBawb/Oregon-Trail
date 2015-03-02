@@ -7,7 +7,9 @@ package mygame.town;
 import mygame.util.PersonInteractionManager;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.scene.Node;
 import mygame.GameManager;
+import mygame.util.Interactable;
 
 /**
  *
@@ -16,8 +18,8 @@ import mygame.GameManager;
 public class TownState extends AbstractAppState {
     
     private PersonInteractionManager townInteractionManager;
-    private TownSceneManager       townSceneManager;
-    private SimpleApplication      app;
+    private TownSceneManager         townSceneManager;
+    private SimpleApplication        app;
     
     public TownState(SimpleApplication app) {
         this.app = app;
@@ -27,6 +29,17 @@ public class TownState extends AbstractAppState {
     
     public void initTown() {
         townSceneManager.initScene(app);
+    }
+    
+    public void removeTown() {
+        app.getRootNode().detachAllChildren();
+        app.getStateManager().getState(GameManager.class).getUtilityManager().getPhysicsManager().clearPhysics(app.getStateManager());
+        Node intNode = townSceneManager.getInteractableNode() ;
+        for (int i = 0; i < intNode.getQuantity(); i++) {
+            Interactable a = (Interactable) intNode.getChild(i);
+            a.getGui().remove();
+        }
+    
     }
     
     private void createTownInteractionManager() {

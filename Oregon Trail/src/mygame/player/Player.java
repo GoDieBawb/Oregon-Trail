@@ -218,6 +218,7 @@ public class Player extends Node {
         situation.put("Total Distance", 0);
         situation.put("Distance Remaining", 0);
         situation.put("Day Number", 1);
+        situation.put("Goals Reached", 0);
         situation.put("Weather", "Hot");
         situation.put("Biome", "Plains");
         saveSituation();

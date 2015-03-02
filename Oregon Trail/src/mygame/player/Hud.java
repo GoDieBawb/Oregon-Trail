@@ -41,10 +41,10 @@ public class Hud extends Gui {
         };
         
         infoText.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
-        infoText.setFont("Interface/Fonts/UnrealTournament.fnt");
+        infoText.getButtonOk().setFont("Interface/Impact.fnt");
         infoText.setWindowTitle("Welcome");
         infoText.setMsg("Welcome to Townyville.");
-        infoText.setButtonOkText("X");
+        infoText.setButtonOkText("Ok");
         infoText.setLockToParentBounds(true);
         infoText.setClippingLayer(infoText);
         infoText.setMinDimensions(new Vector2f(150,180));

@@ -1,7 +1,8 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
-        ColorMap : Flip Repeat Models/Truman/Corpse.png
+        ColorMap : Flip Repeat Textures/oakleaf_dark.png
      }
     AdditionalRenderState {
+      Blend Alpha
     }
 }

@@ -27,7 +27,7 @@ public class PlayerManager extends AbstractAppState {
         player = new Player(app.getStateManager());
     }
     
-    public void initTownPlayer(BulletAppState physics) {
+    public void initPersonPlayer(BulletAppState physics) {
         app.getRootNode().attachChild(player);
         physics.getPhysicsSpace().add(player.getPhys());
     }

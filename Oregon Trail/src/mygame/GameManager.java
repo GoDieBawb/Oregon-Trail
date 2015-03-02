@@ -39,7 +39,7 @@ public class GameManager extends AbstractAppState {
         
         if (setting.equals("Town")) {
             initTown();
-            playerManager.initTownPlayer(utilityManager.getPhysicsManager().getPhysics());
+            playerManager.initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
         }
         
     }
@@ -58,7 +58,7 @@ public class GameManager extends AbstractAppState {
         clearAll();
         townState.initTown();
         utilityManager.getPhysicsManager().addToPhysics(townState.getTownSceneManager().getScene());
-        app.getStateManager().getState(PlayerManager.class).initTownPlayer(utilityManager.getPhysicsManager().getPhysics());
+        app.getStateManager().getState(PlayerManager.class).initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
         utilityManager.getMaterialManager().makeUnshaded(app.getRootNode());
     }
     
