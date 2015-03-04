@@ -58,54 +58,18 @@ public class WagonInteractionManager {
             
             if(click) {
                 
-                if (xSpot < screen.getWidth()/2) right = true;
-                else                             left  = true;
+                if (xSpot < screen.getWidth()/2) left  = true;
+                else                             right = true;
                 
             }
             
-            else if (left)  turnValue =  player.getWagon().getTurnSpeed();
+            if (left)  turnValue =  player.getWagon().getTurnSpeed();
             
             else if (right) turnValue = -player.getWagon().getTurnSpeed();
             
             else turnValue = 0;
             
     }
-    
-    private void wagonMove(float tpf) {
-    
-        Node sn = ((Node) scene.getChild("Scene Node"));
-        Node t1 = (Node)  sn.getChild("t1");
-        Node t2 = (Node)  sn.getChild("t2");
-        int  ms = player.getWagon().getMoveSpeed();
-        
-        t1.move(-ms*tpf,0,turnValue*tpf);
-        t2.move(-ms*tpf,0,turnValue*tpf);
-        
-        if (t1.getLocalTranslation().x <= -128 ) {
-            t1.setLocalTranslation(128,0,0);
-        }
-        
-        if (t2.getLocalTranslation().x <= -128 ) {
-            t2.setLocalTranslation(128,0,0);
-        }
-        
-        float distance = t2.getLocalTranslation().x - t1.getLocalTranslation().x;
-        
-        if (distance < 0) {
-            
-            distance = distance*-1;
-            float correction = 128 - distance;
-            t2.move(-correction,0,0);
-        }
-        
-        else {
-            
-          float correction = 128 - distance;
-          t1.move(-correction,0,0);
-          
-        }        
-        
-    }    
     
     public void update(float tpf) {
         updateKeys();

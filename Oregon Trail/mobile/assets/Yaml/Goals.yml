@@ -1,0 +1,24 @@
+1:
+  Name: Jonesberg
+  At: 100
+  Type: Town
+
+2:
+  Name: Cattleton
+  At: 250
+  Type: Town
+
+3:
+  Name: Jamestown
+  At: 370
+  Type: Town
+
+4:
+  Name: Newtonville
+  At: 400
+  Type: Town
+
+5:
+  Name: Fort Knox
+  At: 500
+  Type: Town

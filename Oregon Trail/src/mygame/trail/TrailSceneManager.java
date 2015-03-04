@@ -66,6 +66,7 @@ public class TrailSceneManager {
         scene.scale(sceneMult);
         app.getRootNode().attachChild(scene);
         player.setInWagon(false);
+        player.getPhys().warp(new Vector3f(-60,0,0));
         wagIntMan.setScene(scene);
         animateWagon(app.getStateManager());
         initInteractableWagon();
@@ -85,13 +86,26 @@ public class TrailSceneManager {
         
         SkeletonFinder sf = stateManager.getState(GameManager.class).getUtilityManager().getSkeletonFinder();
         
-        Node intNode = (Node) scene.getChild("Interactable");
-        Node wm      = (Node) ((Node) intNode.getChild("Wagon"));
+        Node wm      = (Node) player.getWagon().getModel();
         Node ox1     = (Node) wm.getChild("RightCow");
         Node ox2     = (Node) wm.getChild("LeftCow");
         
-        sf.findAnimControl(ox1).createChannel().setAnim("Walk");
-        sf.findAnimControl(ox2).createChannel().setAnim("Walk");
+        sf.findAnimControl(ox1).clearChannels();
+        sf.findAnimControl(ox2).clearChannels();
+        
+        if(wagonized) {
+            sf.findAnimControl(ox1).createChannel().setAnim("Walk");
+            sf.findAnimControl(ox2).createChannel().setAnim("Walk");
+            sf.findAnimControl(ox1).getChannel(0).setSpeed(5);
+            sf.findAnimControl(ox2).getChannel(0).setSpeed(5);
+        }
+        
+        else {
+            sf.findAnimControl(ox1).createChannel().setAnim("@Moo");
+            sf.findAnimControl(ox2).createChannel().setAnim("LookL");        
+            sf.findAnimControl(ox1).getChannel(0).setSpeed(2);
+            sf.findAnimControl(ox2).getChannel(0).setSpeed(2);            
+        }
         
     }
     
@@ -160,11 +174,16 @@ public class TrailSceneManager {
     }
     
     private void wagonizePlayer() {
-            wagonized = true;
-            Spatial a = ((Node) interactableNode.getChild("Wagon")).getChild("Seat");
-            app.getCamera().setLocation(a.getWorldTranslation());
-            app.getCamera().lookAtDirection(new Vector3f(500,0,0), new Vector3f(0,1,0));
-            animateWagon(app.getStateManager());
+        wagonized = true;
+        Spatial a = ((Node) interactableNode.getChild("Wagon")).getChild("Seat");
+        app.getCamera().setLocation(a.getWorldTranslation());
+        app.getCamera().lookAtDirection(new Vector3f(500,0,0), new Vector3f(0,1,0));
+        animateWagon(app.getStateManager());
+    }
+    
+    private void dewagonizePlayer() {
+        wagonized = false;
+        animateWagon(app.getStateManager());
     }
     
     public void update(float tpf) {
@@ -173,14 +192,14 @@ public class TrailSceneManager {
             wagIntMan.update(tpf);
             wagonMove(tpf);
             if(!wagonized)
-            wagonizePlayer();    
+            wagonizePlayer();
         }
         
         else {
             persIntMan.update(tpf);
             app.getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager().update(tpf);
             if(wagonized)
-            wagonized = false;
+            dewagonizePlayer();
         }
         
         for (int i = 0; i < interactableNode.getQuantity(); i++) {
