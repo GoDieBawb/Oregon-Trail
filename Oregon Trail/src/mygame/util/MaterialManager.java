@@ -71,6 +71,7 @@ public class MaterialManager {
           
                         }
 
+                        tat.setBoolean("useTriPlanarMapping", true);
                         geom.setMaterial(tat);
           
                     }

@@ -33,6 +33,7 @@ public class Player extends Node {
     private HashMap         situation;
     private boolean         noMove;
     private Gui             hud;
+    private boolean         inWagon;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -44,6 +45,14 @@ public class Player extends Node {
         setStrafeMult(1f);
         setName("Player");
         
+    }
+    
+    public boolean getInWagon() {
+        return inWagon;
+    }
+    
+    public void setInWagon(boolean inWagon) {
+        this.inWagon = inWagon;
     }
     
     public void createHud() {
@@ -125,6 +134,7 @@ public class Player extends Node {
         
           else {
               model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Truman/Truman.j3o");
+              model.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Citizen.j3m"));
               model.setLocalScale(.125f);
           }
         

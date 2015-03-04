@@ -10,6 +10,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import mygame.player.PlayerManager;
 import mygame.town.TownState;
+import mygame.trail.TrailState;
 import mygame.util.UtilityManager;
 
 /**
@@ -22,6 +23,7 @@ public class GameManager extends AbstractAppState {
     private SimpleApplication app;
     private PlayerManager     playerManager;
     private TownState         townState;
+    private TrailState        trailState;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -29,6 +31,7 @@ public class GameManager extends AbstractAppState {
         createPlayerManager();
         createUtilityManager();
         createTownState();
+        createTrailState();
         playerManager.loadPlayerInfo();
         playerManager.getPlayer().createHud();
         loadSituation();
@@ -40,6 +43,12 @@ public class GameManager extends AbstractAppState {
         if (setting.equals("Town")) {
             initTown();
             playerManager.initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
+            townState.setEnabled(true);
+        }
+        
+        else if (setting.equals("Trail")) {
+            initTrail();
+            trailState.setEnabled(true);
         }
         
     }
@@ -52,6 +61,7 @@ public class GameManager extends AbstractAppState {
     private void createTownState() {
         app.getStateManager().attach(new TownState(app));
         townState = app.getStateManager().getState(TownState.class);
+        townState.setEnabled(false);
     }
     
     public void initTown() {
@@ -60,6 +70,22 @@ public class GameManager extends AbstractAppState {
         utilityManager.getPhysicsManager().addToPhysics(townState.getTownSceneManager().getScene());
         app.getStateManager().getState(PlayerManager.class).initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
         utilityManager.getMaterialManager().makeUnshaded(app.getRootNode());
+        townState.setEnabled(true);
+    }
+    
+    private void createTrailState() {
+        app.getStateManager().attach(new TrailState(app));
+        trailState = app.getStateManager().getState(TrailState.class);
+        trailState.setEnabled(false);
+    }
+    
+    public void initTrail() {
+        clearAll();
+        trailState.initTrail();
+        utilityManager.getPhysicsManager().addToPhysics(trailState.getTrailSceneManager().getScene());
+        utilityManager.getMaterialManager().makeUnshaded(app.getRootNode());
+        trailState.setEnabled(true);
+        app.getStateManager().getState(PlayerManager.class).initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
     }
     
     private void createUtilityManager() {
@@ -71,8 +97,11 @@ public class GameManager extends AbstractAppState {
     }
     
     private void clearAll() {
+        utilityManager.getGuiManager().clearScreen(app);
         app.getRootNode().detachAllChildren();
         utilityManager.getPhysicsManager().clearPhysics(app.getStateManager());
+        trailState.setEnabled(false);
+        townState.setEnabled(false);
     }
     
 }

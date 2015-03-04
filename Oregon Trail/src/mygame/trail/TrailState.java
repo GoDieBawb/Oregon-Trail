@@ -18,7 +18,15 @@ public class TrailState extends AbstractAppState {
     
     public TrailState(SimpleApplication app) {
         this.app = app;
-        trailSceneManager = new TrailSceneManager();
+        trailSceneManager = new TrailSceneManager(app);
+    }
+    
+    public void initTrail() {
+        trailSceneManager.initScene();
+    }
+    
+    public TrailSceneManager getTrailSceneManager(){
+        return trailSceneManager;
     }
     
     @Override

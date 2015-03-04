@@ -8,6 +8,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import java.util.HashMap;
+import mygame.GameManager;
 import mygame.util.Gui;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 
@@ -20,6 +21,7 @@ public class WagonGui extends Gui {
     private ButtonAdapter moveButton;
     private ButtonAdapter situationButton;
     private ButtonAdapter suppliesButton;
+    private ButtonAdapter stopButton;
     
     public WagonGui(AppStateManager stateManager) {
         super(stateManager);
@@ -27,9 +29,37 @@ public class WagonGui extends Gui {
     
     @Override
     public void createElements() {
+        createStopButton();
         createMoveButton();
         createSituationButton();
         createSuppliesButton();
+    }
+    
+    private void createStopButton() {
+    
+        stopButton = new ButtonAdapter(getScreen(), "Stop Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
+                player.setInWagon(false);
+                player.setLocalScale(1f);
+                stopButton.hide();
+                
+            }
+        
+        };        
+        
+        getScreen().addElement(stopButton);        
+        stopButton.setDimensions(getScreen().getWidth()/5, getScreen().getHeight()/10);
+        stopButton.setPosition(getScreen().getWidth()/2 - stopButton.getWidth()/2, getScreen().getHeight()/10);
+        stopButton.hide();
+        stopButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        stopButton.setText("Stop");
+        getElements().add(stopButton);
+        stopButton.setFont("Interface/Fonts/UnrealTournament.fnt");         
+        
     }
     
     private void createMoveButton() {
@@ -39,7 +69,26 @@ public class WagonGui extends Gui {
             @Override
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
+                Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
                 
+                if(player.getSituation().get("Setting").equals("Town")) {
+                    getStateManager().getState(GameManager.class).initTrail();
+                    moveButton.hide();
+                    suppliesButton.hide();
+                    situationButton.hide();
+                    player.getSituation().put("Setting", "Trail");
+                }
+                
+                else if(player.getSituation().get("Setting").equals("Trail")) {
+                
+                    moveButton.hide();
+                    suppliesButton.hide();
+                    situationButton.hide();
+                    player.setInWagon(true);
+                    player.setLocalScale(.1f);
+                    stopButton.show();
+                    
+                }
             
             }
         

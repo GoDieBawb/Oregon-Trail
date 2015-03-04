@@ -104,6 +104,9 @@ public class TownSceneManager {
         WagonModel wm = new WagonModel(app.getStateManager());
         Farmer     fm = new Farmer(app.getStateManager());
         
+        a.setMaterial(app.getAssetManager().loadMaterial("Materials/Shopkeeper.j3m"));
+        b.setMaterial(app.getAssetManager().loadMaterial("Materials/Blacksmith.j3m"));
+        
         sk.setLocalTranslation(a.getWorldTranslation());
         bs.setLocalTranslation(b.getWorldTranslation());
         wm.setLocalTranslation(c.getWorldTranslation());

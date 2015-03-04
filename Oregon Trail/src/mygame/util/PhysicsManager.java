@@ -4,7 +4,6 @@
  */
 package mygame.util;
 
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
@@ -24,7 +23,9 @@ public class PhysicsManager {
     }
     
     public void clearPhysics(AppStateManager stateManager) {
-        physics.getPhysicsSpace().removeAll(((SimpleApplication)stateManager.getApplication()).getRootNode());
+        stateManager.detach(physics);
+        physics = new BulletAppState();
+        stateManager.attach(physics);
     }
     
     public void addToPhysics(Node node) {

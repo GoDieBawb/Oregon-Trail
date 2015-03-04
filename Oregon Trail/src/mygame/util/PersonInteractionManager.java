@@ -29,16 +29,12 @@ public class PersonInteractionManager {
         app               = (SimpleApplication) stateManager.getApplication();
     } 
     
-    public void updateKeys() {
+    private void updateKeys() {
         InteractionManager im = stateManager.getState(GameManager.class).getUtilityManager().getInteractionManager();
         up    = im.getIsPressed("Up");
         down  = im.getIsPressed("Down");
         left  = im.getIsPressed("Left");
         right = im.getIsPressed("Right");
-    }
-    
-    public void updateCamera(float tpf) {
-        stateManager.getState(GameManager.class).getUtilityManager().getCameraManager().chaseCamMove(tpf);
     }
     
     private void chaseMove(){
