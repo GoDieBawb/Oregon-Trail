@@ -21,6 +21,7 @@ public class WagonModel extends Interactable {
     public WagonModel(AppStateManager stateManager) {
         super(stateManager);
         gui = new WagonGui(getStateManager());
+        setGui(gui);
         setName("Wagon");
     }    
     

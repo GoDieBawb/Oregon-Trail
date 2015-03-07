@@ -171,7 +171,7 @@ public class WagonGui extends Gui {
                 String hayInfo    = "Current Hay: " + hay + " pounds" + System.getProperty("line.separator");
                 String oxInfo     = "Oxen: " + oxen + System.getProperty("line.separator");
                 String foodInfo   = "Current Food: " + food + " pounds" + System.getProperty("line.separator");
-                String toolInfo   = "Current Ttools: " + tools + System.getProperty("line.separator");
+                String toolInfo   = "Current Tools: " + tools + System.getProperty("line.separator");
                 String bulletInfo = "Current Bullets: " + bullets + " rounds";
                 
                 String info = hayInfo + oxInfo + foodInfo + toolInfo + bulletInfo;
@@ -202,6 +202,10 @@ public class WagonGui extends Gui {
     
     public ButtonAdapter getSuppliesButton() {
         return suppliesButton;
-    }    
+    }
+    
+    public ButtonAdapter getStopButton() {
+        return stopButton;
+    }
     
 }

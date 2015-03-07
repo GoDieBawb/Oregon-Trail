@@ -6,12 +6,16 @@ package mygame.trail;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.HashMap;
+import java.util.Random;
 import mygame.GameManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import mygame.player.WagonGui;
 import mygame.town.WagonModel;
 import mygame.util.Interactable;
 import mygame.util.PersonInteractionManager;
@@ -32,11 +36,13 @@ public class TrailSceneManager {
     private Node                     interactableNode;
     private EnvironmentManager       envMan;
     private boolean                  wagonized;
+    private Long                     updateWait;
     
     public TrailSceneManager(SimpleApplication app) {
     
-        this.app  = (SimpleApplication) app;
-        sceneMult = 1;
+        this.app   = (SimpleApplication) app;
+        sceneMult  = 1;
+        updateWait = System.currentTimeMillis()/1000;
         createInteractionManager();
         createEnvironmentManager();
         setPlayer();
@@ -76,6 +82,7 @@ public class TrailSceneManager {
     private void initInteractableWagon() {
         Node a        = (Node) interactableNode.getChild(0);
         WagonModel wm = new WagonModel(app.getStateManager());
+        wm.setName("Wagon");
         wm.setLocalTranslation(a.getWorldTranslation());
         wm.attachChild(a);
         interactableNode.attachChild(wm);
@@ -174,32 +181,138 @@ public class TrailSceneManager {
     }
     
     private void wagonizePlayer() {
-        wagonized = true;
-        Spatial a = ((Node) interactableNode.getChild("Wagon")).getChild("Seat");
+        wagonized  = true;
+        Spatial a  = ((Node) interactableNode.getChild("Wagon")).getChild("Seat");
+        updateWait = System.currentTimeMillis()/1000;
         app.getCamera().setLocation(a.getWorldTranslation());
         app.getCamera().lookAtDirection(new Vector3f(500,0,0), new Vector3f(0,1,0));
         animateWagon(app.getStateManager());
+        player.getHud().getInfoText().getButtonOk().hide();
     }
     
     private void dewagonizePlayer() {
         wagonized = false;
         animateWagon(app.getStateManager());
+        player.getHud().getInfoText().getButtonOk().show();
+        player.getHud().getInfoText().hide();
     }
+    
+    private void showSituation() {
+
+        int milesTraveled = (Integer) player.getSituation().get("Total Distance");
+        int goalCount     = (Integer) player.getSituation().get("Goals Reached");
+                
+        HashMap goals     = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
+        HashMap goalMap   = (HashMap) goals.get(goalCount+1);
+        int     hay       = (Integer) player.getInventory().get("Hay");
+        int     food      = (Integer) player.getInventory().get("Food");    
+       
+        String goalName   = (String) goalMap.get("Name");
+        int    goalDist   = ((Integer) goalMap.get("At")) - milesTraveled;
+        String foodInfo   = "Current Food: " + food + " pounds" + System.getProperty("line.separator");
+        String hayInfo    = "Current Hay: " + hay + " pounds" + System.getProperty("line.separator");
+                
+        String info       = "Goal: " + goalName  + System.getProperty("line.separator")
+                            + "Distance Remaining: " + goalDist + System.getProperty("line.separator")
+                                + foodInfo
+                                    + hayInfo;
+                
+        player.getHud().showAlert("Situation", info);
+         
+    }
+    
+    private void updateSituation() {
+    
+        if (System.currentTimeMillis()/1000 - updateWait > 5) {
+        
+            updateWait        = System.currentTimeMillis()/1000;
+            int     newMiles  = (Integer) player.getSituation().get("Total Distance")+randInt(4,8);
+            int     newHay    = (Integer) player.getInventory().get("Hay")-randInt(1,3);
+            int     newFood   = (Integer) player.getInventory().get("Food")-randInt(1,3); 
+            HashMap goals     = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
+            int     goalCount = (Integer) player.getSituation().get("Goals Reached");
+            HashMap goalMap   = (HashMap) goals.get(goalCount+1);
+            int     goalDist  = ((Integer) goalMap.get("At")) - newMiles;
+            int     newDay    = (Integer) player.getSituation().get("Day Number")+randInt(0,1);
+            
+            player.getSituation().put("Total Distance", newMiles);
+            player.getSituation().put("Day Number", newDay);
+            
+            player.getInventory().put("Hay", newHay);
+            player.getInventory().put("Food", newFood);
+            
+
+            if(newHay <= 0) {
+                killOx();
+                player.getInventory().put("Hay", 0);
+            }
+            if(newFood <= 0){
+                die();
+                 player.getInventory().put("Food", 0);
+            }    
+            
+            if (goalDist <= 0) {
+                reachGoal();
+                return;
+            }
+            
+            showSituation(); 
+            
+        }
+        
+    }
+    
+    private void die() {
+    
+    }
+    
+    private void killOx() {
+    
+    }
+    
+    private void reachGoal() {
+        WagonModel currentActor =  (WagonModel) interactableNode.getChild("Wagon");
+        player.getWagon().getModel().setLocalRotation(new Quaternion(0,0,0,1));
+        ((WagonGui) currentActor.getGui()).getStopButton().hide();
+        int goalCount     = (Integer) player.getSituation().get("Goals Reached")+1;
+        HashMap goals     = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
+        HashMap goalMap   = (HashMap) goals.get(goalCount);
+        String goalName   = (String) goalMap.get("Name");
+        player.getSituation().put("Setting Name", goalName);
+        player.getSituation().put("Goals Reached", goalCount);
+        player.getSituation().put("Setting", "Town");
+        player.setLocalScale(1);
+        player.saveInventory();
+        player.saveSituation();
+        app.getStateManager().getState(GameManager.class).initTown();
+        player.getHud().getInfoText().getButtonOk().show();
+    }
+    
+    private int randInt(int min, int max) {
+        Random rand   = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
+    }        
     
     public void update(float tpf) {
     
         if (player.getInWagon()) {
+            
             wagIntMan.update(tpf);
             wagonMove(tpf);
+            updateSituation();
             if(!wagonized)
             wagonizePlayer();
+            
         }
         
         else {
+            
             persIntMan.update(tpf);
             app.getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager().update(tpf);
             if(wagonized)
             dewagonizePlayer();
+            
         }
         
         for (int i = 0; i < interactableNode.getQuantity(); i++) {

@@ -85,6 +85,8 @@ public class TownSceneManager {
         sf.findAnimControl(sk).createChannel().setAnim("StillArms");
         sf.findAnimControl(bs).createChannel().setAnim("StillArms");
         sf.findAnimControl(fm).createChannel().setAnim("StillArms");
+        sf.findAnimControl(ox1).clearChannels();
+        sf.findAnimControl(ox2).clearChannels();
         sf.findAnimControl(ox1).createChannel().setAnim("@Moo");
         sf.findAnimControl(ox2).createChannel().setAnim("LookL");
         sf.findAnimControl(ox3).createChannel().setAnim("Sit");

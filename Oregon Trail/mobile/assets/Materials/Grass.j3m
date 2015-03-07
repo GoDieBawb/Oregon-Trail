@@ -1,7 +1,5 @@
-Material My Material : Common/MatDefs/Terrain/Terrain.j3md {
+Material My Material : Common/MatDefs/Post/CartoonEdge.j3md {
      MaterialParameters {
-        Tex1 : Textures/tx_turf00.png
-        Tex2 : Textures/dirt.jpg
      }
     AdditionalRenderState {
     }

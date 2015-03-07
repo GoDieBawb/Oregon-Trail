@@ -15,10 +15,65 @@
 
 4:
   Name: Newtonville
-  At: 400
+  At: 450
   Type: Town
 
 5:
   Name: Fort Knox
-  At: 500
+  At: 580
+  Type: Town
+  
+6:
+  Name: Weston
+  At: 700
+  Type: Town
+
+7:
+  Name: Fort Leavonworth
+  At: 950
+  Type: Town
+
+8:
+  Name: Atchison
+  At: 1050
+  Type: Town
+
+9:
+  Name: Kansas City
+  At: 1175
+  Type: Town
+
+10:
+  Name: Omaha
+  At: 1275
+  Type: Town
+  
+11:
+  Name: Julesberg
+  At: 1450
+  Type: Town
+
+12:
+  Name: Fort Laramie
+  At: 1600
+  Type: Town
+
+13:
+  Name: La Barge
+  At: 1720
+  Type: Town
+
+14:
+  Name: Fort Kerney
+  At: 1850
+  Type: Town
+
+15:
+  Name: Fort Boise
+  At: 1980
+  Type: Town
+
+16:
+  Name: Oregon
+  At: 1200
   Type: Town
