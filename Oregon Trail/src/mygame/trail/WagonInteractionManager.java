@@ -63,9 +63,17 @@ public class WagonInteractionManager {
                 
             }
             
-            if (left)  turnValue =  player.getWagon().getTurnSpeed();
+            int turnSpeed = player.getWagon().getTurnSpeed();
             
-            else if (right) turnValue = -player.getWagon().getTurnSpeed();
+            if (player.getInventory().get("Oxen").equals(1))
+                turnSpeed = turnSpeed/2;
+            
+            else if (player.getInventory().get("Oxen").equals(0))
+                turnSpeed = 0;
+            
+            if (left)  turnValue =  turnSpeed;
+            
+            else if (right) turnValue = -turnSpeed;
             
             else turnValue = 0;
             

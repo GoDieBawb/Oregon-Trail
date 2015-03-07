@@ -67,7 +67,7 @@ public class EnvironmentManager {
     }       
     
     private void envMove(float tpf) {
-        int  ms = stateManager.getState(PlayerManager.class).getPlayer().getWagon().getMoveSpeed();
+        int  ms = stateManager.getState(PlayerManager.class).getPlayer().getWagonSpeed();
         WagonInteractionManager wagIntMan = stateManager.getState(TrailState.class).getTrailSceneManager().getWagonInteractionManager();
         for (int i = 0; i< envNode.getQuantity(); i++) {
             envNode.getChild(i).move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);

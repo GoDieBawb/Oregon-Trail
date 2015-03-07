@@ -70,13 +70,19 @@ public class WagonGui extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
+                hideButtons();
                 
-                if(player.getSituation().get("Setting").equals("Town")) {
+                if (player.getSituation().get("Setting").equals("Town")) {
+                    
+                    if ((Integer)player.getInventory().get("Oxen") < 2){
+                        player.getHud().showAlert("Oxen", "You'll need at least 2 oxen to pull your wagon!");
+                        return;
+                    }
+                    
                     getStateManager().getState(GameManager.class).initTrail();
-                    moveButton.hide();
-                    suppliesButton.hide();
-                    situationButton.hide();
                     player.getSituation().put("Setting", "Trail");
+                    
+                    
                 }
                 
                 else if(player.getSituation().get("Setting").equals("Trail")) {
@@ -101,7 +107,8 @@ public class WagonGui extends Gui {
         moveButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
         moveButton.setText("Hit the Trail");
         getElements().add(moveButton);
-        moveButton.setFont("Interface/Fonts/UnrealTournament.fnt");          
+        moveButton.setFont("Interface/Fonts/UnrealTournament.fnt");
+        moveButton.setZOrder(-1);
         
     }
     
@@ -111,7 +118,6 @@ public class WagonGui extends Gui {
         
             @Override
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
-                
                 Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
                 String setting = (String) player.getSituation().get("Setting");
                 
@@ -138,6 +144,7 @@ public class WagonGui extends Gui {
                               + "Your next destination is " + goalName + " which is " + goalDist + " miles away." + System.getProperty("line.separator");
                 
                 player.getHud().showAlert("Situation", info);
+                hideButtons();
                 
             }
             
@@ -150,7 +157,8 @@ public class WagonGui extends Gui {
         situationButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
         situationButton.setText("Check Situation");
         getElements().add(situationButton);
-        situationButton.setFont("Interface/Fonts/UnrealTournament.fnt");        
+        situationButton.setFont("Interface/Fonts/UnrealTournament.fnt");
+        situationButton.setZOrder(-1);
         
     }
     
@@ -176,6 +184,7 @@ public class WagonGui extends Gui {
                 
                 String info = hayInfo + oxInfo + foodInfo + toolInfo + bulletInfo;
                 player.getHud().showAlert("Supplies", info);
+                hideButtons();
         
             }
             
@@ -188,8 +197,15 @@ public class WagonGui extends Gui {
         suppliesButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
         suppliesButton.setText("Check Supplies");
         getElements().add(suppliesButton);
-        suppliesButton.setFont("Interface/Fonts/UnrealTournament.fnt");            
+        suppliesButton.setFont("Interface/Fonts/UnrealTournament.fnt");
+        suppliesButton.setZOrder(-1);
         
+    }
+    
+    private void hideButtons(){
+        moveButton.hide();
+        suppliesButton.hide();
+        situationButton.hide();
     }
     
     public ButtonAdapter getMoveButton() {

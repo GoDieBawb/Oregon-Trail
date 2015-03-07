@@ -44,6 +44,16 @@ public class Player extends Node {
         setSpeedMult(3f);
         setStrafeMult(1f);
         setName("Player");
+    }
+    
+    public int getWagonSpeed() {
+        
+        int wagonSpeed = wagon.getMoveSpeed()/2;
+        int oxCount    = (Integer) inventory.get("Oxen");
+        if(oxCount > 2)
+            oxCount = 2;
+        wagonSpeed  = wagonSpeed*oxCount;
+        return wagonSpeed;
         
     }
     

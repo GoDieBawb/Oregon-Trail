@@ -129,7 +129,7 @@ public class TrailSceneManager {
         Node sn = ((Node) scene.getChild("Scene Node"));
         Node t1 = (Node)  sn.getChild("t1");
         Node t2 = (Node)  sn.getChild("t2");
-        int  ms = player.getWagon().getMoveSpeed();
+        int  ms = player.getWagonSpeed();
         
         t1.move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
         t2.move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
@@ -212,7 +212,7 @@ public class TrailSceneManager {
         String foodInfo   = "Current Food: " + food + " pounds" + System.getProperty("line.separator");
         String hayInfo    = "Current Hay: " + hay + " pounds" + System.getProperty("line.separator");
                 
-        String info       = "Goal: " + goalName  + System.getProperty("line.separator")
+        String info       = "Goal: " + goalName + System.getProperty("line.separator")
                             + "Distance Remaining: " + goalDist + System.getProperty("line.separator")
                                 + foodInfo
                                     + hayInfo;
@@ -225,10 +225,13 @@ public class TrailSceneManager {
     
         if (System.currentTimeMillis()/1000 - updateWait > 5) {
         
+            int speedMod      = 1;
+            if (player.getInventory().get("Oxen").equals(1))
+            speedMod          = 2;
             updateWait        = System.currentTimeMillis()/1000;
-            int     newMiles  = (Integer) player.getSituation().get("Total Distance")+randInt(4,8);
+            int     newMiles  = (Integer) player.getSituation().get("Total Distance")+randInt(4/speedMod,8/speedMod);
             int     newHay    = (Integer) player.getInventory().get("Hay")-randInt(1,3);
-            int     newFood   = (Integer) player.getInventory().get("Food")-randInt(1,3); 
+            int     newFood   = (Integer) player.getInventory().get("Food")-randInt(0,1); 
             HashMap goals     = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
             int     goalCount = (Integer) player.getSituation().get("Goals Reached");
             HashMap goalMap   = (HashMap) goals.get(goalCount+1);
@@ -241,19 +244,33 @@ public class TrailSceneManager {
             player.getInventory().put("Hay", newHay);
             player.getInventory().put("Food", newFood);
             
-
             if(newHay <= 0) {
-                killOx();
+                
                 player.getInventory().put("Hay", 0);
+                
+                if(randInt(1,5) == 5) {
+                    killOx();
+                    return;
+                }
+                
             }
+            
             if(newFood <= 0){
-                die();
-                 player.getInventory().put("Food", 0);
+                
+                player.getInventory().put("Food", 0);
+                
+                if(randInt(1,5) == 5){
+                    die("Starvation");
+                    return;
+                }
+                
             }    
             
             if (goalDist <= 0) {
+                
                 reachGoal();
                 return;
+                
             }
             
             showSituation(); 
@@ -262,12 +279,32 @@ public class TrailSceneManager {
         
     }
     
-    private void die() {
-    
+    private void die(String reason) {
+        
     }
     
     private void killOx() {
-    
+        
+       int newOxCount = ((Integer)player.getInventory().get("Oxen")) - 1;
+       int meatWeight = randInt(30,76);
+       int newFood    = ((Integer)player.getInventory().get("Food")) + meatWeight;
+       String oxWarn  = "";
+       
+       player.getInventory().put("Oxen", newOxCount);
+       player.getInventory().put("Food", newFood);
+       
+       if(newOxCount == 1) {
+           oxWarn = " You are down to one ox, your speed is cut in half.";
+           ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
+       }
+       if(newOxCount == 0){
+           die("Stranded");
+           ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
+           return;
+       }
+       
+       player.getHud().showAlert("Death", "One of your Oxen has died. You find " + meatWeight + " pounds of usable meat." + oxWarn);
+       
     }
     
     private void reachGoal() {

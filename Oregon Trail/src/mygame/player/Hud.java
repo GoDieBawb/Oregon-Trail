@@ -4,10 +4,13 @@
  */
 package mygame.player;
 
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.scene.Node;
 import java.util.HashMap;
+import mygame.town.WagonModel;
 import mygame.util.Gui;
 import mygame.util.YamlLoader;
 import tonegod.gui.controls.windows.AlertBox;
@@ -37,6 +40,23 @@ public class Hud extends Gui {
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
                 hideWithEffect();
+                
+                try {
+                  Node a        = (Node) ((SimpleApplication) app).getRootNode().getChild(0);
+                  Node intNode  = (Node) a.getChild("Interactable");
+                  WagonModel wm = (WagonModel) intNode.getChild("Wagon");
+                  
+                  if(wm.inProx()) {
+                      ((WagonGui)wm.getGui()).getMoveButton().show();
+                      ((WagonGui)wm.getGui()).getSituationButton().show();
+                      ((WagonGui)wm.getGui()).getSuppliesButton().show();
+                  }
+                  
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+                
             }
         };
         
