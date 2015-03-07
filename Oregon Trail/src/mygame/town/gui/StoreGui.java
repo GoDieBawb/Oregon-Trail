@@ -212,7 +212,7 @@ public class StoreGui extends Gui {
             int price       = getPrice();
             String info     = "Current Money: " + money +  System.getProperty("line.separator") + "Current Food: " + currentFood
                   + " pounds" +  System.getProperty("line.separator") + "Current Price: " + price;
-            player.getHud().showAlert("Food", info);
+            player.getHud().showAlert("5 Pounds of Food", info);
                 
         }
         
@@ -223,7 +223,7 @@ public class StoreGui extends Gui {
             int price       = getPrice();
             String info     = "Current Money: " + money +  System.getProperty("line.separator") + "Current Bullets: " + currentBullets
                     +  System.getProperty("line.separator") + "Current Price: " + price;
-            player.getHud().showAlert("Bullets", info);
+            player.getHud().showAlert("5 Bullets", info);
                 
         }               
         
@@ -250,10 +250,10 @@ public class StoreGui extends Gui {
         
             String biome = (String)  player.getSituation().get("Biome");
             
-            price = 2;
+            price = 10;
             
             if (biome.equals("Desert")) {
-                price = price + 2;
+                price = price + 3;
             }
             
         }
@@ -262,7 +262,7 @@ public class StoreGui extends Gui {
         
             String biome = (String)  player.getSituation().get("Biome");
             
-            price = 5;
+            price = 20;
             
             if (biome.equals("Desert")) {
                 price = price + 5;
@@ -298,7 +298,7 @@ public class StoreGui extends Gui {
     
         if (itemName.equals("Food")) {
         
-            int newFood  = ((Integer) player.getInventory().get("Food")) + 1;
+            int newFood  = ((Integer) player.getInventory().get("Food")) + 5;
             int newMoney = ((Integer) player.getInventory().get("Money")) - getPrice();
             player.getInventory().put("Food", newFood);
             player.getInventory().put("Money", newMoney);
@@ -307,7 +307,7 @@ public class StoreGui extends Gui {
         
         else if (itemName.equals("Bullets")) {
         
-            int newBullets   = ((Integer) player.getInventory().get("Bullets")) + 1;
+            int newBullets   = ((Integer) player.getInventory().get("Bullets")) + 5;
             int newMoney     = ((Integer) player.getInventory().get("Money")) - getPrice();
             player.getInventory().put("Bullets", newBullets);
             player.getInventory().put("Money", newMoney);

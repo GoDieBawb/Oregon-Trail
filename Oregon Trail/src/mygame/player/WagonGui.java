@@ -42,9 +42,8 @@ public class WagonGui extends Gui {
             @Override
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
-                Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
+                Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setInWagon(false);
-                player.setLocalScale(1f);
                 stopButton.hide();
                 
             }
@@ -91,7 +90,6 @@ public class WagonGui extends Gui {
                     suppliesButton.hide();
                     situationButton.hide();
                     player.setInWagon(true);
-                    player.setLocalScale(.1f);
                     stopButton.show();
                     
                 }

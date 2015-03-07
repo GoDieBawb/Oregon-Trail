@@ -188,6 +188,7 @@ public class TrailSceneManager {
         app.getCamera().lookAtDirection(new Vector3f(500,0,0), new Vector3f(0,1,0));
         animateWagon(app.getStateManager());
         player.getHud().getInfoText().getButtonOk().hide();
+        player.setLocalScale(.1f);
     }
     
     private void dewagonizePlayer() {
@@ -195,6 +196,7 @@ public class TrailSceneManager {
         animateWagon(app.getStateManager());
         player.getHud().getInfoText().getButtonOk().show();
         player.getHud().getInfoText().hide();
+        player.setLocalScale(1f);
     }
     
     private void showSituation() {
@@ -231,7 +233,7 @@ public class TrailSceneManager {
             updateWait        = System.currentTimeMillis()/1000;
             int     newMiles  = (Integer) player.getSituation().get("Total Distance")+randInt(4/speedMod,8/speedMod);
             int     newHay    = (Integer) player.getInventory().get("Hay")-randInt(1,3);
-            int     newFood   = (Integer) player.getInventory().get("Food")-randInt(0,1); 
+            int     newFood   = (Integer) player.getInventory().get("Food")-randInt(1,3); 
             HashMap goals     = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
             int     goalCount = (Integer) player.getSituation().get("Goals Reached");
             HashMap goalMap   = (HashMap) goals.get(goalCount+1);
@@ -280,7 +282,25 @@ public class TrailSceneManager {
     }
     
     private void die(String reason) {
+        player.getWagon().getModel().setLocalRotation(new Quaternion(0,0,0,1));
+        dewagonizePlayer();
+        app.getStateManager().getState(GameManager.class).clearAll();
+        player.setIsDead(true);
+        WagonModel wm = (WagonModel) interactableNode.getChild("Wagon");
+        ((WagonGui) wm.getGui()).getStopButton().hide();
         
+        String deathInfo = "You've died of Dysentery";
+        
+        if(reason.equals("Starvation")) {
+            deathInfo = "You have starved to death";
+        }
+        
+        else if (reason.equals("Stranded")) {
+            deathInfo = "With the death of your last ox you become stranded in the wilderness... You soon run out of supplies and die";
+        }
+        
+        player.getHud().showAlert("Dead", deathInfo);
+        player.getHud().getInfoText().getButtonOk().show();
     }
     
     private void killOx() {
@@ -335,20 +355,20 @@ public class TrailSceneManager {
     
         if (player.getInWagon()) {
             
+            if(!wagonized)
+            wagonizePlayer();
             wagIntMan.update(tpf);
             wagonMove(tpf);
             updateSituation();
-            if(!wagonized)
-            wagonizePlayer();
             
         }
         
         else {
             
-            persIntMan.update(tpf);
-            app.getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager().update(tpf);
             if(wagonized)
             dewagonizePlayer();
+            persIntMan.update(tpf);
+            app.getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager().update(tpf);
             
         }
         

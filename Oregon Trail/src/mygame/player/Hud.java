@@ -37,13 +37,21 @@ public class Hud extends Gui {
     private void createInfoText() {
         
         infoText = new AlertBox(getScreen(), Vector2f.ZERO) {
+            
             @Override
             public void onButtonOkPressed(MouseButtonEvent evt, boolean toggled) {
+                
                 hideWithEffect();
                 
+                PlayerManager  pm = app.getStateManager().getState(PlayerManager.class);
+                
+                if(pm.getPlayer().getIsDead())
+                pm.endGame();
+                
                 try {
+                    
                   Node a        = (Node) ((SimpleApplication) app).getRootNode().getChild(0);
-                  Node intNode  = (Node) a.getChild("Interactable");
+                  Node intNode  = (Node)       a.getChild("Interactable");
                   WagonModel wm = (WagonModel) intNode.getChild("Wagon");
                   
                   if(wm.inProx()) {
@@ -53,11 +61,12 @@ public class Hud extends Gui {
                   }
                   
                 }
+                
                 catch (Exception e){
-                    e.printStackTrace();
                 }
                 
             }
+            
         };
         
         infoText.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
@@ -83,7 +92,6 @@ public class Hud extends Gui {
     private void setScripts() {
         getStateManager().getApplication().getAssetManager().registerLoader(YamlLoader.class, "yml");
         scripts = (HashMap) getStateManager().getApplication().getAssetManager().loadAsset("Yaml/Alerts.yml");
-        System.out.println(scripts.get("Start"));
     }
     
     public HashMap getScripts() {

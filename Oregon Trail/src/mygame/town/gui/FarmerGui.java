@@ -139,7 +139,7 @@ public class FarmerGui extends Gui {
             int price      = getPrice();
             String info    = "Current Money: " + money + System.getProperty("line.separator") 
                     + " Current Hay: " + currentHay + " pounds"  + System.getProperty("line.separator") + "Current Price: " + price;
-            player.getHud().showAlert("Hay", info);
+            player.getHud().showAlert("5 Pounds of Hay", info);
             
         }
                 
@@ -165,7 +165,7 @@ public class FarmerGui extends Gui {
             
             String biome = (String)  player.getSituation().get("Biome");
             
-            price = 5;
+            price = 15;
             
             if (biome.equals("Desert")) {
                 price = price + 5;
@@ -272,7 +272,7 @@ public class FarmerGui extends Gui {
     
         if (itemName.equals("Hay")) {
         
-            int newHay   = ((Integer) player.getInventory().get("Hay")) + 1;
+            int newHay   = ((Integer) player.getInventory().get("Hay")) + 5;
             int newMoney = ((Integer) player.getInventory().get("Money")) - getPrice();
             player.getInventory().put("Hay", newHay);
             player.getInventory().put("Money", newMoney);

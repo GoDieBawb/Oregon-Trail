@@ -34,6 +34,7 @@ public class Player extends Node {
     private boolean         noMove;
     private Gui             hud;
     private boolean         inWagon;
+    private boolean         isDead;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -55,6 +56,19 @@ public class Player extends Node {
         wagonSpeed  = wagonSpeed*oxCount;
         return wagonSpeed;
         
+    }
+    
+    public void reset() {
+        isDead = false;
+        createSituation();
+        createInventory();
+        getWagon().makeNewWagon(stateManager, filePath);
+        saveAll();
+    }
+    
+    public void saveAll(){
+        saveInventory();
+        saveSituation();
     }
     
     public boolean getInWagon() {
@@ -254,6 +268,14 @@ public class Player extends Node {
     
     public boolean getNoMove() {
         return noMove;
+    }
+    
+    public boolean getIsDead() {
+        return isDead;
+    }
+    
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
     }
     
 }

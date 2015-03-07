@@ -36,6 +36,7 @@ public class GuiManager {
         app.getGuiNode().addControl(screen);
         screen.addElement(app.getStateManager().getState(PlayerManager.class).getPlayer().getHud().getInfoText());
         app.getStateManager().getState(PlayerManager.class).getPlayer().getHud().getInfoText().hide();
+        app.getStateManager().getState(PlayerManager.class).getPlayer().getHud().getInfoText().getButtonOk().show();
     }
     
     public Screen getScreen() {

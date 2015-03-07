@@ -8,6 +8,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.BulletAppState;
+import mygame.GameManager;
 
 /**
  *
@@ -17,6 +18,8 @@ public class PlayerManager extends AbstractAppState {
     
     private Player            player;
     private SimpleApplication app;
+    private Long              deathTime;
+    private boolean           cooling;
     
     public PlayerManager(Application app) {
         this.app = (SimpleApplication) app;
@@ -38,6 +41,11 @@ public class PlayerManager extends AbstractAppState {
     
     public Player getPlayer() {
         return player;
+    }
+    
+    public void endGame() {
+        player.reset();
+        app.getStateManager().getState(GameManager.class).initTown();
     }
     
 }

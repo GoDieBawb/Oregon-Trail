@@ -96,7 +96,7 @@ public class GameManager extends AbstractAppState {
         return utilityManager;
     }
     
-    private void clearAll() {
+    public void clearAll() {
         utilityManager.getGuiManager().clearScreen(app);
         app.getRootNode().detachAllChildren();
         utilityManager.getPhysicsManager().clearPhysics(app.getStateManager());
