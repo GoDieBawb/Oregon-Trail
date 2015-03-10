@@ -13,6 +13,7 @@ import java.util.HashMap;
 import mygame.town.WagonModel;
 import mygame.util.Gui;
 import mygame.util.YamlLoader;
+import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.AlertBox;
 
 /**
@@ -21,8 +22,9 @@ import tonegod.gui.controls.windows.AlertBox;
  */
 public class Hud extends Gui {
 
-    private AlertBox infoText;
-    private HashMap  scripts;
+    private AlertBox      infoText;
+    private ButtonAdapter aimButton;
+    private HashMap       scripts;
     
     public Hud(AppStateManager stateManager) {
         super(stateManager);
@@ -50,19 +52,20 @@ public class Hud extends Gui {
                 
                 try {
                     
-                  Node a        = (Node) ((SimpleApplication) app).getRootNode().getChild(0);
-                  Node intNode  = (Node)       a.getChild("Interactable");
-                  WagonModel wm = (WagonModel) intNode.getChild("Wagon");
+                    Node a        = (Node) ((SimpleApplication) app).getRootNode().getChild(0);
+                    Node intNode  = (Node)       a.getChild("Interactable");
+                    WagonModel wm = (WagonModel) intNode.getChild("Wagon");
                   
-                  if(wm.inProx()) {
-                      ((WagonGui)wm.getGui()).getMoveButton().show();
-                      ((WagonGui)wm.getGui()).getSituationButton().show();
-                      ((WagonGui)wm.getGui()).getSuppliesButton().show();
-                  }
+                    if(wm.inProx()) {
+                        ((WagonGui)wm.getGui()).getMoveButton().show();
+                        ((WagonGui)wm.getGui()).getSituationButton().show();
+                        ((WagonGui)wm.getGui()).getSuppliesButton().show();
+                    }
                   
                 }
                 
-                catch (Exception e){
+                catch (Exception e) {
+                    
                 }
                 
             }

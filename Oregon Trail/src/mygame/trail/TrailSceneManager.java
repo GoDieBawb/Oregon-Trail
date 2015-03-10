@@ -84,6 +84,7 @@ public class TrailSceneManager {
         wagIntMan.setScene(scene);
         animateWagon(app.getStateManager());
         initInteractableWagon();
+        player.saveAll();
     
     }
     
@@ -154,7 +155,7 @@ public class TrailSceneManager {
         
         if (distance < 0) {
             
-            distance = distance*-1;
+            distance         = distance*-1;
             float correction = 128 - distance;
             t2.move(-correction,0,0);
         }

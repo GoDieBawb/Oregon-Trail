@@ -5,6 +5,7 @@
 package mygame.hunt;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.Random;
 import mygame.player.Player;
@@ -34,19 +35,22 @@ public class AnimalManager {
     
     private void checkPlayer() {
         
-        if (!player.getInWagon()) {
-            if(System.currentTimeMillis()/1000 - cooldown > 3) {
-                if (randInt(1,10) == 10) {
+        int animalChance = randInt(1,10);
         
-                    createAnimal();
             
-                }
+        if (System.currentTimeMillis()/1000 - cooldown > 3) {
                 
+            if (animalChance == 10) {
+        
+                createAnimal();
+            
             }
-            
-            cooldown = System.currentTimeMillis();
-            
+                
+            cooldown = System.currentTimeMillis()/1000;
+                
         }
+            
+        
         
     }
     
@@ -54,6 +58,7 @@ public class AnimalManager {
         System.out.println("Animal Created");
         Animal animal = new Animal(app.getStateManager());
         placeAnimal(animal);
+        animal.run();
     }
     
     private void placeAnimal(Animal animal) {
@@ -81,21 +86,21 @@ public class AnimalManager {
                 }
                 
                 zSpot = randInt(-75, 75);
-                zMove = randInt(-75,75);
+                zMove = randInt(-1,1);
                 
             }
             
             else {
             
                 zSpot = 190;
-                zMove = 1;
+                zMove = -1;
                 if(isNeg) {    
                     zSpot = -190;
-                    zMove = -1;
+                    zMove = 1;
                 }
                 
                 xSpot = randInt(-75, 75);                
-                xMove = randInt(-75, 75);
+                xMove = randInt(-1, 1);
                 
             }
             
@@ -109,15 +114,20 @@ public class AnimalManager {
         for(int i = 0; i < animalNode.getQuantity(); i++) {
             
             Animal animal = (Animal) animalNode.getChild(i);
+            animal.lookAt(animal.getMoveDir().mult(500), new Vector3f(0,1,0));
             
-            if(animal.isDead())
-            animal.move(animal.getMoveDir().mult(tpf));
+            if(!animal.isDead())
+            animal.move(animal.getMoveDir().mult(5).mult(tpf));
             
-            if (Math.abs(animal.getLocalTranslation().x) > 200)
+            if (Math.abs(animal.getLocalTranslation().x) > 200) {
                 animal.removeFromParent();
+                System.out.println("Animal Removed");
+            }
             
-            if (Math.abs(animal.getLocalTranslation().z) > 200)
+            if (Math.abs(animal.getLocalTranslation().z) > 200) {
                 animal.removeFromParent();
+                System.out.println("Animal Removed");
+            }
             
         }
         

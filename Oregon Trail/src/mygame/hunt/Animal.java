@@ -1,5 +1,6 @@
 package mygame.hunt;
 
+import com.jme3.animation.AnimControl;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -29,6 +30,7 @@ public class Animal extends Node {
         
         stateManager.getState(GameManager.class).getUtilityManager().getMaterialManager().makeUnshaded(model);
         attachChild(model);
+        model.setLocalTranslation(0,0,0);
         
     }
     
@@ -40,6 +42,29 @@ public class Animal extends Node {
     private void makeDeer(AppStateManager stateManager) {
         type  = "Deer";
         model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Creatures/deer.j3o");
+    }
+    
+    public void run() {
+        
+        model.getControl(AnimControl.class).clearChannels();
+        
+        if(type.equals("Bear"))
+            model.getControl(AnimControl.class).createChannel().setAnim("run");
+        else
+            model.getControl(AnimControl.class).createChannel().setAnim("Run");
+        
+    }
+    
+    public void die() {
+        
+        isDead = true;
+        model.getControl(AnimControl.class).clearChannels();
+        
+        if(type.equals("Bear"))
+            model.getControl(AnimControl.class).createChannel().setAnim("die");
+        else
+            model.getControl(AnimControl.class).createChannel().setAnim("Dead");
+        
     }
     
     public void setMoveDir(int xMove, int zMove) {

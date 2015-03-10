@@ -7,6 +7,7 @@ package mygame.util;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.SceneGraphVisitor;
@@ -78,6 +79,9 @@ public class MaterialManager {
               
                         mat.setTexture("ColorMap", geom.getMaterial().getTextureParam("DiffuseMap").getTextureValue());
                         mat.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+                        mat.setFloat("AlphaDiscardThreshold", .5f);
+                        mat.setFloat("ShadowIntensity", 5);
+                        mat.setVector3("LightPos", new Vector3f(5,20,5));
                         geom.setMaterial(mat);
               
                     }
