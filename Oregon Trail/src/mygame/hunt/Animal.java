@@ -1,13 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mygame.hunt;
 
 import com.jme3.app.state.AppStateManager;
-import com.jme3.scene.Node;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.Random;
+import mygame.GameManager;
 
 /**
  *
@@ -15,9 +12,10 @@ import java.util.Random;
  */
 public class Animal extends Node {
     
-    private String  type;
-    private boolean isDead;
-    private Node    model;
+    private String   type;
+    private boolean  isDead;
+    private Node     model;
+    private Vector3f moveDir;
     
     public Animal(AppStateManager stateManager) {
         
@@ -25,8 +23,12 @@ public class Animal extends Node {
         
         if(chance == 1)
             makeBear(stateManager);
+        
         else
             makeDeer(stateManager);
+        
+        stateManager.getState(GameManager.class).getUtilityManager().getMaterialManager().makeUnshaded(model);
+        attachChild(model);
         
     }
     
@@ -38,6 +40,18 @@ public class Animal extends Node {
     private void makeDeer(AppStateManager stateManager) {
         type  = "Deer";
         model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Creatures/deer.j3o");
+    }
+    
+    public void setMoveDir(int xMove, int zMove) {
+        moveDir = new Vector3f(xMove, 0, zMove);
+    }
+    
+    public Vector3f getMoveDir() {
+        return moveDir;
+    }
+    
+    public boolean isDead() {
+        return isDead;
     }
     
     private int randInt(int min, int max) {

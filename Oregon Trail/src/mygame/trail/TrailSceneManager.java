@@ -13,6 +13,7 @@ import com.jme3.scene.Spatial;
 import java.util.HashMap;
 import java.util.Random;
 import mygame.GameManager;
+import mygame.hunt.AnimalManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
 import mygame.player.WagonGui;
@@ -35,6 +36,7 @@ public class TrailSceneManager {
     private PersonInteractionManager persIntMan;
     private Node                     interactableNode;
     private EnvironmentManager       envMan;
+    private AnimalManager            anMan;
     private boolean                  wagonized;
     private Long                     updateWait;
     
@@ -45,6 +47,7 @@ public class TrailSceneManager {
         updateWait = System.currentTimeMillis()/1000;
         createInteractionManager();
         createEnvironmentManager();
+        createAnimalManager();
         setPlayer();
         
     }
@@ -52,6 +55,10 @@ public class TrailSceneManager {
     private void createInteractionManager() {
         wagIntMan  = new WagonInteractionManager(app.getStateManager());
         persIntMan = new  PersonInteractionManager(app.getStateManager());
+    }
+    
+    private void createAnimalManager() {
+        anMan = new AnimalManager(app);
     }
     
     private void createEnvironmentManager() {
@@ -69,6 +76,7 @@ public class TrailSceneManager {
         interactableNode.getChild("Wagon").setLocalTranslation(-64,0,0);
         interactableNode.getChild("Wagon").rotate(0,89.5f,0);
         app.getRootNode().attachChild(envMan.getEnvNode());
+        app.getRootNode().attachChild(anMan.getAnimalNode());
         scene.scale(sceneMult);
         app.getRootNode().attachChild(scene);
         player.setInWagon(false);
@@ -380,6 +388,7 @@ public class TrailSceneManager {
         }        
         
         envMan.update(tpf);
+        anMan.update(tpf);
         
     }
     
