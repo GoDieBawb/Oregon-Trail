@@ -32,7 +32,7 @@ public class EnvironmentManager {
     }
     
     private void createObject() {
-        Node tree = (Node) app.getAssetManager().loadModel("Models/Plants/Bush/Bush.j3o");
+        Node tree = (Node) app.getAssetManager().loadModel("Models/Plants/Bush/BushBatch.j3o");
         tree.scale(.5f);
         envNode.attachChild(tree);   
         placeObject(tree);

@@ -39,9 +39,7 @@ public class MaterialManager {
                     Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
                     Material tat = new Material(assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
 
-                    if (geom.getName().equals("Invisible")) {
-            
-                    }
+                    if (geom.getName().equals("Invisible"));
         
                     else if (geom.getMaterial().getTextureParam("DiffuseMap_1") != null) {
             
