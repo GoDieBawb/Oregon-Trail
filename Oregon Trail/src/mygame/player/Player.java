@@ -15,8 +15,6 @@ import com.jme3.math.Ray;
 import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
-import mygame.player.wagon.WagonGui;
-import mygame.player.wagon.WagonModel;
 import mygame.trail.TrailState;
 import mygame.util.AndroidManager;
 import mygame.util.Gui;
@@ -42,6 +40,7 @@ public class Player extends Node {
     private boolean         inWagon;
     private boolean         isDead;
     private boolean         isAiming;
+    private boolean         hasWon;
     private BetterCharacterControl phys;
     
     public Player(AppStateManager stateManager) {
@@ -77,6 +76,7 @@ public class Player extends Node {
     public void saveAll(){
         saveInventory();
         saveSituation();
+        wagon.save(stateManager, filePath);
     }
     
     public boolean getInWagon() {
@@ -277,6 +277,7 @@ public class Player extends Node {
     
     public void die(String reason) {
         stateManager.getState(GameManager.class).clearAll();
+        getHud().getAimButton().hide();
         setIsDead(true);
         
         String deathInfo = "You've died of Dysentery";
@@ -293,9 +294,19 @@ public class Player extends Node {
             deathInfo = "You've been mauled to death by a bear";
         }        
         
+        else if (reason.equals("Broken Wagon")) {
+            deathInfo = "The damage to your wagon has become to great and you become stranded in the wilderness... You soon run out of supplies and die";
+        }
+        
         getHud().showAlert("Dead", deathInfo);
         getHud().getInfoText().getButtonOk().show();
     }    
+    
+    public void finishGame() {
+        hasWon = true;
+        stateManager.getState(GameManager.class).clearAll();
+        getHud().showAlert("Congratulations", "You have successfully reached Oregon!");
+    }
     
     public HashMap getSituation() {
         return situation;

@@ -11,6 +11,7 @@ import com.jme3.scene.Node;
 import java.util.Random;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import mygame.trail.TrailState;
 
 /**
  *
@@ -36,11 +37,11 @@ public class AnimalManager {
     
     private void checkPlayer() {
         
-        int animalChance = randInt(1,10);
+        int animalChance = randInt(1,3);
         
         if (System.currentTimeMillis()/1000 - cooldown > 3) {
                 
-            if (animalChance == 10) {
+            if (animalChance == 3) {
         
                 createAnimal();
             
@@ -163,7 +164,7 @@ public class AnimalManager {
             Animal animal   = (Animal) animalNode.getChild(i);
             float  distance = animal.getWorldTranslation().distance(player.getWorldTranslation());
             
-            if (distance < 30) {
+            if (distance < 40) {
             
                 if (animal.getType().equals("Bear")) {
                     animal.setMoveDir(animal.getWorldTranslation().subtract(player.getWorldTranslation()).normalize().negate());
@@ -175,7 +176,7 @@ public class AnimalManager {
                 
             }
             
-            if (distance < 5) {
+            if (distance < 3) {
             
                 if(animal.isDead()) {
                     
@@ -198,7 +199,7 @@ public class AnimalManager {
                 }
                 
                 else if (animal.getType().equals("Bear")) {
-                    player.die("Bear");
+                    app.getStateManager().getState(TrailState.class).getTrailSceneManager().killPlayer("Bear");
                 }
                 
             }
@@ -211,7 +212,7 @@ public class AnimalManager {
         Random rand   = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
-    }   
+    }
     
     public void update(float tpf) {
         checkPlayer();

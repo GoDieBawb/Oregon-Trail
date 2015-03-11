@@ -89,6 +89,10 @@ public class TrailSceneManager {
     
     }
     
+    public Node getInteractableNode() {
+        return interactableNode;
+    }
+    
     private void initInteractableWagon() {
         Node a        = (Node) interactableNode.getChild(0);
         WagonModel wm = new WagonModel(app.getStateManager());
@@ -273,7 +277,7 @@ public class TrailSceneManager {
                 player.getInventory().put("Food", 0);
                 
                 if(randInt(1,5) == 5){
-                    die("Starvation");
+                    killPlayer("Starvation");
                     return;
                 }
                 
@@ -292,9 +296,11 @@ public class TrailSceneManager {
         
     }
     
-    private void die(String reason) {
+    public void killPlayer(String reason) {
         dewagonizePlayer();
         WagonModel wm = (WagonModel) interactableNode.getChild("Wagon");
+        envMan.getEnvNode().detachAllChildren();
+        anMan.getAnimalNode().detachAllChildren();
         ((WagonGui) wm.getGui()).getStopButton().hide();
         player.die(reason);
     }
@@ -314,7 +320,7 @@ public class TrailSceneManager {
            ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
        }
        if(newOxCount == 0){
-           die("Stranded");
+           killPlayer("Stranded");
            ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
            return;
        }
@@ -324,13 +330,19 @@ public class TrailSceneManager {
     }
     
     private void reachGoal() {
+        
         WagonModel currentActor =  (WagonModel) interactableNode.getChild("Wagon");
-        player.getWagon().getModel().setLocalRotation(new Quaternion(0,0,0,1));
+        int goalCount           = (Integer) player.getSituation().get("Goals Reached")+1;
+        HashMap goals           = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
+        HashMap goalMap         = (HashMap) goals.get(goalCount);
+        String goalName         = (String) goalMap.get("Name");
+        
+        if (goalName.equals("Oregon")) {
+            player.finishGame();
+            return;
+        }
+        
         ((WagonGui) currentActor.getGui()).getStopButton().hide();
-        int goalCount     = (Integer) player.getSituation().get("Goals Reached")+1;
-        HashMap goals     = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
-        HashMap goalMap   = (HashMap) goals.get(goalCount);
-        String goalName   = (String) goalMap.get("Name");
         player.getSituation().put("Setting Name", goalName);
         player.getSituation().put("Goals Reached", goalCount);
         player.getSituation().put("Setting", "Town");

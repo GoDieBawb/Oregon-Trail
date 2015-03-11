@@ -50,7 +50,7 @@ public class Wagon extends Node {
         wagonInfo.put("MaxHealth", maxHealth);
         wagonInfo.put("CurrentHealth", currentHealth);
         wagonInfo.put("Upgrades", "None");
-        stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().saveYaml(filePath, wagonInfo);
+        stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().saveYaml(filePath+"WagonInfo.yml", wagonInfo);
     }
     
     public void makeNewWagon(AppStateManager stateManager, String filePath) {
