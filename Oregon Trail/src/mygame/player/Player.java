@@ -7,11 +7,17 @@ package mygame.player;
 import mygame.player.wagon.Wagon;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
+import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
+import com.jme3.collision.CollisionResults;
+import com.jme3.math.Ray;
 import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
+import mygame.player.wagon.WagonGui;
+import mygame.player.wagon.WagonModel;
+import mygame.trail.TrailState;
 import mygame.util.AndroidManager;
 import mygame.util.Gui;
 
@@ -28,7 +34,6 @@ public class Player extends Node {
     private Node            model;
     private AnimControl     animControl;
     private AnimChannel     armChannel, legChannel;
-    private BetterCharacterControl phys;
     private float           speedMult;
     private float           strafeMult;
     private HashMap         situation;
@@ -37,6 +42,7 @@ public class Player extends Node {
     private boolean         inWagon;
     private boolean         isDead;
     private boolean         isAiming;
+    private BetterCharacterControl phys;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -259,6 +265,37 @@ public class Player extends Node {
         situation.put("Biome", "Plains");
         saveSituation();
     }
+    
+    public void shoot() {
+        
+        Ray ray                  = new Ray(stateManager.getApplication().getCamera().getLocation(), stateManager.getApplication().getCamera().getDirection());
+        CollisionResults results = new CollisionResults();
+        ((SimpleApplication)stateManager.getApplication()).getRootNode().collideWith(ray, results);
+        stateManager.getState(TrailState.class).getTrailSceneManager().getAnimalManager().checkForHits(results);
+        
+    }
+    
+    public void die(String reason) {
+        stateManager.getState(GameManager.class).clearAll();
+        setIsDead(true);
+        
+        String deathInfo = "You've died of Dysentery";
+        
+        if(reason.equals("Starvation")) {
+            deathInfo = "You have starved to death";
+        }
+        
+        else if (reason.equals("Stranded")) {
+            deathInfo = "With the death of your last ox you become stranded in the wilderness... You soon run out of supplies and die";
+        }
+        
+        else if (reason.equals("Bear")) {
+            deathInfo = "You've been mauled to death by a bear";
+        }        
+        
+        getHud().showAlert("Dead", deathInfo);
+        getHud().getInfoText().getButtonOk().show();
+    }    
     
     public HashMap getSituation() {
         return situation;

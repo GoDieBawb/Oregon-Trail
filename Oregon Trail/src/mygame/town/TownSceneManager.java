@@ -8,6 +8,7 @@ import mygame.player.wagon.WagonModel;
 import mygame.util.Interactable;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.Quaternion;
 import com.jme3.scene.Node;
 import mygame.GameManager;
 import mygame.player.Player;
@@ -35,6 +36,7 @@ public class TownSceneManager {
         animateTown(app.getStateManager());
         player.getPhys().warp(scene.getChild("PlayerSpot").getLocalTranslation());
         informPlayer();
+        player.getWagon().getModel().setLocalRotation(new Quaternion(0,0,0,1));
     }
     
     public void removeScene() {
@@ -52,8 +54,8 @@ public class TownSceneManager {
         
         int day           = (Integer) player.getSituation().get("Day Number");
         int milesTraveled = (Integer) player.getSituation().get("Total Distance");
-        String name       = (String) player.getSituation().get("Setting Name");
-        String weather    = (String) player.getSituation().get("Weather");
+        String name       = (String)  player.getSituation().get("Setting Name");
+        String weather    = (String)  player.getSituation().get("Weather");
         
         String info = "Welcome to " + name + ". You have traveled a total of " + milesTraveled + " miles in " + day + " days and the weather is " + weather;
         
@@ -62,7 +64,6 @@ public class TownSceneManager {
         
         else
         player.getHud().showAlert("Welcome", info);   
-        
         
     }
     

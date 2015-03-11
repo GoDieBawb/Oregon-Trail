@@ -5,6 +5,7 @@
 package mygame.hunt;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.Random;
@@ -37,7 +38,6 @@ public class AnimalManager {
         
         int animalChance = randInt(1,10);
         
-            
         if (System.currentTimeMillis()/1000 - cooldown > 3) {
                 
             if (animalChance == 10) {
@@ -49,13 +49,38 @@ public class AnimalManager {
             cooldown = System.currentTimeMillis()/1000;
                 
         }
-            
         
+    }
+    
+    public void checkForHits(CollisionResults results) {
+    
+        System.out.println(results.size());
+        
+        for(int i = 0; i < results.size(); i++) {
+        
+            Node hitNode = results.getCollision(i).getGeometry().getParent();
+            checkForAnimal(hitNode);
+            
+        }
+        
+    }
+    
+    private void checkForAnimal(Node hitNode) {
+        
+        if(hitNode.getParent() == app.getRootNode());
+        
+        else if (hitNode instanceof Animal) {
+            Animal hitAnimal = (Animal) hitNode;
+            hitAnimal.die();
+        }
+        
+        else {
+            checkForAnimal(hitNode.getParent());
+        }
         
     }
     
     private void createAnimal() {
-        System.out.println("Animal Created");
         Animal animal = new Animal(app.getStateManager());
         placeAnimal(animal);
         animal.run();
@@ -121,16 +146,65 @@ public class AnimalManager {
             
             if (Math.abs(animal.getLocalTranslation().x) > 200) {
                 animal.removeFromParent();
-                System.out.println("Animal Removed");
             }
             
             if (Math.abs(animal.getLocalTranslation().z) > 200) {
                 animal.removeFromParent();
-                System.out.println("Animal Removed");
             }
             
         }
         
+    }
+    
+    private void checkProximity() {
+    
+        for(int i = 0; i < animalNode.getQuantity(); i++) {
+            
+            Animal animal   = (Animal) animalNode.getChild(i);
+            float  distance = animal.getWorldTranslation().distance(player.getWorldTranslation());
+            
+            if (distance < 30) {
+            
+                if (animal.getType().equals("Bear")) {
+                    animal.setMoveDir(animal.getWorldTranslation().subtract(player.getWorldTranslation()).normalize().negate());
+                }
+                
+                else {
+                    animal.setMoveDir(animal.getWorldTranslation().subtract(player.getWorldTranslation()).normalize());
+                }
+                
+            }
+            
+            if (distance < 5) {
+            
+                if(animal.isDead()) {
+                    
+                    animal.removeFromParent();
+                    int meatWeight;
+                    
+                    if (animal.getType().equals("Bear")) {
+                        meatWeight = randInt(35, 100);
+                        player.getHud().showAlert("Hunt", "You collect " + meatWeight + " pounds of meat from the bear.");
+                    }
+                    
+                    else {
+                        meatWeight =  randInt(35, 100);
+                        player.getHud().showAlert("Hunt", "You collect " + meatWeight + " pounds of meat from the deer.");
+                    }
+                    
+                    int newMeat = ((Integer) player.getInventory().get("Food")) + meatWeight;
+                    player.getInventory().put("Food", newMeat);
+                    
+                }
+                
+                else if (animal.getType().equals("Bear")) {
+                    player.die("Bear");
+                }
+                
+            }
+            
+        }
+    
     }
     
     private int randInt(int min, int max) {
@@ -142,6 +216,7 @@ public class AnimalManager {
     public void update(float tpf) {
         checkPlayer();
         moveAnimals(tpf);
+        checkProximity();
     }
     
 }

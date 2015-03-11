@@ -12,6 +12,7 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
@@ -19,7 +20,6 @@ import mygame.util.CameraManager;
 import mygame.util.Gui;
 import mygame.util.YamlLoader;
 import tonegod.gui.controls.buttons.ButtonAdapter;
-import tonegod.gui.controls.text.LabelElement;
 import tonegod.gui.controls.windows.AlertBox;
 
 /**
@@ -69,6 +69,7 @@ public class Hud extends Gui {
                     app.getCamera().setLocation(player.getModel().getChild("Face").getWorldTranslation());
                     player.setLocalScale(.1f);
                     aimButton.setText("Done");
+                    updateBulletDisplay();
                 }
                 
                 else {
@@ -109,7 +110,9 @@ public class Hud extends Gui {
                 
                 if (ammo > 0) {
                     player.getInventory().put("Bullets", ammo-1);
+                    player.shoot();
                     updateBulletDisplay();
+                    app.getCamera().lookAtDirection(app.getCamera().getDirection().add(0,.25f,0), new Vector3f(0,1,0));
                 }
                 
                 else {

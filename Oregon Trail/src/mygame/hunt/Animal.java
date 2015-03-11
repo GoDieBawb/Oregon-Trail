@@ -1,6 +1,7 @@
 package mygame.hunt;
 
 import com.jme3.animation.AnimControl;
+import com.jme3.animation.LoopMode;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -65,10 +66,20 @@ public class Animal extends Node {
         else
             model.getControl(AnimControl.class).createChannel().setAnim("Dead");
         
+        model.getControl(AnimControl.class).getChannel(0).setLoopMode(LoopMode.DontLoop);
+        
+    }
+    
+    public String getType() {
+        return type;
     }
     
     public void setMoveDir(int xMove, int zMove) {
         moveDir = new Vector3f(xMove, 0, zMove);
+    }
+    
+    public void setMoveDir(Vector3f newDir) {
+        moveDir = newDir;
     }
     
     public Vector3f getMoveDir() {

@@ -293,25 +293,10 @@ public class TrailSceneManager {
     }
     
     private void die(String reason) {
-        player.getWagon().getModel().setLocalRotation(new Quaternion(0,0,0,1));
         dewagonizePlayer();
-        app.getStateManager().getState(GameManager.class).clearAll();
-        player.setIsDead(true);
         WagonModel wm = (WagonModel) interactableNode.getChild("Wagon");
         ((WagonGui) wm.getGui()).getStopButton().hide();
-        
-        String deathInfo = "You've died of Dysentery";
-        
-        if(reason.equals("Starvation")) {
-            deathInfo = "You have starved to death";
-        }
-        
-        else if (reason.equals("Stranded")) {
-            deathInfo = "With the death of your last ox you become stranded in the wilderness... You soon run out of supplies and die";
-        }
-        
-        player.getHud().showAlert("Dead", deathInfo);
-        player.getHud().getInfoText().getButtonOk().show();
+        player.die(reason);
     }
     
     private void killOx() {
@@ -325,7 +310,7 @@ public class TrailSceneManager {
        player.getInventory().put("Food", newFood);
        
        if(newOxCount == 1) {
-           oxWarn = " You are down to one ox, your speed is cut in half.";
+           oxWarn = "You are down to one ox, your speed is cut in half.";
            ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
        }
        if(newOxCount == 0){
@@ -334,7 +319,7 @@ public class TrailSceneManager {
            return;
        }
        
-       player.getHud().showAlert("Death", "One of your Oxen has died. You find " + meatWeight + " pounds of usable meat." + oxWarn);
+       player.getHud().showAlert("Death", "One of your Oxen has died. You find " + meatWeight + " pounds of usable meat. " + oxWarn);
        
     }
     
@@ -361,6 +346,10 @@ public class TrailSceneManager {
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
     }        
+    
+    public AnimalManager getAnimalManager() {
+        return anMan;
+    }
     
     public void update(float tpf) {
     
