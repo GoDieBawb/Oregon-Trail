@@ -6,7 +6,6 @@ package mygame.trail;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -147,6 +146,12 @@ public class TrailSceneManager {
         
         t1.move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
         t2.move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
+        
+        for(int i = 0; i < anMan.getAnimalNode().getQuantity(); i++) {
+        
+            anMan.getAnimalNode().getChild(i).move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
+            
+        }
         
         if (t1.getLocalTranslation().x <= -128 ) {
             t1.setLocalTranslation(128,0,0);
