@@ -17,7 +17,7 @@ import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
-import mygame.player.Wagon;
+import mygame.player.wagon.Wagon;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.core.Element;

@@ -37,8 +37,8 @@ public class MaterialManager {
                     if (spatial instanceof Geometry) {
           
                     Geometry geom = (Geometry) spatial;
-                    Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-                    Material tat = new Material(assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
+                    Material mat  = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+                    Material tat  = new Material(assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
 
                     if (geom.getName().equals("Invisible"));
         

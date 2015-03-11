@@ -12,7 +12,7 @@ import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
 import mygame.town.TownState;
-import mygame.town.WagonModel;
+import mygame.player.wagon.WagonModel;
 import mygame.util.Gui;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.core.Element;

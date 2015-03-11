@@ -38,6 +38,7 @@ public class GameManager extends AbstractAppState {
     }
 
     private void loadSituation() {
+        
         String setting = (String) playerManager.getPlayer().getSituation().get("Setting");
         
         if (setting.equals("Town")) {

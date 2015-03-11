@@ -4,6 +4,7 @@
  */
 package mygame.player;
 
+import mygame.player.wagon.Wagon;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.app.state.AppStateManager;
@@ -35,6 +36,7 @@ public class Player extends Node {
     private Gui             hud;
     private boolean         inWagon;
     private boolean         isDead;
+    private boolean         isAiming;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -276,6 +278,14 @@ public class Player extends Node {
     
     public void setIsDead(boolean isDead) {
         this.isDead = isDead;
+    }
+    
+    public void setIsAiming(boolean aim) {
+        isAiming = aim;
+    }
+    
+    public boolean isAiming() {
+        return isAiming;
     }
     
 }

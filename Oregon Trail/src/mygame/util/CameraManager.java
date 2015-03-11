@@ -24,19 +24,22 @@ public class CameraManager {
   private Vector3f          panDir;
   private Vector3f          cameraSpot;
   private Vector3f          cameraLook;
-  public  boolean           isPan;    
+  public  boolean           isPan;
+  private boolean           isHunt;
   
   public CameraManager(SimpleApplication app) {
      this.app   = app;
      player     = app.getStateManager().getState(PlayerManager.class).getPlayer();
+     isHunt     = false;
      initCamera();
   }
   
   //Creates camera
   private void initCamera() {
-      
+
     //Creates a new chase cam and attached it to the player.getModel() for the game
     app.getFlyByCamera().setEnabled(false);
+    app.getFlyByCamera().setDragToRotate(true);
     cam = this.app.getCamera();
     cameraLook = player.getModel().getWorldTranslation().add(0,1f,0);
     
@@ -85,6 +88,7 @@ public class CameraManager {
   }
  
   private void slerpLookAt(Vector3f pos, float amount) {
+      
     TempVars vars = TempVars.get();
     Vector3f newDirection = vars.vect1;
     Vector3f newUp = vars.vect2;
@@ -94,15 +98,20 @@ public class CameraManager {
     newDirection.set(pos).subtractLocal(cam.getLocation()).normalizeLocal();
 
     newLeft.set(Vector3f.UNIT_Y).crossLocal(newDirection).normalizeLocal();
+    
     if (newLeft.equals(Vector3f.ZERO)) {
+        
         if (newDirection.x != 0) {
             newLeft.set(newDirection.y, -newDirection.x, 0f);
-        } else {
+        } 
+        
+        else {
             newLeft.set(0f, newDirection.z, -newDirection.y);
         }
+        
     }
 
-    newUp.set(newDirection).crossLocal(newLeft).normalizeLocal();
+     newUp.set(newDirection).crossLocal(newLeft).normalizeLocal();
 
      airRotation.fromAxes(newLeft, newUp, newDirection);
      airRotation.normalizeLocal();
@@ -119,7 +128,23 @@ public class CameraManager {
         cam.setRotation(rotation);
     }  
     
+    public void setHuntCam(boolean hunt) {
+        
+        isHunt = hunt;
+        
+        if(isHunt) {
+            app.getFlyByCamera().setEnabled(true);
+            app.getFlyByCamera().setMoveSpeed(0);
+        }
+        
+        else {
+            app.getFlyByCamera().setEnabled(false);
+        }
+        
+    }
+    
     public void update(float tpf) {
+        if(!isHunt) 
         chaseCamMove(tpf);
     }
     

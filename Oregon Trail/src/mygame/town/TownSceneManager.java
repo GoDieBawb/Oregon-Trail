@@ -4,6 +4,7 @@
  */
 package mygame.town;
 
+import mygame.player.wagon.WagonModel;
 import mygame.util.Interactable;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;

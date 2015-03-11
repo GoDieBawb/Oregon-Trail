@@ -4,16 +4,22 @@
  */
 package mygame.player;
 
+import mygame.player.wagon.WagonModel;
+import mygame.player.wagon.WagonGui;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
 import java.util.HashMap;
-import mygame.town.WagonModel;
+import mygame.GameManager;
+import mygame.util.CameraManager;
 import mygame.util.Gui;
 import mygame.util.YamlLoader;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.text.LabelElement;
 import tonegod.gui.controls.windows.AlertBox;
 
 /**
@@ -25,6 +31,9 @@ public class Hud extends Gui {
     private AlertBox      infoText;
     private ButtonAdapter aimButton;
     private HashMap       scripts;
+    private BitmapText    crossHair;
+    private BitmapText    bulletDisplay;
+    private ButtonAdapter shootButton;
     
     public Hud(AppStateManager stateManager) {
         super(stateManager);
@@ -34,6 +43,115 @@ public class Hud extends Gui {
     @Override
     public void createElements() {
         createInfoText();
+        createAimButton();
+        createShootButton();
+        createCrossHair();
+        createBulletDisplay();
+    }
+    
+    private void createAimButton() {
+    
+        aimButton = new ButtonAdapter(getScreen(), "Aim Button", new Vector2f(12,12)) {
+            
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                Player player    = getStateManager().getState(PlayerManager.class).getPlayer();
+                CameraManager cm = getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager();
+                
+                if (!player.isAiming()) {
+                    player.setIsAiming(true);
+                    player.setNoMove(true);
+                    cm.setHuntCam(true);
+                    ((SimpleApplication)app).getGuiNode().attachChild(crossHair);
+                    shootButton.show();
+                    ((SimpleApplication)app).getGuiNode().attachChild(bulletDisplay);
+                    app.getCamera().setLocation(player.getModel().getChild("Face").getWorldTranslation());
+                    player.setLocalScale(.1f);
+                    aimButton.setText("Done");
+                }
+                
+                else {
+                    player.setIsAiming(false);
+                    player.setNoMove(false);
+                    cm.setHuntCam(false);
+                    ((SimpleApplication)app).getGuiNode().detachChild(crossHair);
+                    shootButton.hide();
+                    ((SimpleApplication)app).getGuiNode().detachChild(bulletDisplay);
+                    player.setLocalScale(1f);
+                    aimButton.setText("Aim");
+                }
+                
+            }
+        
+        };
+        
+        getScreen().addElement(aimButton);        
+        aimButton.setDimensions(getScreen().getWidth()/5, getScreen().getHeight()/10);
+        aimButton.setPosition(getScreen().getWidth()/2 - aimButton.getWidth()/2, getScreen().getHeight()/10);
+        aimButton.hide();
+        aimButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        aimButton.setText("Aim");
+        getElements().add(aimButton);
+        aimButton.setFont("Interface/Fonts/UnrealTournament.fnt");     
+    
+    }
+    
+    private void createShootButton() {
+    
+        shootButton = new ButtonAdapter(getScreen(), "Shoot Button", new Vector2f(12,12)) {
+            
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                Player player = getStateManager().getState(PlayerManager.class).getPlayer();
+                int ammo      = (Integer)player.getInventory().get("Bullets");
+                
+                if (ammo > 0) {
+                    player.getInventory().put("Bullets", ammo-1);
+                    updateBulletDisplay();
+                }
+                
+                else {
+                
+                }
+                
+            }
+        
+        };
+        
+        getScreen().addElement(shootButton);        
+        shootButton.setDimensions(getScreen().getWidth()/5, getScreen().getHeight()/10);
+        shootButton.setPosition(getScreen().getWidth()/2 - shootButton.getWidth()/2, getScreen().getHeight() - getScreen().getHeight()/5);
+        shootButton.hide();
+        shootButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        shootButton.setText("Shoot");
+        getElements().add(shootButton);
+        shootButton.setFont("Interface/Fonts/UnrealTournament.fnt");     
+        
+    }
+    
+    private void createCrossHair() {
+        BitmapFont font = getStateManager().getApplication().getAssetManager().loadFont("Interface/Fonts/UnrealTournament.fnt");
+        crossHair       = new BitmapText(font);
+        crossHair.setText("+");
+        crossHair.setLocalTranslation(getScreen().getWidth()/2 - crossHair.getLineWidth()/2, getScreen().getHeight()/2 + crossHair.getLineHeight()/2, 0);
+        
+    }
+    
+    private void createBulletDisplay() {
+        BitmapFont font     = getStateManager().getApplication().getAssetManager().loadFont("Interface/Fonts/UnrealTournament.fnt");
+        bulletDisplay       = new BitmapText(font);
+        bulletDisplay.setSize(bulletDisplay.getSize()/2);
+        bulletDisplay.setLocalTranslation(getScreen().getWidth()/10 - bulletDisplay.getLineWidth()/2, getScreen().getHeight() - getScreen().getHeight()/10 - bulletDisplay.getLineHeight()/2, 0);
+        bulletDisplay.setText("Ammo: ");
+        updateBulletDisplay();
+        
+    }
+    
+    private void updateBulletDisplay() {
+        Player player    = getStateManager().getState(PlayerManager.class).getPlayer();
+        bulletDisplay.setText("Ammo: " + (Integer)player.getInventory().get("Bullets"));
     }
     
     private void createInfoText() {
@@ -103,6 +221,10 @@ public class Hud extends Gui {
     
     public AlertBox getInfoText(){
         return infoText;
+    }
+    
+    public ButtonAdapter getAimButton() {
+        return aimButton;
     }
     
 }

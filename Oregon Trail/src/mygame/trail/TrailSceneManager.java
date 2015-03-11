@@ -16,8 +16,8 @@ import mygame.GameManager;
 import mygame.hunt.AnimalManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
-import mygame.player.WagonGui;
-import mygame.town.WagonModel;
+import mygame.player.wagon.WagonGui;
+import mygame.player.wagon.WagonModel;
 import mygame.util.Interactable;
 import mygame.util.PersonInteractionManager;
 import mygame.util.SkeletonFinder;
@@ -85,6 +85,7 @@ public class TrailSceneManager {
         animateWagon(app.getStateManager());
         initInteractableWagon();
         player.saveAll();
+        player.getHud().getAimButton().show();
     
     }
     
@@ -254,6 +255,7 @@ public class TrailSceneManager {
             
             player.getInventory().put("Hay", newHay);
             player.getInventory().put("Food", newFood);
+            player.saveAll();
             
             if(newHay <= 0) {
                 
