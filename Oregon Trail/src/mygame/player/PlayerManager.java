@@ -48,4 +48,10 @@ public class PlayerManager extends AbstractAppState {
         app.getStateManager().getState(GameManager.class).initTown();
     }
     
+    @Override
+    public void update(float tpf) {
+        if (player.getWorldTranslation().y < -5)
+            player.getPhys().warp(player.getWorldTranslation().add(0,10,0));
+    }
+    
 }

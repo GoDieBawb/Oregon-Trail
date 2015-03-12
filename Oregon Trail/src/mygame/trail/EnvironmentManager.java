@@ -39,14 +39,14 @@ public class EnvironmentManager {
         
         if(randInt(1,25) == 25) {
             object = (Node) app.getAssetManager().loadModel("Models/Plants/GrassPatch.j3o");
-            object.scale(.1f);  
+            object.scale(.5f);  
             object.setName("Grass");
         }
         
         else {
-            object = (Node) app.getAssetManager().loadModel("Models/Plants/Bush/BushBatch.j3o");
-            object.rotate(0, 0, randInt(0,180));
-            object.scale(.5f);
+            object = (Node) app.getAssetManager().loadModel("Models/Plants/Maple.j3o");
+            //object.rotate(0, 0, randInt(0,180));
+            object.scale(.25f);
             object.setName("Tree");
         }
         
@@ -72,7 +72,7 @@ public class EnvironmentManager {
         negMult = -1;
         
         if(object.getName().equals("Tree"))
-            ySpot = 4;
+            ySpot = -2;
         
         object.setLocalTranslation(xSpot*negMult, ySpot , zSpot*negMult1);
         stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().addToPhysics(object);
@@ -108,6 +108,7 @@ public class EnvironmentManager {
                         
                 if ( distance < 3) {
                     
+                    stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
                     plant.removeFromParent();
                     int feedWeight = randInt(3,17);
                     int newFeed    = ((Integer) player.getInventory().get("Hay")) + feedWeight;
@@ -132,6 +133,7 @@ public class EnvironmentManager {
                 
                 if (results.size() > 0) {
                     
+                    stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
                     plant.removeFromParent();
                     player.getWagon().setCurrentHealth(player.getWagon().getCurrentHealth()-5);
                     
