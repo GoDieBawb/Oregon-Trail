@@ -106,7 +106,7 @@ public class EnvironmentManager {
                 
                 float distance = player.getWorldTranslation().distance(plant.getWorldTranslation());
                         
-                if ( distance < 3) {
+                if ( distance < 5) {
                     
                     stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
                     plant.removeFromParent();
