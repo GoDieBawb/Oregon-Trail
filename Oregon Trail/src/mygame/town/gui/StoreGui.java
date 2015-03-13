@@ -111,6 +111,7 @@ public class StoreGui extends Gui {
                 player.setNoMove(true);
                 player.getModel().scale(.1f);
                 player.setModel((Node)selectedItem.getChild(0));
+                player.getHud().getJoystick().hide();
                 endInteractButton.show();
                 interactButton.hide();
                 nextButton.show();
@@ -143,6 +144,7 @@ public class StoreGui extends Gui {
                 Node   model  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Player");
                 player.setNoMove(false);
                 player.setModel((Node)model.getChild(0));
+                player.getHud().getJoystick().show();
                 endInteractButton.hide();
                 nextButton.hide();
                 buyButton.hide();

@@ -47,6 +47,7 @@ public class WagonGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setInWagon(false);
                 stopButton.hide();
+                player.getHud().getJoystick().show();
                 
             }
         
@@ -75,8 +76,8 @@ public class WagonGui extends Gui {
                 
                 if (player.getSituation().get("Setting").equals("Town")) {
                     
-                    if ((Integer)player.getInventory().get("Oxen") < 2){
-                        player.getHud().showAlert("Oxen", "You'll need at least 2 oxen to pull your wagon!");
+                    if ((Integer)player.getInventory().get("Oxen") < 1){
+                        player.getHud().showAlert("Oxen", "You'll need at least one ox to pull your wagon!");
                         return;
                     }
                     
@@ -93,6 +94,7 @@ public class WagonGui extends Gui {
                     situationButton.hide();
                     player.setInWagon(true);
                     stopButton.show();
+                    player.getHud().getJoystick().hide();
                     
                 }
             

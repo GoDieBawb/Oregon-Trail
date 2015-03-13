@@ -79,6 +79,7 @@ public class TrailSceneManager {
         scene.scale(sceneMult);
         app.getRootNode().attachChild(scene);
         player.setInWagon(false);
+        player.getHud().endHunt();
         player.getPhys().warp(new Vector3f(-60,0,0));
         wagIntMan.setScene(scene);
         animateWagon(app.getStateManager());
@@ -304,6 +305,7 @@ public class TrailSceneManager {
     public void killPlayer(String reason) {
         dewagonizePlayer();
         WagonModel wm = (WagonModel) interactableNode.getChild("Wagon");
+        player.getHud().endHunt();
         envMan.getEnvNode().detachAllChildren();
         anMan.getAnimalNode().detachAllChildren();
         ((WagonGui) wm.getGui()).getStopButton().hide();
@@ -356,6 +358,8 @@ public class TrailSceneManager {
         player.saveSituation();
         app.getStateManager().getState(GameManager.class).initTown();
         player.getHud().getInfoText().getButtonOk().show();
+        player.getHud().getJoystick().show();
+        
     }
     
     private int randInt(int min, int max) {
@@ -363,6 +367,12 @@ public class TrailSceneManager {
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
     }        
+    
+    public void clearTrail() {
+        scene = null;
+        anMan.clear();
+        envMan.clear();
+    }
     
     public AnimalManager getAnimalManager() {
         return anMan;

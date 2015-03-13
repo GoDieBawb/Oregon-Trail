@@ -39,7 +39,7 @@ public class AnimalManager {
         
         int animalChance = randInt(1,3);
         
-        if (System.currentTimeMillis()/1000 - cooldown > 3) {
+        if (System.currentTimeMillis()/1000 - cooldown > 3 && animalNode.getQuantity() < 3) {
                 
             if (animalChance == 3) {
         
@@ -166,7 +166,7 @@ public class AnimalManager {
             
             if (distance < 40) {
             
-                if (animal.getType().equals("Bear")) {
+                if (animal.getType().equals("Bear") && !player.getInWagon()) {
                     animal.setMoveDir(animal.getWorldTranslation().subtract(player.getWorldTranslation()).normalize().negate());
                 }
                 
@@ -212,6 +212,10 @@ public class AnimalManager {
         Random rand   = new Random();
         int randomNum = rand.nextInt((max - min) + 1) + min;
         return randomNum;
+    }
+    
+    public void clear() {
+        animalNode = new Node();
     }
     
     public void update(float tpf) {

@@ -2,6 +2,7 @@ package mygame;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.renderer.RenderManager;
+import com.jme3.system.AppSettings;
 
 /**
  * test
@@ -17,8 +18,11 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         setShowSettings(false);
-        setDisplayFps(false);
-        setDisplayStatView(false);
+        AppSettings newSetting = new AppSettings(true);
+        newSetting.setFrameRate(30);
+        setSettings(newSetting);
+        //setDisplayFps(false);
+        //setDisplayStatView(false);
         stateManager.attach(new GameManager());
     }
 

@@ -45,6 +45,7 @@ public class PlayerManager extends AbstractAppState {
     
     public void endGame() {
         player.reset();
+        player.getHud().getJoystick().show();
         app.getStateManager().getState(GameManager.class).initTown();
     }
     

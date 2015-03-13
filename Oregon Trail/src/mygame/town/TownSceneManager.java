@@ -39,11 +39,9 @@ public class TownSceneManager {
         player.getWagon().getModel().setLocalRotation(new Quaternion(0,0,0,1));
     }
     
-    public void removeScene() {
-        scene.removeFromParent();
-        scene.detachAllChildren();
-        interactableNode.removeFromParent();
-        interactableNode.detachAllChildren();
+    public void clearTown() {
+        scene            = new Node();
+        interactableNode = new Node();
     }
     
     public Node getInteractableNode() {

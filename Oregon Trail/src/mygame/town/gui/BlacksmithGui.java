@@ -108,6 +108,7 @@ public class BlacksmithGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 Node   inter  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Interactable");
                 Node   wagon  = (Node) inter.getChild("Wagon");
+                player.getHud().getJoystick().hide();
                 player.setNoMove(true);
                 player.setModel(wagon);
                 endInteractButton.show();
@@ -143,6 +144,7 @@ public class BlacksmithGui extends Gui {
                 Node   model  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Player");
                 player.setNoMove(false);
                 player.setModel((Node)model.getChild(0));
+                player.getHud().getJoystick().show();
                 endInteractButton.hide();
                 wagonHealth.hide();
                 nextButton.hide();

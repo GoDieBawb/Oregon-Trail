@@ -24,10 +24,10 @@ public class PhysicsManager {
         stateManager.attach(physics);
     }
     
-    public void rePhys(AppStateManager stateManager) {
-        clearPhysics(stateManager);
-        addToPhysics(((SimpleApplication) stateManager.getApplication()).getRootNode());
-        physics.getPhysicsSpace().add(stateManager.getState(PlayerManager.class).getPlayer().getPhys());
+    public void rePhys(AppStateManager stateManager, Node node) {
+        System.out.println(physics.getPhysicsSpace());
+        physics.getPhysicsSpace().removeAll(node);
+        physics.getPhysicsSpace().add(node);
     } 
     
     public void clearPhysics(AppStateManager stateManager) {

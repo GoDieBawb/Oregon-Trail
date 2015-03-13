@@ -67,20 +67,41 @@ public class InteractionManager implements ActionListener {
         
     }
     
+    public void setUp(boolean newVal) {
+        up = newVal;
+    }
+    
+    public void setDown(boolean newVal) {
+        down = newVal;
+    }
+    
+    public void setLeft(boolean newVal) {
+        left = newVal;
+    }
+    
+    public void setRight(boolean newVal) {
+        right = newVal;
+    }
+    
     public boolean getIsPressed(String triggerName) {
         
         if (triggerName.equals("Left"))
-        return left;
+            return left;
+        
         else if (triggerName.equals("Right"))
-        return right;
+            return right;
+        
         else if (triggerName.equals("Up"))
-        return up;
+            return up;
+        
         else if (triggerName.equals("Down"))
-        return down;
+            return down;
+        
         else if (triggerName.equals("Click"))
-        return click;    
+            return click;
+        
         else
-        return false;
+            return false;
         
     }
     

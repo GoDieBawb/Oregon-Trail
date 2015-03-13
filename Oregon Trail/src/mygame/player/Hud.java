@@ -8,19 +8,25 @@ import mygame.player.wagon.WagonModel;
 import mygame.player.wagon.WagonGui;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.TextureKey;
 import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.jme3.texture.Texture;
 import java.util.HashMap;
 import mygame.GameManager;
 import mygame.util.CameraManager;
 import mygame.util.Gui;
+import mygame.util.InteractionManager;
 import mygame.util.YamlLoader;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.extras.android.Joystick;
 import tonegod.gui.controls.windows.AlertBox;
+import tonegod.gui.effects.Effect;
 
 /**
  *
@@ -34,6 +40,7 @@ public class Hud extends Gui {
     private BitmapText    crossHair;
     private BitmapText    bulletDisplay;
     private ButtonAdapter shootButton;
+    private Joystick      stick;
     
     public Hud(AppStateManager stateManager) {
         super(stateManager);
@@ -47,6 +54,7 @@ public class Hud extends Gui {
         createShootButton();
         createCrossHair();
         createBulletDisplay();
+        createJoyStick();
     }
     
     private void createAimButton() {
@@ -57,30 +65,13 @@ public class Hud extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player    = getStateManager().getState(PlayerManager.class).getPlayer();
-                CameraManager cm = getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager();
                 
                 if (!player.isAiming()) {
-                    player.setIsAiming(true);
-                    player.setNoMove(true);
-                    cm.setHuntCam(true);
-                    ((SimpleApplication)app).getGuiNode().attachChild(crossHair);
-                    shootButton.show();
-                    ((SimpleApplication)app).getGuiNode().attachChild(bulletDisplay);
-                    app.getCamera().setLocation(player.getModel().getChild("Face").getWorldTranslation());
-                    player.setLocalScale(.1f);
-                    aimButton.setText("Done");
-                    updateBulletDisplay();
+                    startHunt();
                 }
                 
                 else {
-                    player.setIsAiming(false);
-                    player.setNoMove(false);
-                    cm.setHuntCam(false);
-                    ((SimpleApplication)app).getGuiNode().detachChild(crossHair);
-                    shootButton.hide();
-                    ((SimpleApplication)app).getGuiNode().detachChild(bulletDisplay);
-                    player.setLocalScale(1f);
-                    aimButton.setText("Aim");
+                    endHunt();
                 }
                 
             }
@@ -96,6 +87,38 @@ public class Hud extends Gui {
         getElements().add(aimButton);
         aimButton.setFont("Interface/Fonts/UnrealTournament.fnt");     
     
+    }
+    
+    private void startHunt() {
+        Player player         = getStateManager().getState(PlayerManager.class).getPlayer();
+        CameraManager cm      = getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager();
+        SimpleApplication app = (SimpleApplication) getStateManager().getApplication();
+        player.setIsAiming(true);
+        player.setNoMove(true);
+        cm.setHuntCam(true);
+        app.getGuiNode().attachChild(crossHair);
+        shootButton.show();
+        app.getGuiNode().attachChild(bulletDisplay);
+        app.getCamera().setLocation(player.getModel().getChild("Face").getWorldTranslation());
+        player.setLocalScale(.1f);
+        aimButton.setText("Done");
+        updateBulletDisplay();
+        stick.hide();
+    }
+    
+    public void endHunt() {
+        Player player    = getStateManager().getState(PlayerManager.class).getPlayer();
+        CameraManager cm = getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager();
+        SimpleApplication app = (SimpleApplication) getStateManager().getApplication();
+        player.setIsAiming(false);
+        player.setNoMove(false);
+        cm.setHuntCam(false);
+        app.getGuiNode().detachChild(crossHair);
+        shootButton.hide();
+        app.getGuiNode().detachChild(bulletDisplay);
+        player.setLocalScale(1f);
+        aimButton.setText("Aim");
+        stick.show();
     }
     
     private void createShootButton() {
@@ -133,6 +156,81 @@ public class Hud extends Gui {
         shootButton.setFont("Interface/Fonts/UnrealTournament.fnt");     
         
     }
+
+    private void createJoyStick(){
+        
+        stick = new Joystick(getScreen(), Vector2f.ZERO, (int)(getScreen().getWidth()/6)) {
+            InteractionManager im = getStateManager().getState(GameManager.class).getUtilityManager().getInteractionManager();
+            
+            @Override
+            public void show() {
+                
+                boolean isAndroid = "Dalvik".equals(System.getProperty("java.vm.name"));
+                
+                if (!isAndroid)
+                    return;
+                
+                super.show();
+                
+            }
+            
+            @Override
+            public void onUpdate(float tpf, float deltaX, float deltaY) {
+            
+                
+                float dzVal = .2f; // Dead zone threshold
+            
+                if (deltaX < -dzVal) {
+                    im.setLeft(true);
+                    im.setRight(false);
+                }
+            
+                else if (deltaX > dzVal) {
+                im.setRight(true);
+                im.setLeft(false);
+                }
+            
+                else {
+                    im.setRight(false);
+                    im.setLeft(false);
+                }
+            
+                if (deltaY < -dzVal) {
+                    im.setDown(true);
+                    im.setUp(false);
+                }
+            
+                else if (deltaY > dzVal) {
+                    im.setDown(false);
+                    im.setUp(true);
+                }
+            
+                else {
+                    im.setUp(false);
+                    im.setDown(false);
+                }
+            
+                getStateManager().getState(PlayerManager.class).getPlayer().setSpeedMult((FastMath.abs(deltaY) + FastMath.abs(deltaX)) / 3);
+            
+                }
+        
+            };
+        
+            
+            TextureKey key = new TextureKey("Textures/barrel.png", false);
+            Texture tex = ((SimpleApplication)getStateManager().getApplication()).getAssetManager().loadTexture(key);
+            stick.setTextureAtlasImage(tex, "x=20|y=20|w=120|h=35");
+            stick.getThumb().setTextureAtlasImage(tex, "x=20|y=20|w=120|h=35");
+            getScreen().addElement(stick, true);
+            stick.setPosition(getScreen().getWidth()/10 - stick.getWidth()/2, getScreen().getHeight() / 10f - stick.getHeight()/5);
+            // Add some fancy effects
+            Effect fxIn = new Effect(Effect.EffectType.FadeIn, Effect.EffectEvent.Show,.5f);
+            stick.addEffect(fxIn);
+            Effect fxOut = new Effect(Effect.EffectType.FadeOut, Effect.EffectEvent.Hide,.5f);
+            stick.addEffect(fxOut);
+            stick.show();
+    }
+    
     
     private void createCrossHair() {
         BitmapFont font = getStateManager().getApplication().getAssetManager().loadFont("Interface/Fonts/UnrealTournament.fnt");
@@ -169,7 +267,8 @@ public class Hud extends Gui {
                 PlayerManager  pm = app.getStateManager().getState(PlayerManager.class);
                 
                 if(pm.getPlayer().getIsDead())
-                pm.endGame();
+                    pm.endGame();
+               
                 
                 try {
                     
@@ -228,6 +327,10 @@ public class Hud extends Gui {
     
     public ButtonAdapter getAimButton() {
         return aimButton;
+    }
+    
+    public Joystick getJoystick() {
+        return stick;
     }
     
 }

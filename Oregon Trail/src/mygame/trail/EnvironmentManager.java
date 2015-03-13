@@ -75,7 +75,7 @@ public class EnvironmentManager {
             ySpot = -2;
         
         object.setLocalTranslation(xSpot*negMult, ySpot , zSpot*negMult1);
-        stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().addToPhysics(object);
+        //stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().addToPhysics(object);
         
     }
     
@@ -108,7 +108,6 @@ public class EnvironmentManager {
                         
                 if ( distance < 5) {
                     
-                    stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
                     plant.removeFromParent();
                     int feedWeight = randInt(3,17);
                     int newFeed    = ((Integer) player.getInventory().get("Hay")) + feedWeight;
@@ -133,7 +132,7 @@ public class EnvironmentManager {
                 
                 if (results.size() > 0) {
                     
-                    stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
+                    //stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
                     plant.removeFromParent();
                     player.getWagon().setCurrentHealth(player.getWagon().getCurrentHealth()-5);
                     
@@ -147,6 +146,10 @@ public class EnvironmentManager {
             
         }
     
+    }
+    
+    public void clear() {
+        envNode = new Node();
     }
     
     public void update(float tpf) {

@@ -37,7 +37,7 @@ public class PersonInteractionManager {
         right = im.getIsPressed("Right");
     }
     
-    private void chaseMove(){
+    private void chaseMove(float tpf){
         
         if(player.getNoMove())
         return;
@@ -67,8 +67,9 @@ public class PersonInteractionManager {
         }
         
         float speedMult;
-        speedMult = player.getSpeedMult()*.8f + player.getStrafeMult()*.2f;
-        player.getPhys().setWalkDirection(walkDirection.mult(.5f));
+        
+        speedMult = player.getSpeedMult();
+        player.getPhys().setWalkDirection(walkDirection.mult(speedMult));
         if (!up && !down && !left && !right)
         player.getPhys().setViewDirection(camDir);
         else
@@ -77,7 +78,7 @@ public class PersonInteractionManager {
     }
     
     public void update(float tpf) {
-        chaseMove();
+        chaseMove(tpf);
         updateKeys();
     }
     

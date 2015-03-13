@@ -1,10 +1,12 @@
 package com.bigbawb.oregontrail;
  
 import android.content.pm.ActivityInfo;
+import android.os.Bundle;
 import com.jme3.app.AndroidHarness;
 import com.jme3.system.android.AndroidConfigChooser.ConfigType;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
+import mygame.util.AndroidManager;
  
 public class MainActivity extends AndroidHarness{
  
@@ -31,6 +33,21 @@ public class MainActivity extends AndroidHarness{
         mouseEventsEnabled = true;
         // Set the default logging level (default=Level.INFO, Level.ALL=All Debug Info)
         LogManager.getLogManager().getLogger("").setLevel(Level.INFO);
+    }
+    
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        AndroidManager am = new AndroidManager();
+        app.getStateManager().attach(am);
+        am.setFilePath(getFilesDir().toString());
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.runFinalization();
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
  
 }

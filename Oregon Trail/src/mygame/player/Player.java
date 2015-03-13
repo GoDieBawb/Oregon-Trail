@@ -49,8 +49,8 @@ public class Player extends Node {
         setModel();
         createPhys();
         createAnimControl();
-        setSpeedMult(3f);
-        setStrafeMult(1f);
+        setSpeedMult(.5f);
+        setStrafeMult(.5f);
         setName("Player");
     }
     
@@ -231,7 +231,7 @@ public class Player extends Node {
     }
     
     private void createPhys() {
-        phys = new BetterCharacterControl(.3f, 1.1f, 100);
+        phys = new BetterCharacterControl(.11f, .8f, 100);
         addControl(phys);
     }
     

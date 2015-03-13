@@ -6,11 +6,14 @@ package mygame.util;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.util.TempVars;
+import mygame.GameManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import tonegod.gui.core.Screen;
 
 /**
  *
@@ -26,6 +29,9 @@ public class CameraManager {
   private Vector3f          cameraLook;
   public  boolean           isPan;
   private boolean           isHunt;
+  private boolean           isTouched = false;
+  private boolean           panLeft = false, panRight = false;
+  private Vector2f          touchSpot;
   
   public CameraManager(SimpleApplication app) {
      this.app   = app;
@@ -134,7 +140,9 @@ public class CameraManager {
         
         if(isHunt) {
             app.getFlyByCamera().setEnabled(true);
+            app.getFlyByCamera().setDragToRotate(false);
             app.getFlyByCamera().setMoveSpeed(0);
+            app.getFlyByCamera().setRotationSpeed(2f);
         }
         
         else {
@@ -143,9 +151,73 @@ public class CameraManager {
         
     }
     
+    private void rotateCam(float tpf) {
+    
+        UtilityManager um = app.getStateManager().getState(GameManager.class).getUtilityManager();
+        boolean isClick   = um.getInteractionManager().getIsPressed("Click");
+        panLeft           = false;
+        panRight          = false;     
+                
+        if(isClick || isTouched) {
+            
+            Vector2f mouseSpot = new Vector2f(0,0);
+            
+            if(isClick) {
+                mouseSpot = app.getInputManager().getCursorPosition();
+            }
+        
+            else if (isTouched) {
+                mouseSpot = touchSpot;
+            }
+            
+            float xSpot = mouseSpot.getX();
+            float ySpot = mouseSpot.getY();
+            
+            Screen screen = um.getGuiManager().getScreen();
+            
+            if (ySpot > screen.getHeight()/3 + screen.getHeight()/10 && ySpot < screen.getHeight() - screen.getHeight()/3 + screen.getHeight()/10) {
+                
+                if (xSpot > screen.getWidth()/2)
+                    panLeft = true;
+                
+                else
+                    panRight = true;
+                
+            }
+            
+        }
+        
+    
+    
+        if (panLeft) {
+            Vector3f camDir = cam.getLeft().mult(6);
+            cam.setLocation(cam.getLocation().add(camDir.mult(tpf)));
+            player.getPhys().setViewDirection(cam.getDirection());
+            cam.lookAt(cameraLook, new Vector3f(0,1,0));
+        }
+    
+        else if (panRight) {
+            Vector3f camDir = cam.getLeft().negate().mult(6);
+            cam.setLocation(cam.getLocation().add(camDir.mult(tpf)));
+            player.getPhys().setViewDirection(cam.getDirection());
+            cam.lookAt(cameraLook, new Vector3f(0,1,0));
+        }
+    
+    }
+    
+    public void setIsTouched(boolean newVal) {
+        isTouched = newVal;
+    }
+    
+    public void setTouchSpot(Vector2f newVal) {
+        touchSpot = newVal;
+    }
+    
     public void update(float tpf) {
-        if(!isHunt) 
-        chaseCamMove(tpf);
+        if(!isHunt){
+            rotateCam(tpf);
+            chaseCamMove(tpf);
+        }
     }
     
 }

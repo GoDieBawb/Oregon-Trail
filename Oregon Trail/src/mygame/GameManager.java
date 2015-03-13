@@ -101,6 +101,8 @@ public class GameManager extends AbstractAppState {
         utilityManager.getGuiManager().clearScreen(app);
         app.getRootNode().detachAllChildren();
         utilityManager.getPhysicsManager().clearPhysics(app.getStateManager());
+        trailState.getTrailSceneManager().clearTrail();
+        townState.getTownSceneManager().clearTown();
         trailState.setEnabled(false);
         townState.setEnabled(false);
     }
