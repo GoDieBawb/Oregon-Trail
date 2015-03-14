@@ -149,6 +149,8 @@ public class EnvironmentManager {
     }
     
     public void clear() {
+        envNode.detachAllChildren();
+        envNode = null;
         envNode = new Node();
     }
     

@@ -139,14 +139,21 @@ public class CameraManager {
         isHunt = hunt;
         
         if(isHunt) {
+            
             app.getFlyByCamera().setEnabled(true);
-            app.getFlyByCamera().setDragToRotate(false);
+            
+            if ("Dalvik".equals(System.getProperty("java.vm.name"))) 
+                app.getFlyByCamera().setDragToRotate(false);
+            
             app.getFlyByCamera().setMoveSpeed(0);
             app.getFlyByCamera().setRotationSpeed(2f);
+            
         }
         
         else {
+            
             app.getFlyByCamera().setEnabled(false);
+            
         }
         
     }

@@ -171,7 +171,7 @@ public class AnimalManager {
                 }
                 
                 else {
-                    animal.setMoveDir(animal.getWorldTranslation().subtract(player.getWorldTranslation()).normalize());
+                    animal.setMoveDir(animal.getWorldTranslation().subtract(player.getWorldTranslation()).normalize().multLocal(1,0,1));
                 }
                 
             }
@@ -181,16 +181,21 @@ public class AnimalManager {
                 if(animal.isDead()) {
                     
                     animal.removeFromParent();
-                    int meatWeight;
+                    int meatWeight = 0;
                     
                     if (animal.getType().equals("Bear")) {
                         meatWeight = randInt(35, 100);
                         player.getHud().showAlert("Hunt", "You collect " + meatWeight + " pounds of meat from the bear.");
                     }
                     
-                    else {
+                    else if (animal.getType().equals("Deer")){
                         meatWeight =  randInt(35, 100);
                         player.getHud().showAlert("Hunt", "You collect " + meatWeight + " pounds of meat from the deer.");
+                    }
+                    
+                    else if (animal.getType().equals("Rabbit")) {
+                        meatWeight =  randInt(3, 9);
+                        player.getHud().showAlert("Hunt", "You collect " + meatWeight + " pounds of meat from the rabbit.");
                     }
                     
                     int newMeat = ((Integer) player.getInventory().get("Food")) + meatWeight;
@@ -215,6 +220,8 @@ public class AnimalManager {
     }
     
     public void clear() {
+        animalNode.detachAllChildren();
+        animalNode = null;
         animalNode = new Node();
     }
     

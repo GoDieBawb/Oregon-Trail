@@ -69,6 +69,7 @@ public class TrailSceneManager {
     }    
     
     public void initScene() {
+        
         scene            = (Node) app.getAssetManager().loadModel("Scenes/Terrain.j3o");
         interactableNode = (Node) scene.getChild("Interactable");
         interactableNode.attachChild(player.getWagon().getModel());

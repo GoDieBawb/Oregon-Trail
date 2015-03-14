@@ -231,6 +231,8 @@ public class Player extends Node {
     }
     
     private void createPhys() {
+        phys = new BetterCharacterControl(.3f, 1.1f, 100);
+        if ("Dalvik".equals(System.getProperty("java.vm.name"))) 
         phys = new BetterCharacterControl(.11f, .8f, 100);
         addControl(phys);
     }

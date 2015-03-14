@@ -21,13 +21,16 @@ public class Animal extends Node {
     
     public Animal(AppStateManager stateManager) {
         
-        int chance = randInt(0,1);
+        int chance = randInt(1,10);
         
         if(chance == 1)
             makeBear(stateManager);
         
-        else
+        else if (chance == 2)
             makeDeer(stateManager);
+        
+        else
+            makeRabbit(stateManager);
         
         stateManager.getState(GameManager.class).getUtilityManager().getMaterialManager().makeUnshaded(model);
         attachChild(model);
@@ -43,6 +46,11 @@ public class Animal extends Node {
     private void makeDeer(AppStateManager stateManager) {
         type  = "Deer";
         model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Creatures/deer.j3o");
+    }
+    
+    private void makeRabbit(AppStateManager stateManager) {
+        type  = "Rabbit";
+        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Creatures/rabbit.j3o");
     }
     
     public void run() {
@@ -63,6 +71,8 @@ public class Animal extends Node {
         
         if(type.equals("Bear"))
             model.getControl(AnimControl.class).createChannel().setAnim("die");
+        else if (type.equals("Rabbit"))
+            model.getControl(AnimControl.class).createChannel().setAnim("Death1");
         else
             model.getControl(AnimControl.class).createChannel().setAnim("Dead");
         
