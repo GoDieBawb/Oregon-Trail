@@ -143,7 +143,7 @@ public class CameraManager {
             app.getFlyByCamera().setEnabled(true);
             
             if ("Dalvik".equals(System.getProperty("java.vm.name"))) 
-                app.getFlyByCamera().setDragToRotate(false);
+                app.getFlyByCamera().setDragToRotate(true);
             
             app.getFlyByCamera().setMoveSpeed(0);
             app.getFlyByCamera().setRotationSpeed(2f);

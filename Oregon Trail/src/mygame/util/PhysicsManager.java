@@ -25,15 +25,14 @@ public class PhysicsManager {
     }
     
     public void rePhys(AppStateManager stateManager, Node node) {
-        System.out.println(physics.getPhysicsSpace());
         physics.getPhysicsSpace().removeAll(node);
         physics.getPhysicsSpace().add(node);
     } 
     
     public void clearPhysics(AppStateManager stateManager) {
-        stateManager.detach(physics);
-        physics = new BulletAppState();
-        stateManager.attach(physics);
+        physics.getPhysicsSpace().removeAll(((SimpleApplication)stateManager.getApplication()).getRootNode());
+        //physics = new BulletAppState();
+        //stateManager.attach(physics);
     }
     
     public void addToPhysics(Node node) {

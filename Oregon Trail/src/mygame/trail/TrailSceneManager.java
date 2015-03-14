@@ -213,6 +213,7 @@ public class TrailSceneManager {
     }
     
     private void dewagonizePlayer() {
+        envMan.rePhysTrees();
         wagonized = false;
         animateWagon(app.getStateManager());
         player.getHud().getInfoText().getButtonOk().show();

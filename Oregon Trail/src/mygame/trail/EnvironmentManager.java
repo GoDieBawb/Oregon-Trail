@@ -6,6 +6,7 @@ package mygame.trail;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.BulletAppState;
 import com.jme3.collision.CollisionResults;
 import com.jme3.collision.UnsupportedCollisionException;
 import com.jme3.scene.Node;
@@ -75,7 +76,7 @@ public class EnvironmentManager {
             ySpot = -2;
         
         object.setLocalTranslation(xSpot*negMult, ySpot , zSpot*negMult1);
-        //stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().addToPhysics(object);
+        stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().addToPhysics(object);
         
     }
     
@@ -132,7 +133,7 @@ public class EnvironmentManager {
                 
                 if (results.size() > 0) {
                     
-                    //stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
+                    stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
                     plant.removeFromParent();
                     player.getWagon().setCurrentHealth(player.getWagon().getCurrentHealth()-5);
                     
@@ -154,6 +155,16 @@ public class EnvironmentManager {
         envNode = new Node();
     }
     
+    public void rePhysTrees() {
+        
+        for (int i = 0; i < envNode.getQuantity(); i++) {
+            BulletAppState physics = stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics();
+            physics.getPhysicsSpace().removeAll(envNode.getChild(i));
+            physics.getPhysicsSpace().add(envNode.getChild(i));
+        }
+        
+    }
+    
     public void update(float tpf) {
         
         envActionCheck();
@@ -166,8 +177,10 @@ public class EnvironmentManager {
         }
         
         for (int i = 0; i < envNode.getQuantity(); i++) {
-            if (envNode.getChild(i).getLocalTranslation().x <= -128)
-            envNode.getChild(i).removeFromParent();
+            if (envNode.getChild(i).getLocalTranslation().x <= -128) {
+                stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(envNode.getChild(i));
+                envNode.getChild(i).removeFromParent();
+            }
         }
         
     }

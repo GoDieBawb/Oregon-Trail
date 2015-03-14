@@ -50,11 +50,13 @@ public class StoreGui extends Gui {
          itemName = newItem;
          
         if (newItem.equals("Food"))
-        selectedItem = (Node) items.getChild(0);
+            selectedItem = (Node) items.getChild(0);
+        
         else if (newItem.equals("Bullets"))
-        selectedItem = (Node) items.getChild(1);
+            selectedItem = (Node) items.getChild(1);
+        
         else
-        selectedItem = (Node) items.getChild(2);
+            selectedItem = (Node) items.getChild(2);
         
     }    
     

@@ -147,8 +147,8 @@ public class Hud extends Gui {
         };
         
         getScreen().addElement(shootButton);        
-        shootButton.setDimensions(getScreen().getWidth()/5, getScreen().getHeight()/10);
-        shootButton.setPosition(getScreen().getWidth()/2 - shootButton.getWidth()/2, getScreen().getHeight() - getScreen().getHeight()/5);
+        shootButton.setDimensions(getScreen().getWidth()/5, getScreen().getHeight()/5);
+        shootButton.setPosition(getScreen().getWidth()/2 - shootButton.getWidth()/2 + shootButton.getWidth()*1.5f, aimButton.getHeight()/2);
         shootButton.hide();
         shootButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
         shootButton.setText("Shoot");
@@ -186,8 +186,8 @@ public class Hud extends Gui {
                 }
             
                 else if (deltaX > dzVal) {
-                im.setRight(true);
-                im.setLeft(false);
+                    im.setRight(true);
+                    im.setLeft(false);
                 }
             
                 else {
@@ -266,9 +266,10 @@ public class Hud extends Gui {
                 
                 PlayerManager  pm = app.getStateManager().getState(PlayerManager.class);
                 
-                if(pm.getPlayer().getIsDead())
+                if(pm.getPlayer().getIsDead()) {
                     pm.endGame();
-               
+                    return;
+                }
                 
                 try {
                     

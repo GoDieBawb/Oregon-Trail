@@ -8,6 +8,12 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.scene.SceneGraphVisitor;
+import com.jme3.scene.Spatial;
+import com.jme3.terrain.Terrain;
+import com.jme3.terrain.geomipmap.TerrainLodControl;
+import java.lang.reflect.Field;
+import java.util.concurrent.ExecutorService;
 import mygame.player.PlayerManager;
 import mygame.town.TownState;
 import mygame.trail.TrailState;
@@ -98,6 +104,7 @@ public class GameManager extends AbstractAppState {
     }
     
     public void clearAll() {
+        clearTerrainLod();
         utilityManager.getGuiManager().clearScreen(app);
         app.getRootNode().detachAllChildren();
         utilityManager.getPhysicsManager().clearPhysics(app.getStateManager());
@@ -105,6 +112,40 @@ public class GameManager extends AbstractAppState {
         townState.getTownSceneManager().clearTown();
         trailState.setEnabled(false);
         townState.setEnabled(false);
+        System.gc();
     }
+    
+    private void clearTerrainLod() {
+    
+        SceneGraphVisitor sgv = new SceneGraphVisitor() {
+            
+            public void visit(Spatial spatial) {
+            
+                if (spatial instanceof Terrain) {
+                    
+                    TerrainLodControl tlc = spatial.getControl(TerrainLodControl.class);
+                    Field f;
+                    
+                    try {
+                        f = tlc.getClass().getDeclaredField("executor");
+                        f.setAccessible(true);
+                        ExecutorService ex = (ExecutorService) f.get(tlc);
+                        ex.shutdown();
+                    }
+                    
+                    catch (NoSuchFieldException nsf) {
+                    }
+                    
+                    catch (IllegalAccessException e) {
+                    }
+            
+                }
+            }
+        
+        };
+        
+        app.getRootNode().depthFirstTraversal(sgv);
+        
+    }    
     
 }
