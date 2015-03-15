@@ -164,7 +164,7 @@ public class AnimalManager {
             Animal animal   = (Animal) animalNode.getChild(i);
             float  distance = animal.getWorldTranslation().distance(player.getWorldTranslation());
             
-            if (distance < 40) {
+            if (distance < 20) {
             
                 if (animal.getType().equals("Bear") && !player.getInWagon()) {
                     animal.setMoveDir(animal.getWorldTranslation().subtract(player.getWorldTranslation()).normalize().negate());

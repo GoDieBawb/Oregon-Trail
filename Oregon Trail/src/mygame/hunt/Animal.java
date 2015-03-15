@@ -21,7 +21,7 @@ public class Animal extends Node {
     
     public Animal(AppStateManager stateManager) {
         
-        int chance = randInt(1,10);
+        int chance = randInt(1,5);
         
         if(chance == 1)
             makeBear(stateManager);
