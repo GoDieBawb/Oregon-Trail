@@ -21,8 +21,9 @@ public class Main extends SimpleApplication {
         AppSettings newSetting = new AppSettings(true);
         newSetting.setFrameRate(30);
         setSettings(newSetting);
-        //setDisplayFps(false);
-        //setDisplayStatView(false);
+        setDisplayFps(false);
+        setDisplayStatView(false);
+        this.setPauseOnLostFocus(false);
         stateManager.attach(new GameManager());
     }
 

@@ -213,7 +213,6 @@ public class TrailSceneManager {
     }
     
     private void dewagonizePlayer() {
-        envMan.rePhysTrees();
         wagonized = false;
         animateWagon(app.getStateManager());
         player.getHud().getInfoText().getButtonOk().show();
@@ -328,9 +327,10 @@ public class TrailSceneManager {
            oxWarn = "You are down to one ox, your speed is cut in half.";
            ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
        }
+       
        if(newOxCount == 0){
            killPlayer("Stranded");
-           ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
+           //((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
            return;
        }
        
@@ -370,8 +370,12 @@ public class TrailSceneManager {
         return randomNum;
     }        
     
-    public void clearTrail() {
-        scene = null;
+    public void clearTrail(AppStateManager stateManager) {
+        stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().clearPhysics(stateManager, scene);
+        interactableNode = null;
+        scene            = null;
+        interactableNode = new Node();
+        scene            = new Node();
         anMan.clear();
         envMan.clear();
     }

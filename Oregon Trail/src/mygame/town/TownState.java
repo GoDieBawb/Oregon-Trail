@@ -33,7 +33,7 @@ public class TownState extends AbstractAppState {
     
     public void removeTown() {
         app.getRootNode().detachAllChildren();
-        app.getStateManager().getState(GameManager.class).getUtilityManager().getPhysicsManager().clearPhysics(app.getStateManager());
+        app.getStateManager().getState(GameManager.class).getUtilityManager().getPhysicsManager().clearPhysics(app.getStateManager(), null);
         Node intNode = townSceneManager.getInteractableNode() ;
         for (int i = 0; i < intNode.getQuantity(); i++) {
             Interactable a = (Interactable) intNode.getChild(i);

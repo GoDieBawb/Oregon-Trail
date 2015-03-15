@@ -30,6 +30,8 @@ public class GameManager extends AbstractAppState {
     private PlayerManager     playerManager;
     private TownState         townState;
     private TrailState        trailState;
+    private Long              debugCool;
+    private boolean           isDebug = false;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -40,7 +42,10 @@ public class GameManager extends AbstractAppState {
         createTrailState();
         playerManager.loadPlayerInfo();
         playerManager.getPlayer().createHud();
+        townState.setEnabled(false);
+        trailState.setEnabled(false);
         loadSituation();
+        debugCool = System.currentTimeMillis();
     }
 
     private void loadSituation() {
@@ -75,9 +80,9 @@ public class GameManager extends AbstractAppState {
         clearAll();
         townState.initTown();
         utilityManager.getPhysicsManager().addToPhysics(townState.getTownSceneManager().getScene());
-        app.getStateManager().getState(PlayerManager.class).initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
         utilityManager.getMaterialManager().makeUnshaded(app.getRootNode());
         townState.setEnabled(true);
+        app.getStateManager().getState(PlayerManager.class).initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
     }
     
     private void createTrailState() {
@@ -104,14 +109,14 @@ public class GameManager extends AbstractAppState {
     }
     
     public void clearAll() {
+        trailState.setEnabled(false);
+        townState.setEnabled(false);
         clearTerrainLod();
         utilityManager.getGuiManager().clearScreen(app);
         app.getRootNode().detachAllChildren();
-        utilityManager.getPhysicsManager().clearPhysics(app.getStateManager());
-        trailState.getTrailSceneManager().clearTrail();
-        townState.getTownSceneManager().clearTown();
-        trailState.setEnabled(false);
-        townState.setEnabled(false);
+        utilityManager.getPhysicsManager().clearPhysics(app.getStateManager(), null);
+        trailState.getTrailSceneManager().clearTrail(app.getStateManager());
+        townState.getTownSceneManager().clearTown(app.getStateManager());
         System.gc();
     }
     
@@ -138,6 +143,10 @@ public class GameManager extends AbstractAppState {
                     
                     catch (IllegalAccessException e) {
                     }
+                    
+                    catch (Exception a) {
+                    
+                    }
             
                 }
             }
@@ -146,6 +155,30 @@ public class GameManager extends AbstractAppState {
         
         app.getRootNode().depthFirstTraversal(sgv);
         
-    }    
+    }
+    
+    @Override
+    public void update (float tpf) {
+    
+        if(isDebug)
+        if (System.currentTimeMillis()/1000 - debugCool/1000 > 1) {
+        
+            if (townState.isEnabled()) {
+                townState.setEnabled(false);
+                initTrail();
+                System.out.println("Trail Making");
+            }
+            
+            else {
+                trailState.setEnabled(false);
+                initTown();
+                System.out.println("Town Making");
+            }
+            
+            debugCool = System.currentTimeMillis();
+            
+        }
+       
+    }
     
 }

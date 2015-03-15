@@ -116,7 +116,7 @@ public class WagonGui extends Gui {
     
     private void createSituationButton() {
         
-        situationButton = new ButtonAdapter(getScreen(), "Situaton Button", new Vector2f(12,12)) {
+        situationButton = new ButtonAdapter(getScreen(), "Situation Button", new Vector2f(12,12)) {
         
             @Override
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {

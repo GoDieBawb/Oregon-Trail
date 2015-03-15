@@ -29,8 +29,13 @@ public class PhysicsManager {
         physics.getPhysicsSpace().add(node);
     } 
     
-    public void clearPhysics(AppStateManager stateManager) {
-        physics.getPhysicsSpace().removeAll(((SimpleApplication)stateManager.getApplication()).getRootNode());
+    public void clearPhysics(AppStateManager stateManager, Node node) {
+        
+        if (node == null)
+            node = ((SimpleApplication)stateManager.getApplication()).getRootNode();
+        
+        physics.getPhysicsSpace().removeAll(node);
+        //physics = null;
         //physics = new BulletAppState();
         //stateManager.attach(physics);
     }

@@ -63,14 +63,15 @@ public class GuiManager {
     }
     
     public void clearScreen(SimpleApplication app) {
-        app.getGuiNode().removeControl(screen);
-        screen = null;
-        screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
-        screen.setUseTextureAtlas(true,"tonegod/gui/style/atlasdef/atlas.png");
-        screen.setUseMultiTouch(true);
-        app.getInputManager().setSimulateMouse(true);
-        app.getGuiNode().addControl(screen);
-        screen.addElement(app.getStateManager().getState(PlayerManager.class).getPlayer().getHud().getInfoText());
+        //app.getGuiNode().removeControl(screen);
+        //screen = null;
+        //screen = new Screen(app, "tonegod/gui/style/atlasdef/style_map.gui.xml");
+        //screen.setUseTextureAtlas(true,"tonegod/gui/style/atlasdef/atlas.png");
+        //screen.setUseMultiTouch(true);
+        //app.getInputManager().setSimulateMouse(true);
+        //app.getGuiNode().addControl(screen);
+        //screen.addElement(app.getStateManager().getState(PlayerManager.class).getPlayer().getHud().getInfoText());
+        screen.getElements().removeAll(screen.getElements());
         app.getStateManager().getState(PlayerManager.class).getPlayer().getHud().getInfoText().hide();
         app.getStateManager().getState(PlayerManager.class).getPlayer().getHud().getInfoText().getButtonOk().show();
     }

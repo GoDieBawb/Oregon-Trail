@@ -8,6 +8,7 @@ import mygame.player.wagon.WagonModel;
 import mygame.util.Interactable;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Quaternion;
 import com.jme3.scene.Node;
 import mygame.GameManager;
@@ -39,7 +40,8 @@ public class TownSceneManager {
         player.getWagon().getModel().setLocalRotation(new Quaternion(0,0,0,1));
     }
     
-    public void clearTown() {
+    public void clearTown(AppStateManager stateManager) {
+        stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().clearPhysics(stateManager, scene);
         scene            = null;
         interactableNode = null;
         scene            = new Node();
