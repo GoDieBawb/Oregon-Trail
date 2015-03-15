@@ -140,10 +140,11 @@ public class AnimalManager {
         for(int i = 0; i < animalNode.getQuantity(); i++) {
             
             Animal animal = (Animal) animalNode.getChild(i);
-            animal.lookAt(animal.getMoveDir().mult(500), new Vector3f(0,1,0));
             
-            if(!animal.isDead())
-            animal.move(animal.getMoveDir().mult(5).mult(tpf));
+            if(!animal.isDead()) {
+                animal.move(animal.getMoveDir().mult(5).mult(tpf));
+                animal.lookAt(animal.getMoveDir().mult(500), new Vector3f(0,1,0));
+            }
             
             if (Math.abs(animal.getLocalTranslation().x) > 200) {
                 animal.removeFromParent();

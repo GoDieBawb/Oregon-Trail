@@ -6,7 +6,9 @@ package mygame.trail;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.util.HashMap;
@@ -87,7 +89,21 @@ public class TrailSceneManager {
         initInteractableWagon();
         player.saveAll();
         player.getHud().getAimButton().show();
+        scaleGrassTexture();
+        ((WagonModel) interactableNode.getChild(0)).checkOxen();
     
+    }
+    
+    private void scaleGrassTexture() {
+    
+        Node sn     = ((Node) scene.getChild("Scene Node"));
+        Node t1     = (Node)  sn.getChild("t1");
+        Geometry g1 = (Geometry) ((Node)((Node)t1.getChild(0)).getChild(0)).getChild(0);
+        Node t2     = (Node)  sn.getChild("t2");
+        Geometry g2 = (Geometry) ((Node)((Node)t2.getChild(0)).getChild(0)).getChild(0);
+        g1.getMesh().scaleTextureCoordinates(new Vector2f(10,10));
+        g2.getMesh().scaleTextureCoordinates(new Vector2f(10,10));
+        
     }
     
     public Node getInteractableNode() {
