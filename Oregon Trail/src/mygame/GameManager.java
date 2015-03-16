@@ -46,6 +46,7 @@ public class GameManager extends AbstractAppState {
         trailState.setEnabled(false);
         loadSituation();
         debugCool = System.currentTimeMillis();
+        initAudio();
     }
 
     private void loadSituation() {
@@ -63,6 +64,13 @@ public class GameManager extends AbstractAppState {
             trailState.setEnabled(true);
         }
         
+    }
+    
+    private void initAudio() {
+        utilityManager.getAudioManager().loadSound("Song", "Sounds/Pennsylvania Rose.ogg", true);
+        utilityManager.getAudioManager().loadSound("Gunshot", "Sounds/Gunshot.ogg", false);
+        utilityManager.getAudioManager().loadSound("Empty", "Sounds/Empty.ogg", false);
+        utilityManager.getAudioManager().playSound("Song");
     }
     
     private void createPlayerManager() {

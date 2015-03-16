@@ -54,8 +54,6 @@ public class AnimalManager {
     }
     
     public void checkForHits(CollisionResults results) {
-    
-        System.out.println(results.size());
         
         for(int i = 0; i < results.size(); i++) {
         

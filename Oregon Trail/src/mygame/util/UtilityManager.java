@@ -21,6 +21,7 @@ public class UtilityManager {
     private PhysicsManager     physicsManager;
     private GuiManager         guiManager;
     private SkeletonFinder     skeletonFinder;
+    private AudioManager       audioManager;
 
     public UtilityManager(Application app) {
         System.out.println("Creating Utility Manager");
@@ -32,8 +33,17 @@ public class UtilityManager {
         createPhysicsManager();
         createGuiManager();
         createSkeletonFinder();
+        createAudioManager();
+    }
+    
+    private void createAudioManager() {
+        audioManager = new AudioManager(app.getStateManager());
     }
 
+    public AudioManager getAudioManager() {
+        return audioManager;
+    }
+    
     private void createSkeletonFinder() {
         skeletonFinder = new SkeletonFinder();
     }

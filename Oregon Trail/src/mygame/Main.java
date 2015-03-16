@@ -23,7 +23,7 @@ public class Main extends SimpleApplication {
         setSettings(newSetting);
         setDisplayFps(false);
         setDisplayStatView(false);
-        this.setPauseOnLostFocus(false);
+        //this.setPauseOnLostFocus(false);
         stateManager.attach(new GameManager());
     }
 

@@ -1,6 +1,6 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
-        ColorMap : Repeat Textures/tx_turf00.png
+        ColorMap : Flip Repeat Textures/tx_turf00.png
      }
     AdditionalRenderState {
     }

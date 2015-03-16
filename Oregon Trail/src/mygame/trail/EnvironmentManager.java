@@ -6,7 +6,6 @@ package mygame.trail;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.bullet.BulletAppState;
 import com.jme3.collision.CollisionResults;
 import com.jme3.collision.UnsupportedCollisionException;
 import com.jme3.scene.Node;
@@ -160,17 +159,19 @@ public class EnvironmentManager {
         envActionCheck();
         
         if (stateManager.getState(PlayerManager.class).getPlayer().getInWagon())
-        envMove(tpf);    
+            envMove(tpf);    
         
         if (envNode.getQuantity() < 40) {
             createObject();
         }
         
         for (int i = 0; i < envNode.getQuantity(); i++) {
+            
             if (envNode.getChild(i).getLocalTranslation().x <= -128) {
                 //stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(envNode.getChild(i));
                 envNode.getChild(i).removeFromParent();
             }
+            
         }
         
     }

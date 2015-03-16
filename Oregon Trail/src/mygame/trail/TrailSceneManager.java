@@ -40,6 +40,7 @@ public class TrailSceneManager {
     private AnimalManager            anMan;
     private boolean                  wagonized;
     private Long                     updateWait;
+    private boolean                  scaledGrass;
     
     public TrailSceneManager(SimpleApplication app) {
     
@@ -89,13 +90,16 @@ public class TrailSceneManager {
         initInteractableWagon();
         player.saveAll();
         player.getHud().getAimButton().show();
-        scaleGrassTexture();
         ((WagonModel) interactableNode.getChild(0)).checkOxen();
+        
+        if(!scaledGrass)
+        scaleGrassTexture();
     
     }
     
     private void scaleGrassTexture() {
-    
+        
+        scaledGrass = true;
         Node sn     = ((Node) scene.getChild("Scene Node"));
         Node t1     = (Node)  sn.getChild("t1");
         Geometry g1 = (Geometry) ((Node)((Node)t1.getChild(0)).getChild(0)).getChild(0);

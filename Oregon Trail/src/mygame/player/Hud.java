@@ -136,10 +136,11 @@ public class Hud extends Gui {
                     player.shoot();
                     updateBulletDisplay();
                     app.getCamera().lookAtDirection(app.getCamera().getDirection().add(0,.25f,0), new Vector3f(0,1,0));
+                    getStateManager().getState(GameManager.class).getUtilityManager().getAudioManager().playSound("Gunshot");
                 }
                 
                 else {
-                
+                    getStateManager().getState(GameManager.class).getUtilityManager().getAudioManager().playSound("Empty");
                 }
                 
             }
