@@ -179,7 +179,7 @@ public class Hud extends Gui {
             public void onUpdate(float tpf, float deltaX, float deltaY) {
             
                 
-                float dzVal = .2f; // Dead zone threshold
+                float dzVal = .3f; // Dead zone threshold
             
                 if (deltaX < -dzVal) {
                     im.setLeft(true);

@@ -78,6 +78,7 @@ public class TrailSceneManager {
         interactableNode.attachChild(player.getWagon().getModel());
         interactableNode.getChild("Wagon").setLocalTranslation(-64,0,0);
         interactableNode.getChild("Wagon").rotate(0,89.5f,0);
+        envMan.setInitialFill(true);
         app.getRootNode().attachChild(envMan.getEnvNode());
         app.getRootNode().attachChild(anMan.getAnimalNode());
         scene.scale(sceneMult);

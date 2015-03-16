@@ -8,6 +8,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.math.Vector3f;
 import mygame.GameManager;
 
 /**
@@ -33,6 +34,7 @@ public class PlayerManager extends AbstractAppState {
     public void initPersonPlayer(BulletAppState physics) {
         app.getRootNode().attachChild(player);
         physics.getPhysicsSpace().add(player.getPhys());
+        player.getPhys().setGravity(new Vector3f(0,-50,0));
     }
     
     public void loadPlayerInfo() {

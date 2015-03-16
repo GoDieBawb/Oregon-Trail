@@ -23,6 +23,8 @@ public class EnvironmentManager {
     private Node              envNode;
     private AppStateManager   stateManager;
     private SimpleApplication app;
+    private boolean           initialFill;
+    private int               minX;
     
     public EnvironmentManager(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -45,7 +47,6 @@ public class EnvironmentManager {
         
         else {
             object = (Node) app.getAssetManager().loadModel("Models/Plants/Maple.j3o");
-            //object.rotate(0, 0, randInt(0,180));
             object.scale(.25f);
             object.setName("Tree");
         }
@@ -57,7 +58,7 @@ public class EnvironmentManager {
     
     private void placeObject(Node object) {
         
-        int xSpot      = randInt(1,96);
+        int xSpot      = randInt(minX,96);
         int ySpot      = 0;
         int zSpot      = randInt(1,64);
         int negChance  = randInt(1,2);
@@ -92,6 +93,12 @@ public class EnvironmentManager {
             envNode.getChild(i).move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
         }
         
+    }
+    
+    public void setInitialFill(boolean newVal) {
+        initialFill = newVal;
+        if(initialFill)
+            minX = 1;
     }
     
     private void envActionCheck() {
@@ -163,6 +170,11 @@ public class EnvironmentManager {
         
         if (envNode.getQuantity() < 40) {
             createObject();
+        }
+        
+        else if (initialFill) {
+            initialFill = false;
+            minX        = 16;
         }
         
         for (int i = 0; i < envNode.getQuantity(); i++) {
