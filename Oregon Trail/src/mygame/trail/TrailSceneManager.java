@@ -19,8 +19,8 @@ import mygame.player.Player;
 import mygame.player.PlayerManager;
 import mygame.player.wagon.WagonGui;
 import mygame.player.wagon.WagonModel;
+import mygame.util.DualStickControl;
 import mygame.util.Interactable;
-import mygame.util.PersonInteractionManager;
 import mygame.util.SkeletonFinder;
 
 /**
@@ -34,7 +34,7 @@ public class TrailSceneManager {
     private float                    sceneMult;
     private Player                   player;
     private WagonInteractionManager  wagIntMan;
-    private PersonInteractionManager persIntMan;
+    private DualStickControl         persIntMan;
     private Node                     interactableNode;
     private EnvironmentManager       envMan;
     private AnimalManager            anMan;
@@ -56,7 +56,7 @@ public class TrailSceneManager {
     
     private void createInteractionManager() {
         wagIntMan  = new WagonInteractionManager(app.getStateManager());
-        persIntMan = new  PersonInteractionManager(app.getStateManager());
+        persIntMan = new  DualStickControl(app.getStateManager());
     }
     
     private void createAnimalManager() {
@@ -381,7 +381,8 @@ public class TrailSceneManager {
         player.saveSituation();
         app.getStateManager().getState(GameManager.class).initTown();
         player.getHud().getInfoText().getButtonOk().show();
-        player.getHud().getJoystick().show();
+        player.getHud().getRightStick().show();
+        player.getHud().getLeftStick().show();
         
     }
     
@@ -405,6 +406,10 @@ public class TrailSceneManager {
         return anMan;
     }
     
+    public DualStickControl getControl() {
+        return persIntMan;
+    }    
+    
     public void update(float tpf) {
     
         if (player.getInWagon()) {
@@ -422,7 +427,6 @@ public class TrailSceneManager {
             if(wagonized)
             dewagonizePlayer();
             persIntMan.update(tpf);
-            app.getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager().update(tpf);
             
         }
         

@@ -42,6 +42,7 @@ public class GameManager extends AbstractAppState {
         createTrailState();
         playerManager.loadPlayerInfo();
         playerManager.getPlayer().createHud();
+        initHudElements();
         townState.setEnabled(false);
         trailState.setEnabled(false);
         loadSituation();
@@ -49,6 +50,11 @@ public class GameManager extends AbstractAppState {
         initAudio();
     }
 
+    //For Player Hud Elements that need the UtilityManager
+    private void initHudElements() {
+        playerManager.getPlayer().getHud().initUtilHudElements(utilityManager);
+    }
+    
     private void loadSituation() {
         
         String setting = (String) playerManager.getPlayer().getSituation().get("Setting");

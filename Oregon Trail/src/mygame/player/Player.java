@@ -34,6 +34,7 @@ public class Player extends Node {
     private AnimChannel     armChannel, legChannel;
     private float           speedMult;
     private float           strafeMult;
+    private float           lookHeight;
     private HashMap         situation;
     private boolean         noMove;
     private Gui             hud;
@@ -336,6 +337,14 @@ public class Player extends Node {
     
     public boolean isAiming() {
         return isAiming;
+    }
+    
+    public float getLookHeight() {
+        return lookHeight;
+    }
+    
+    public void setLookHeight(float newVal) {
+        lookHeight = newVal;
     }
     
 }

@@ -47,7 +47,8 @@ public class WagonGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setInWagon(false);
                 stopButton.hide();
-                player.getHud().getJoystick().show();
+                player.getHud().getLeftStick().show();
+                player.getHud().getRightStick().show();
                 
             }
         
@@ -94,7 +95,8 @@ public class WagonGui extends Gui {
                     situationButton.hide();
                     player.setInWagon(true);
                     stopButton.show();
-                    player.getHud().getJoystick().hide();
+                    player.getHud().getLeftStick().hide();
+                    player.getHud().getRightStick().hide();
                     
                 }
             

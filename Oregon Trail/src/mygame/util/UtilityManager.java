@@ -17,19 +17,16 @@ public class UtilityManager {
     private SimpleApplication  app;
     private MaterialManager    materialManager;
     private YamlManager        yamlManager;
-    private CameraManager      cameraManager;
     private PhysicsManager     physicsManager;
     private GuiManager         guiManager;
     private SkeletonFinder     skeletonFinder;
     private AudioManager       audioManager;
 
     public UtilityManager(Application app) {
-        System.out.println("Creating Utility Manager");
         this.app = (SimpleApplication) app;
         createInteractionManager();
         createMaterialManager();
         createYamlManager();
-        createCameraManager();
         createPhysicsManager();
         createGuiManager();
         createSkeletonFinder();
@@ -58,14 +55,6 @@ public class UtilityManager {
     
     public GuiManager getGuiManager() {
         return guiManager;
-    }
-    
-    private void createCameraManager() {
-        cameraManager = new CameraManager(app);
-    }
-    
-    public CameraManager getCameraManager() {
-        return cameraManager;
     }
     
     private void createYamlManager() {

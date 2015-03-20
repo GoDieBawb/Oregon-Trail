@@ -4,11 +4,11 @@
  */
 package mygame.town;
 
-import mygame.util.PersonInteractionManager;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.scene.Node;
 import mygame.GameManager;
+import mygame.util.DualStickControl;
 import mygame.util.Interactable;
 
 /**
@@ -17,9 +17,9 @@ import mygame.util.Interactable;
  */
 public class TownState extends AbstractAppState {
     
-    private PersonInteractionManager townInteractionManager;
-    private TownSceneManager         townSceneManager;
-    private SimpleApplication        app;
+    private DualStickControl    townInteractionManager;
+    private TownSceneManager    townSceneManager;
+    private SimpleApplication   app;
     
     public TownState(SimpleApplication app) {
         this.app = app;
@@ -43,7 +43,7 @@ public class TownState extends AbstractAppState {
     }
     
     private void createTownInteractionManager() {
-        townInteractionManager = new PersonInteractionManager(app.getStateManager());
+        townInteractionManager = new DualStickControl(app.getStateManager());
     }
     
     private void createTownSceneManager() {
@@ -54,11 +54,14 @@ public class TownState extends AbstractAppState {
         return townSceneManager;
     }
     
+    public DualStickControl getControl() {
+        return townInteractionManager;
+    }
+    
     @Override
     public void update(float tpf) {
         townInteractionManager.update(tpf);
         townSceneManager.update(tpf);
-        app.getStateManager().getState(GameManager.class).getUtilityManager().getCameraManager().update(tpf);
     }
     
 }

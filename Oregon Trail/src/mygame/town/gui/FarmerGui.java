@@ -107,7 +107,8 @@ public class FarmerGui extends Gui {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setNoMove(true);
-                player.getHud().getJoystick().hide();
+                player.getHud().getLeftStick().hide();
+                player.getHud().getRightStick().hide();
                 endInteractButton.show();
                 nextButton.show();
                 interactButton.hide();
@@ -220,7 +221,8 @@ public class FarmerGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 Node   model  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Player");
                 player.setNoMove(false);
-                player.getHud().getJoystick().show();
+                player.getHud().getLeftStick().show();
+                player.getHud().getRightStick().show();
                 player.setModel((Node)model.getChild(0));
                 endInteractButton.hide();
                 nextButton.hide();

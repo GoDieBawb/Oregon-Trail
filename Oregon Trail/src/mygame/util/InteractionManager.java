@@ -11,6 +11,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.math.Vector2f;
 
 /**
  *
@@ -20,7 +21,9 @@ public class InteractionManager implements ActionListener {
     
     private InputManager      inputManager;
     private SimpleApplication app;
-    private boolean      up = false, down = false, left = false, right = false, click = false;
+    private boolean           up = false, down = false, left = false, right = false, click = false;
+    private boolean           up1 = false, down1 = false, left1 = false, right1 = false;
+    private Vector2f          touchSpot;
     
     public InteractionManager(SimpleApplication app) {
         this.app     = app;
@@ -39,6 +42,14 @@ public class InteractionManager implements ActionListener {
         inputManager.addListener(this, "Left");
         inputManager.addListener(this, "Right");
         inputManager.addListener(this, "Click");
+        inputManager.addMapping("Up1", new KeyTrigger(KeyInput.KEY_UP));
+        inputManager.addMapping("Down1", new KeyTrigger(KeyInput.KEY_DOWN));
+        inputManager.addMapping("Left1", new KeyTrigger(KeyInput.KEY_LEFT));
+        inputManager.addMapping("Right1", new KeyTrigger(KeyInput.KEY_RIGHT));
+        inputManager.addListener(this, "Up1");
+        inputManager.addListener(this, "Down1");
+        inputManager.addListener(this, "Left1");
+        inputManager.addListener(this, "Right1");
     }
     
     public void onAction(String binding, boolean isPressed, float tpf) {
@@ -65,6 +76,34 @@ public class InteractionManager implements ActionListener {
             
         }
         
+        if (binding.equals("Up1")) {
+            up1 = isPressed;
+        }
+        
+        else if (binding.equals("Down1")) {
+            down1 = isPressed;
+        }
+        
+        else if (binding.equals("Left1")) {
+            left1 = isPressed;
+        }
+        
+        else if (binding .equals("Right1")) {
+            right1 = isPressed;
+        }        
+        
+    }
+    
+    public void setTouchSpot(Vector2f newVal) {
+        touchSpot = newVal;
+    }
+    
+    public Vector2f getTouchSpot() {
+        return touchSpot;
+    }
+    
+    public void setClick(boolean newVal) {
+        click = newVal;
     }
     
     public void setUp(boolean newVal) {
@@ -83,6 +122,22 @@ public class InteractionManager implements ActionListener {
         right = newVal;
     }
     
+    public void setUp1(boolean newVal) {
+        up1 = newVal;
+    }
+    
+    public void setDown1(boolean newVal) {
+        down1 = newVal;
+    }
+    
+    public void setLeft1(boolean newVal) {
+        left1 = newVal;
+    }
+    
+    public void setRight1(boolean newVal) {
+        right1 = newVal;
+    }    
+    
     public boolean getIsPressed(String triggerName) {
         
         if (triggerName.equals("Left"))
@@ -99,6 +154,18 @@ public class InteractionManager implements ActionListener {
         
         else if (triggerName.equals("Click"))
             return click;
+        
+        if (triggerName.equals("Left1"))
+            return left1;
+        
+        else if (triggerName.equals("Right1"))
+            return right1;
+        
+        else if (triggerName.equals("Up1"))
+            return up1;
+        
+        else if (triggerName.equals("Down1"))
+            return down1;   
         
         else
             return false;
