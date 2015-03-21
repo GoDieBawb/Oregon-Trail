@@ -12,6 +12,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
+import mygame.player.PlayerManager;
 
 /**
  *
@@ -28,6 +29,7 @@ public class InteractionManager implements ActionListener {
     public InteractionManager(SimpleApplication app) {
         this.app     = app;
         inputManager = app.getInputManager();
+        inputManager.setCursorVisible(false);
         setUpKeys();
     }
     
@@ -36,11 +38,13 @@ public class InteractionManager implements ActionListener {
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
+        inputManager.addMapping("Cursor", new KeyTrigger(KeyInput.KEY_E));
         inputManager.addMapping("Click", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(this, "Up");
         inputManager.addListener(this, "Down");
         inputManager.addListener(this, "Left");
         inputManager.addListener(this, "Right");
+        inputManager.addListener(this, "Cursor");
         inputManager.addListener(this, "Click");
         inputManager.addMapping("Up1", new KeyTrigger(KeyInput.KEY_UP));
         inputManager.addMapping("Down1", new KeyTrigger(KeyInput.KEY_DOWN));
@@ -69,6 +73,20 @@ public class InteractionManager implements ActionListener {
         else if (binding .equals("Right")) {
             right = isPressed;
         }
+        
+        else if (binding .equals("Cursor")) {
+            
+            if(isPressed) {
+                inputManager.setCursorVisible(true);
+                app.getStateManager().getState(PlayerManager.class).getPlayer().getChaseControl().getCameraManager().getChaseCam().setDragToRotate(true);
+            }
+            
+            else {
+                inputManager.setCursorVisible(false);
+                app.getStateManager().getState(PlayerManager.class).getPlayer().getChaseControl().getCameraManager().getChaseCam().setDragToRotate(false);
+            }
+                
+        }        
         
         else if (binding.equals("Click")) {
             

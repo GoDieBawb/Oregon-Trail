@@ -84,9 +84,9 @@ public class TownSceneManager {
         Node ox3 = (Node) oxNode.getChild(0);
         Node ox4 = (Node) oxNode.getChild(1);
 
-        sf.findAnimControl(sk).createChannel().setAnim("StillArms");
-        sf.findAnimControl(bs).createChannel().setAnim("StillArms");
-        sf.findAnimControl(fm).createChannel().setAnim("StillArms");
+        sf.findAnimControl(sk).createChannel().setAnim("ArmIdle");
+        sf.findAnimControl(bs).createChannel().setAnim("ArmIdle");
+        sf.findAnimControl(fm).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(ox1).clearChannels();
         sf.findAnimControl(ox2).clearChannels();
         sf.findAnimControl(ox1).createChannel().setAnim("@Moo");
@@ -110,6 +110,7 @@ public class TownSceneManager {
         
         a.setMaterial(app.getAssetManager().loadMaterial("Materials/Shopkeeper.j3m"));
         b.setMaterial(app.getAssetManager().loadMaterial("Materials/Blacksmith.j3m"));
+        d.setMaterial(app.getAssetManager().loadMaterial("Materials/Farmer.j3m"));
         
         sk.setLocalTranslation(a.getWorldTranslation());
         bs.setLocalTranslation(b.getWorldTranslation());

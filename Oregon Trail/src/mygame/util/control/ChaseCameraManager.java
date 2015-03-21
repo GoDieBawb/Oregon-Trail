@@ -8,6 +8,8 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.ChaseCamera;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
@@ -37,14 +39,17 @@ public class ChaseCameraManager {
         //Creates a new chase cam and attached it to the player.model for the game
         cam = new ChaseCamera(this.app.getCamera(), player.getModel(), this.app.getInputManager());
         cam.setMinDistance(0.5f);
-        cam.setMaxDistance(5);
+        cam.setMaxDistance(3);
         cam.setDefaultDistance(3);
-        cam.setDragToRotate(true);
+        cam.setDragToRotate(false);
         cam.setRotationSpeed(5f);
-        cam.setLookAtOffset(player.getLocalTranslation().add(0, .75f, 0));
+        cam.setLookAtOffset(player.getLocalTranslation().add(0, .5f, 0));
         cam.setDefaultVerticalRotation(.145f);
         cam.setMaxVerticalRotation(.145f);
         cam.setMinVerticalRotation(.145f);
+        app.getInputManager().setCursorVisible(false);
+        cam.setZoomInTrigger(new KeyTrigger(KeyInput.KEY_X));
+        cam.setZoomOutTrigger(new KeyTrigger(KeyInput.KEY_C));
     }
 
     private void chaseCamMove() {
@@ -80,7 +85,9 @@ public class ChaseCameraManager {
         
         if(isHunt) {
             
+            cam.setEnabled(false);
             app.getFlyByCamera().setEnabled(true);
+            app.getFlyByCamera().setDragToRotate(true);
             
             if ("Dalvik".equals(System.getProperty("java.vm.name"))) 
                 app.getFlyByCamera().setDragToRotate(true);
@@ -92,6 +99,8 @@ public class ChaseCameraManager {
         
         else {
             
+            cam.setEnabled(true);
+            cam.setDragToRotate(false);
             app.getFlyByCamera().setEnabled(false);
             
         }

@@ -20,7 +20,6 @@ import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import java.util.HashMap;
 import mygame.GameManager;
-import mygame.trail.TrailState;
 import mygame.util.Gui;
 import mygame.util.InteractionManager;
 import mygame.util.UtilityManager;
@@ -179,8 +178,8 @@ public class Hud extends Gui {
                 
                 boolean isAndroid = "Dalvik".equals(System.getProperty("java.vm.name"));
                 
-                //if (!isAndroid)
-                    //return;
+                if (!isAndroid)
+                    return;
                 
                 super.show();
                 

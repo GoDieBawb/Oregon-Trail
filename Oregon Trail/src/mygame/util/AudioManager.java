@@ -31,6 +31,7 @@ public class AudioManager {
     }
     
     public void playSound(String soundName) {
+        ((AudioNode)sounds.get(soundName)).stop();
         ((AudioNode)sounds.get(soundName)).play();
     }
     

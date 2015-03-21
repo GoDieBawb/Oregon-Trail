@@ -1,6 +1,6 @@
 Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
      MaterialParameters {
-        ColorMap : Flip Models/Truman/Smith.png
+        ColorMap : Flip Models/Person/BlackSmith.png
      }
     AdditionalRenderState {
     }

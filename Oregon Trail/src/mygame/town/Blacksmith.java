@@ -40,7 +40,7 @@ public class Blacksmith extends Interactable {
     
     @Override
     public void whileInProx() {
-        lookAt(getStateManager().getState(PlayerManager.class).getPlayer().getModel().getWorldTranslation(), new Vector3f(0,1,0));
+        lookAt(getStateManager().getState(PlayerManager.class).getPlayer().getModel().getWorldTranslation().multLocal(1,0,1), new Vector3f(0,1,0));
     }    
     
 }

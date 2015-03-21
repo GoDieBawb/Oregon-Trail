@@ -223,6 +223,7 @@ public class TrailSceneManager {
         wagonized  = true;
         Spatial a  = ((Node) interactableNode.getChild("Wagon")).getChild("Seat");
         updateWait = System.currentTimeMillis()/1000;
+        player.getChaseControl().getCameraManager().getChaseCam().setEnabled(false);
         app.getCamera().setLocation(a.getWorldTranslation());
         app.getCamera().lookAtDirection(new Vector3f(500,0,0), new Vector3f(0,1,0));
         animateWagon(app.getStateManager());
@@ -232,6 +233,7 @@ public class TrailSceneManager {
     
     private void dewagonizePlayer() {
         wagonized = false;
+        player.getChaseControl().getCameraManager().getChaseCam().setEnabled(true);
         animateWagon(app.getStateManager());
         player.getHud().getInfoText().getButtonOk().show();
         player.getHud().getInfoText().hide();

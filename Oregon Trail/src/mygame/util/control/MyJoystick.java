@@ -76,7 +76,12 @@ public abstract class MyJoystick extends Element implements Control {
                             deltaY /= maxDistance;
                             
 			}
-			
+                        
+                        @Override
+                        public void onButtonMouseLeftDown(MouseButtonEvent evt, boolean isToggled) {
+                            evt.setConsumed();
+                        }
+                        
 			@Override
 			public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isToggled) {
 				setPosition(origin);
@@ -112,7 +117,7 @@ public abstract class MyJoystick extends Element implements Control {
 	}
 
 	public ButtonAdapter getThumb() { return this.thumb; }
-	
+        
 	@Override
 	public Control cloneForSpatial(Spatial spatial) {
 		return this;
@@ -132,4 +137,5 @@ public abstract class MyJoystick extends Element implements Control {
 	
 	@Override
 	public void render(RenderManager rm, ViewPort vp) {  }
+        
 }

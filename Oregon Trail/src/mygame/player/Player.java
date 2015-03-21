@@ -52,7 +52,7 @@ public class Player extends Node {
         setModel();
         createPhys();
         createAnimControl();
-        setSpeedMult(.5f);
+        setSpeedMult(2f);
         setStrafeMult(.5f);
         setName("Player");
     }
@@ -121,35 +121,35 @@ public class Player extends Node {
     }
     
     private void createAnimControl() {
-        animControl = model.getChild("Body").getControl(AnimControl.class);
+        animControl = model.getChild("Person").getControl(AnimControl.class);
         armChannel  = animControl.createChannel();
         legChannel  = animControl.createChannel();
-        armChannel.addFromRootBone("TopSPine");
+        armChannel.addFromRootBone("TopSpine");
         legChannel.addFromRootBone("BottomSpine");
-        armChannel.setAnim("StillArms");
-        legChannel.setAnim("StillLegs");
+        armChannel.setAnim("ArmIdle");
+        legChannel.setAnim("LegsIdle");
     }
     
     public void run() {
   
-        if (!armChannel.getAnimationName().equals("UnarmedRun")) {
-            armChannel.setAnim("UnarmedRun");
+        if (!armChannel.getAnimationName().equals("ArmRun")) {
+            armChannel.setAnim("ArmRun");
         }
       
-        if (!legChannel.getAnimationName().equals("RunAction")) {
-            legChannel.setAnim("RunAction");
+        if (!legChannel.getAnimationName().equals("LegRun")) {
+            legChannel.setAnim("LegRun");
         }    
       
     }
   
     public void idle() {
   
-        if (!armChannel.getAnimationName().equals("StillArms")) {
-            armChannel.setAnim("StillArms");
+        if (!armChannel.getAnimationName().equals("ArmIdle")) {
+            armChannel.setAnim("ArmIdle");
         }
       
-        if (!legChannel.getAnimationName().equals("StillLegs")) {
-            legChannel.setAnim("StillLegs");
+        if (!legChannel.getAnimationName().equals("LegsIdle")) {
+            legChannel.setAnim("LegsIdle");
         }
         
     }
@@ -168,9 +168,9 @@ public class Player extends Node {
           }
         
           else {
-              model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Truman/Truman.j3o");
-              model.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Citizen.j3m"));
-              model.setLocalScale(.125f);
+              model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/Person/Person.j3o");
+              model.setLocalScale(.2f);
+              model.setLocalTranslation(0,.4f,0);
           }
         
           attachChild(model);
