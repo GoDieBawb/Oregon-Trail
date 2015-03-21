@@ -25,6 +25,7 @@ public class PlayerManager extends AbstractAppState {
     public PlayerManager(Application app) {
         this.app = (SimpleApplication) app;
         createPlayer();
+        player.createChaseControl();
     }
     
     private void createPlayer() {
@@ -47,7 +48,6 @@ public class PlayerManager extends AbstractAppState {
     
     public void endGame() {
         player.reset();
-        player.getHud().getRightStick().show();
         player.getHud().getLeftStick().show();
         app.getStateManager().getState(GameManager.class).initTown();
     }

@@ -48,7 +48,6 @@ public class WagonGui extends Gui {
                 player.setInWagon(false);
                 stopButton.hide();
                 player.getHud().getLeftStick().show();
-                player.getHud().getRightStick().show();
                 
             }
         
@@ -96,7 +95,6 @@ public class WagonGui extends Gui {
                     player.setInWagon(true);
                     stopButton.show();
                     player.getHud().getLeftStick().hide();
-                    player.getHud().getRightStick().hide();
                     
                 }
             

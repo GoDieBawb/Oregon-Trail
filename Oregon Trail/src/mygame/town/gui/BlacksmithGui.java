@@ -10,6 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.font.BitmapFont.Align;
 import com.jme3.font.BitmapFont.VAlign;
 import com.jme3.font.LineWrapMode;
+import com.jme3.input.ChaseCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
@@ -18,6 +19,7 @@ import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
 import mygame.player.wagon.Wagon;
+import mygame.town.TownState;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.extras.Indicator;
 import tonegod.gui.core.Element;
@@ -109,9 +111,9 @@ public class BlacksmithGui extends Gui {
                 Node   inter  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Interactable");
                 Node   wagon  = (Node) inter.getChild("Wagon");
                 player.getHud().getLeftStick().hide();
-                player.getHud().getRightStick().hide();
                 player.setNoMove(true);
-                player.setModel(wagon);
+                player.getModel().removeControl(player.getChaseControl().getCameraManager().getChaseCam());
+                wagon.addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 endInteractButton.show();
                 wagonHealth.show();
                 interactButton.hide();
@@ -142,11 +144,9 @@ public class BlacksmithGui extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                Node   model  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Player");
                 player.setNoMove(false);
-                player.setModel((Node)model.getChild(0));
+                player.getModel().addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 player.getHud().getLeftStick().show();
-                player.getHud().getRightStick().show();
                 endInteractButton.hide();
                 wagonHealth.hide();
                 nextButton.hide();

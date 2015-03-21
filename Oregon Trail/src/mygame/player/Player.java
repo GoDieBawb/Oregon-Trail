@@ -18,6 +18,7 @@ import mygame.GameManager;
 import mygame.trail.TrailState;
 import mygame.util.AndroidManager;
 import mygame.util.Gui;
+import mygame.util.control.ChaseControl;
 
 /**
  *
@@ -42,6 +43,7 @@ public class Player extends Node {
     private boolean         isDead;
     private boolean         isAiming;
     private boolean         hasWon;
+    private ChaseControl    chaseControl;
     private BetterCharacterControl phys;
     
     public Player(AppStateManager stateManager) {
@@ -345,6 +347,14 @@ public class Player extends Node {
     
     public void setLookHeight(float newVal) {
         lookHeight = newVal;
+    }
+    
+    public void createChaseControl() {
+        chaseControl = new ChaseControl(stateManager, this);
+    }
+    
+    public ChaseControl getChaseControl() {
+        return chaseControl;
     }
     
 }

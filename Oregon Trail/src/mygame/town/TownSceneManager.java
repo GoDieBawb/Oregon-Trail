@@ -8,7 +8,6 @@ import mygame.player.wagon.WagonModel;
 import mygame.util.Interactable;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Quaternion;
 import com.jme3.scene.Node;
 import mygame.GameManager;
@@ -162,6 +161,8 @@ public class TownSceneManager {
     
     public void update(float tpf) {
     
+        player.getChaseControl().update(tpf);
+        
         for (int i = 0; i < interactableNode.getQuantity(); i++) {
             
             Interactable currentActor =  (Interactable) interactableNode.getChild(i);

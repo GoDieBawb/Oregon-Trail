@@ -4,6 +4,7 @@
  */
 package mygame.player;
 
+import mygame.util.control.MyJoystick;
 import mygame.player.wagon.WagonModel;
 import mygame.player.wagon.WagonGui;
 import com.jme3.app.SimpleApplication;
@@ -20,11 +21,11 @@ import com.jme3.texture.Texture;
 import java.util.HashMap;
 import mygame.GameManager;
 import mygame.trail.TrailState;
-import mygame.util.DualStickControl;
 import mygame.util.Gui;
 import mygame.util.InteractionManager;
 import mygame.util.UtilityManager;
 import mygame.util.YamlLoader;
+import mygame.util.control.ChaseControl;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.controls.windows.AlertBox;
 import tonegod.gui.effects.Effect;
@@ -42,7 +43,7 @@ public class Hud extends Gui {
     private BitmapText     bulletDisplay;
     private ButtonAdapter  shootButton;
     private MyJoystick     leftStick;
-    private MyJoystick     rightStick;
+    //private MyJoystick     rightStick;
     private UtilityManager um;
 
     
@@ -64,7 +65,6 @@ public class Hud extends Gui {
     public void initUtilHudElements(UtilityManager um) {
         this.um = um;
         createLeftStick();
-        createRightStick();
     }
     
     private void createAimButton() {
@@ -102,7 +102,7 @@ public class Hud extends Gui {
     private void startHunt() {
         Player player         = getStateManager().getState(PlayerManager.class).getPlayer();
         SimpleApplication app = (SimpleApplication) getStateManager().getApplication();
-        DualStickControl con  = getStateManager().getState(TrailState.class).getTrailSceneManager().getControl();
+        ChaseControl con      = player.getChaseControl();
         player.setIsAiming(true);
         player.setNoMove(true);
         con.getCameraManager().setHuntCam(true);
@@ -114,12 +114,11 @@ public class Hud extends Gui {
         aimButton.setText("Done");
         updateBulletDisplay();
         leftStick.hide();
-        rightStick.hide();
     }
     
     public void endHunt() {
         Player player         = getStateManager().getState(PlayerManager.class).getPlayer();
-        DualStickControl con  = getStateManager().getState(TrailState.class).getTrailSceneManager().getControl();
+        ChaseControl con      = player.getChaseControl();
         SimpleApplication app = (SimpleApplication) getStateManager().getApplication();
         player.setIsAiming(false);
         player.setNoMove(false);
@@ -130,7 +129,6 @@ public class Hud extends Gui {
         player.setLocalScale(1f);
         aimButton.setText("Aim");
         leftStick.show();
-        rightStick.show();
     }
     
     private void createShootButton() {
@@ -246,78 +244,6 @@ public class Hud extends Gui {
             
     }
     
-    private void createRightStick(){
-        
-        rightStick = new MyJoystick(getScreen(), Vector2f.ZERO, (int)(getScreen().getWidth()/6)) {
-            InteractionManager im = um.getInteractionManager();
-            
-            @Override
-            public void show() {
-                
-                boolean isAndroid = "Dalvik".equals(System.getProperty("java.vm.name"));
-                
-                //if (!isAndroid)
-                    //return;
-                
-                super.show();
-                
-            }
-            
-            @Override
-            public void onUpdate(float tpf, float deltaX, float deltaY) {
-            
-                
-                float dzVal = .3f; // Dead zone threshold
-            
-                if (deltaX < -dzVal) {
-                    im.setLeft1(true);
-                    im.setRight1(false);
-                }
-            
-                else if (deltaX > dzVal) {
-                    im.setRight1(true);
-                    im.setLeft1(false);
-                }
-            
-                else {
-                    im.setRight1(false);
-                    im.setLeft1(false);
-                }
-            
-                if (deltaY < -dzVal) {
-                    im.setDown1(true);
-                    im.setUp1(false);
-                }
-            
-                else if (deltaY > dzVal) {
-                    im.setDown1(false);
-                    im.setUp1(true);
-                }
-            
-                else {
-                    im.setUp1(false);
-                    im.setDown1(false);
-                }
-            
-            }
-        
-        };
-        
-        TextureKey key = new TextureKey("Textures/barrel.png", false);
-        Texture tex = ((SimpleApplication)getStateManager().getApplication()).getAssetManager().loadTexture(key);
-        rightStick.setTextureAtlasImage(tex, "x=20|y=20|w=120|h=35");
-        rightStick.getThumb().setTextureAtlasImage(tex, "x=20|y=20|w=120|h=35");
-        getScreen().addElement(rightStick, true);
-        rightStick.setPosition(getScreen().getWidth()*.9f - rightStick.getWidth()/2, getScreen().getHeight() / 10f - rightStick.getHeight()/5);
-        // Add some fancy effects
-        Effect fxIn = new Effect(Effect.EffectType.FadeIn, Effect.EffectEvent.Show,.5f);
-        rightStick.addEffect(fxIn);
-        Effect fxOut = new Effect(Effect.EffectType.FadeOut, Effect.EffectEvent.Hide,.5f);
-        rightStick.addEffect(fxOut);
-        rightStick.show();
-            
-    }
-    
     
     private void createCrossHair() {
         BitmapFont font = getStateManager().getApplication().getAssetManager().loadFont("Interface/Fonts/UnrealTournament.fnt");
@@ -419,10 +345,6 @@ public class Hud extends Gui {
     
     public MyJoystick getLeftStick() {
         return leftStick;
-    }
-    
-    public MyJoystick getRightStick() {
-        return rightStick;
     }
     
 }

@@ -7,11 +7,14 @@ package mygame.town.gui;
 import mygame.util.Gui;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.input.ChaseCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import mygame.town.TownState;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.core.Element;
 
@@ -81,7 +84,7 @@ public class StoreGui extends Gui {
                 
                 showItemInfo();
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                player.setModel((Node)selectedItem.getChild(0));
+                selectedItem.addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 
             }
             
@@ -112,14 +115,16 @@ public class StoreGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setNoMove(true);
                 player.getModel().scale(.1f);
-                player.setModel((Node)selectedItem.getChild(0));
                 player.getHud().getLeftStick().hide();
-                player.getHud().getRightStick().hide();
                 endInteractButton.show();
                 interactButton.hide();
                 nextButton.show();
                 buyButton.show();
+                player.getModel().removeControl(ChaseCamera.class);
+                selectedItem.addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 showItemInfo();
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,.0f,0f));
+                player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(1.5f);
                 
             }
             
@@ -144,16 +149,16 @@ public class StoreGui extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                Node   model  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Player");
                 player.setNoMove(false);
-                player.setModel((Node)model.getChild(0));
                 player.getHud().getLeftStick().show();
-                player.getHud().getRightStick().show();
                 endInteractButton.hide();
                 nextButton.hide();
                 buyButton.hide();
                 player.getModel().scale(10f);
                 player.getHud().getInfoText().hide();
+                player.getModel().addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,.75f,0f));
+                player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(3);
                 
             }
             

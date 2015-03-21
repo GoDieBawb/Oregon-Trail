@@ -6,6 +6,7 @@ package mygame.town.gui;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.input.ChaseCamera;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Node;
@@ -77,7 +78,7 @@ public class FarmerGui extends Gui {
                 
                 showItemInfo();
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                player.setModel(selectedItem);
+                selectedItem.addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 
             }
             
@@ -108,13 +109,13 @@ public class FarmerGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setNoMove(true);
                 player.getHud().getLeftStick().hide();
-                player.getHud().getRightStick().hide();
                 endInteractButton.show();
                 nextButton.show();
                 interactButton.hide();
                 buyButton.show();
                 
-                player.setModel(selectedItem);
+                player.getModel().removeControl(player.getChaseControl().getCameraManager().getChaseCam());
+                selectedItem.addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 showItemInfo();
                 
             }
@@ -219,11 +220,9 @@ public class FarmerGui extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-                Node   model  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Player");
                 player.setNoMove(false);
                 player.getHud().getLeftStick().show();
-                player.getHud().getRightStick().show();
-                player.setModel((Node)model.getChild(0));
+                player.getModel().addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 endInteractButton.hide();
                 nextButton.hide();
                 buyButton.hide();
