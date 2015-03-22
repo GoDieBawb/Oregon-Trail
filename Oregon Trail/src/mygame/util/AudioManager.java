@@ -26,7 +26,7 @@ public class AudioManager {
         AudioNode an = new AudioNode(stateManager.getApplication().getAssetManager(), path, false);
         an.setPositional(false);
         an.setLooping(loop);
-        an.setVolume(.5f);
+        an.setVolume(.3f);
         sounds.put(soundName, an);
     }
     

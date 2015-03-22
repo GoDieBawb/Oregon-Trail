@@ -42,9 +42,7 @@ public class Hud extends Gui {
     private BitmapText     bulletDisplay;
     private ButtonAdapter  shootButton;
     private MyJoystick     leftStick;
-    //private MyJoystick     rightStick;
     private UtilityManager um;
-
     
     public Hud(AppStateManager stateManager) {
         super(stateManager);
@@ -241,8 +239,7 @@ public class Hud extends Gui {
         leftStick.addEffect(fxOut);
         leftStick.show();
             
-    }
-    
+    } 
     
     private void createCrossHair() {
         BitmapFont font = getStateManager().getApplication().getAssetManager().loadFont("Interface/Fonts/UnrealTournament.fnt");
@@ -312,8 +309,8 @@ public class Hud extends Gui {
         infoText.setButtonOkText("Ok");
         infoText.setLockToParentBounds(true);
         infoText.setClippingLayer(infoText);
-        infoText.setMinDimensions(new Vector2f(150,180));
-        infoText.setIsResizable(true);
+        infoText.setMinDimensions(new Vector2f(getScreen().getWidth()/5, getScreen().getHeight()/5));
+        infoText.setIsResizable(false);
         getScreen().addElement(infoText);
         infoText.hide();
         

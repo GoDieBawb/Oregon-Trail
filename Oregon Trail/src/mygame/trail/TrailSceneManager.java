@@ -360,7 +360,7 @@ public class TrailSceneManager {
     
     private void reachGoal() {
         
-        WagonModel currentActor =  (WagonModel) interactableNode.getChild("Wagon");
+        WagonModel currentActor = (WagonModel) interactableNode.getChild("Wagon");
         int goalCount           = (Integer) player.getSituation().get("Goals Reached")+1;
         HashMap goals           = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
         HashMap goalMap         = (HashMap) goals.get(goalCount);
@@ -381,6 +381,7 @@ public class TrailSceneManager {
         app.getStateManager().getState(GameManager.class).initTown();
         player.getHud().getInfoText().getButtonOk().show();
         player.getHud().getLeftStick().show();
+        player.getChaseControl().getCameraManager().getChaseCam().setEnabled(true);
         
     }
     

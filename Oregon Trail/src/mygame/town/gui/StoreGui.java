@@ -113,7 +113,7 @@ public class StoreGui extends Gui {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setNoMove(true);
-                player.getModel().scale(.1f);
+                player.getModel().move(0,-5,0);
                 player.getHud().getLeftStick().hide();
                 endInteractButton.show();
                 interactButton.hide();
@@ -122,7 +122,7 @@ public class StoreGui extends Gui {
                 player.getModel().removeControl(ChaseCamera.class);
                 selectedItem.addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 showItemInfo();
-                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,.0f,0f));
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,.25f,0f));
                 player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(1.5f);
                 
             }
@@ -153,10 +153,10 @@ public class StoreGui extends Gui {
                 endInteractButton.hide();
                 nextButton.hide();
                 buyButton.hide();
-                player.getModel().scale(10f);
+                player.getModel().move(0,5,0);
                 player.getHud().getInfoText().hide();
                 player.getModel().addControl(player.getChaseControl().getCameraManager().getChaseCam());
-                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,.75f,0f));
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,.5f,0f));
                 player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(3);
                 
             }

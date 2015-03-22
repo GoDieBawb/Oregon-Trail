@@ -10,9 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.input.ChaseCamera;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.KeyTrigger;
-import com.jme3.scene.Node;
 import mygame.player.Player;
-import mygame.player.PlayerManager;
 
 /**
 *
@@ -42,6 +40,7 @@ public class ChaseCameraManager {
         cam.setMaxDistance(3);
         cam.setDefaultDistance(3);
         cam.setDragToRotate(false);
+        cam.setDownRotateOnCloseViewOnly(false);
         cam.setRotationSpeed(5f);
         cam.setLookAtOffset(player.getLocalTranslation().add(0, .5f, 0));
         cam.setDefaultVerticalRotation(.145f);
