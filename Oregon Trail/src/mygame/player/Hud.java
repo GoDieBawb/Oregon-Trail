@@ -20,6 +20,7 @@ import com.jme3.scene.Node;
 import com.jme3.texture.Texture;
 import java.util.HashMap;
 import mygame.GameManager;
+import mygame.menu.GameMenu;
 import mygame.util.Gui;
 import mygame.util.InteractionManager;
 import mygame.util.UtilityManager;
@@ -41,12 +42,15 @@ public class Hud extends Gui {
     private BitmapText     crossHair;
     private BitmapText     bulletDisplay;
     private ButtonAdapter  shootButton;
+    private ButtonAdapter  menuButton;
     private MyJoystick     leftStick;
     private UtilityManager um;
+    private GameMenu       gm;
     
     public Hud(AppStateManager stateManager) {
         super(stateManager);
         setScripts();
+        gm = new GameMenu(stateManager);
     }
     
     @Override
@@ -56,12 +60,58 @@ public class Hud extends Gui {
         createShootButton();
         createCrossHair();
         createBulletDisplay();
+        createMenuButton();
     }
     
     //For Elements that need the UtilityManager
     public void initUtilHudElements(UtilityManager um) {
         this.um = um;
         createLeftStick();
+    }
+    
+    private void createMenuButton() {
+        
+        menuButton = new ButtonAdapter(getScreen(), "Menu Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean toggled) {
+                super.onButtonMouseLeftUp(evt, toggled);
+                
+                if(getText().equals("Menu")) {
+                    
+                    setText("Exit");
+                    gm.addElements();
+                    leftStick.hide();
+                    
+                    if (getStateManager().getState(PlayerManager.class).getPlayer().getSituation().get("Setting").equals("Trail")) {
+                        aimButton.hide();
+                    }
+                    
+                }
+                
+                else {
+                    
+                    setText("Menu");
+                    gm.removeElements();
+                    leftStick.show();
+                    
+                    if (getStateManager().getState(PlayerManager.class).getPlayer().getSituation().get("Setting").equals("Trail")) {
+                        aimButton.show();
+                    }
+                    
+                }
+                
+            }
+            
+        };
+        
+        getScreen().addElement(menuButton);        
+        menuButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        getElements().add(menuButton);
+        menuButton.setFont("Interface/Fonts/UnrealTournament.fnt");     
+        menuButton.setPosition(getScreen().getWidth() - menuButton.getWidth(), getScreen().getHeight()-menuButton.getHeight());
+        menuButton.setText("Menu");
+        
     }
     
     private void createAimButton() {
@@ -111,6 +161,7 @@ public class Hud extends Gui {
         aimButton.setText("Done");
         updateBulletDisplay();
         leftStick.hide();
+        menuButton.hide();
     }
     
     public void endHunt() {
@@ -126,6 +177,7 @@ public class Hud extends Gui {
         player.setLocalScale(1f);
         aimButton.setText("Aim");
         leftStick.show();
+        menuButton.show();
     }
     
     private void createShootButton() {
@@ -309,7 +361,7 @@ public class Hud extends Gui {
         infoText.setButtonOkText("Ok");
         infoText.setLockToParentBounds(true);
         infoText.setClippingLayer(infoText);
-        infoText.setMinDimensions(new Vector2f(getScreen().getWidth()/5, getScreen().getHeight()/5));
+        //infoText.setDimensions(new Vector2f(getScreen().getWidth()/10, getScreen().getHeight()/10));
         infoText.setIsResizable(false);
         getScreen().addElement(infoText);
         infoText.hide();
@@ -341,6 +393,10 @@ public class Hud extends Gui {
     
     public MyJoystick getLeftStick() {
         return leftStick;
+    }
+    
+    public ButtonAdapter getMenuButton() {
+        return menuButton;
     }
     
 }

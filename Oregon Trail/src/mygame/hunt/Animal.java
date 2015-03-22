@@ -70,7 +70,7 @@ public class Animal extends Node {
         model.getControl(AnimControl.class).clearChannels();
         
         if(type.equals("Bear"))
-            model.getControl(AnimControl.class).createChannel().setAnim("die");
+            model.getControl(AnimControl.class).createChannel().setAnim("die2");
         else if (type.equals("Rabbit"))
             model.getControl(AnimControl.class).createChannel().setAnim("Death1");
         else
