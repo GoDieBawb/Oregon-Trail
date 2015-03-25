@@ -234,6 +234,7 @@ public class TrailSceneManager {
     private void dewagonizePlayer() {
         wagonized = false;
         player.getChaseControl().getCameraManager().getChaseCam().setEnabled(true);
+        player.getChaseControl().getCameraManager().getChaseCam().setDragToRotate(false);
         animateWagon(app.getStateManager());
         player.getHud().getInfoText().getButtonOk().show();
         player.getHud().getInfoText().hide();
