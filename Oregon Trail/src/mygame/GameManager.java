@@ -8,6 +8,7 @@ import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.scene.Node;
 import com.jme3.scene.SceneGraphVisitor;
 import com.jme3.scene.Spatial;
 import com.jme3.terrain.Terrain;
@@ -15,6 +16,7 @@ import com.jme3.terrain.geomipmap.TerrainLodControl;
 import java.lang.reflect.Field;
 import java.util.concurrent.ExecutorService;
 import mygame.player.PlayerManager;
+import mygame.river.RiverState;
 import mygame.town.TownState;
 import mygame.trail.TrailState;
 import mygame.util.UtilityManager;
@@ -30,6 +32,7 @@ public class GameManager extends AbstractAppState {
     private PlayerManager     playerManager;
     private TownState         townState;
     private TrailState        trailState;
+    private RiverState        riverState;
     private Long              debugCool;
     private boolean           isDebug = false;
     
@@ -40,11 +43,13 @@ public class GameManager extends AbstractAppState {
         createUtilityManager();
         createTownState();
         createTrailState();
+        createRiverState();
         playerManager.loadPlayerInfo();
         playerManager.getPlayer().createHud();
         initHudElements();
         townState.setEnabled(false);
         trailState.setEnabled(false);
+        riverState.setEnabled(false);
         loadSituation();
         debugCool = System.currentTimeMillis();
         initAudio();
@@ -55,7 +60,7 @@ public class GameManager extends AbstractAppState {
         playerManager.getPlayer().getHud().initUtilHudElements(utilityManager);
     }
     
-    private void loadSituation() {
+    public void loadSituation() {
         
         String setting = (String) playerManager.getPlayer().getSituation().get("Setting");
         
@@ -68,6 +73,11 @@ public class GameManager extends AbstractAppState {
         else if (setting.equals("Trail")) {
             initTrail();
             trailState.setEnabled(true);
+        }
+        
+        else if (setting.equals("River")) {
+            initRiver();
+            riverState.setEnabled(true);
         }
         
     }
@@ -114,6 +124,21 @@ public class GameManager extends AbstractAppState {
         app.getStateManager().getState(PlayerManager.class).initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
     }
     
+    private void createRiverState() {
+        app.getStateManager().attach(new RiverState(app));
+        riverState = app.getStateManager().getState(RiverState.class);
+        riverState.setEnabled(false);
+    }
+    
+    public void initRiver() {
+        clearAll();
+        riverState.initRiver();
+        utilityManager.getPhysicsManager().addToPhysics((Node)riverState.getRiverSceneManager().getScene().getChild("Static"));
+        utilityManager.getMaterialManager().makeUnshaded(app.getRootNode());
+        riverState.setEnabled(true);
+        app.getStateManager().getState(PlayerManager.class).initPersonPlayer(utilityManager.getPhysicsManager().getPhysics());
+    }
+    
     private void createUtilityManager() {
         utilityManager = new UtilityManager(app);
     }
@@ -125,12 +150,14 @@ public class GameManager extends AbstractAppState {
     public void clearAll() {
         trailState.setEnabled(false);
         townState.setEnabled(false);
+        riverState.setEnabled(false);
         clearTerrainLod();
         utilityManager.getGuiManager().clearScreen(app);
         app.getRootNode().detachAllChildren();
         utilityManager.getPhysicsManager().clearPhysics(app.getStateManager(), null);
         trailState.getTrailSceneManager().clearTrail(app.getStateManager());
         townState.getTownSceneManager().clearTown(app.getStateManager());
+        riverState.getRiverSceneManager().clearRiver(app.getStateManager());
         System.gc();
     }
     

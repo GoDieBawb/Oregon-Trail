@@ -54,6 +54,7 @@ public class EnvironmentManager {
         envNode.attachChild(object);   
         placeObject(object);
         stateManager.getState(GameManager.class).getUtilityManager().getMaterialManager().makeUnshaded(object);
+        
     }
     
     private void placeObject(Node object) {

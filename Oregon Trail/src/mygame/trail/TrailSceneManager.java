@@ -365,7 +365,8 @@ public class TrailSceneManager {
         int goalCount           = (Integer) player.getSituation().get("Goals Reached")+1;
         HashMap goals           = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
         HashMap goalMap         = (HashMap) goals.get(goalCount);
-        String goalName         = (String) goalMap.get("Name");
+        String  goalName        = (String)  goalMap.get("Name");
+        String goalType         = (String)  goalMap.get("Type");
         
         if (goalName.equals("Oregon")) {
             player.finishGame();
@@ -375,15 +376,14 @@ public class TrailSceneManager {
         ((WagonGui) currentActor.getGui()).getStopButton().hide();
         player.getSituation().put("Setting Name", goalName);
         player.getSituation().put("Goals Reached", goalCount);
-        player.getSituation().put("Setting", "Town");
+        player.getSituation().put("Setting", goalType);
         player.setLocalScale(1);
         player.saveInventory();
         player.saveSituation();
-        app.getStateManager().getState(GameManager.class).initTown();
+        app.getStateManager().getState(GameManager.class).loadSituation();
         player.getHud().getInfoText().getButtonOk().show();
         player.getHud().getLeftStick().show();
         player.getChaseControl().getCameraManager().getChaseCam().setEnabled(true);
-        
     }
     
     private int randInt(int min, int max) {

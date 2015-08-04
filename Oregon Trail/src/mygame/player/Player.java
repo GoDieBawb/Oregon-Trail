@@ -175,7 +175,7 @@ public class Player extends Node {
         
           attachChild(model);
         
-      }
+    }
     
     private void setFilePath() {
         
