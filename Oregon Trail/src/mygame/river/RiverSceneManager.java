@@ -11,6 +11,8 @@ import com.jme3.scene.Node;
 import mygame.GameManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import mygame.player.wagon.WagonModel;
+import mygame.util.Interactable;
 
 /**
  *
@@ -41,7 +43,33 @@ public class RiverSceneManager {
     }
     
     private void initInteractables(SimpleApplication app) {
-    
+        
+        Node wagonNode       = (Node) interactableNode.getChild("Wagon");
+        Node ferryManNode    = (Node) interactableNode.getChild("Ferryman");
+        Node indianGuideNode = (Node) interactableNode.getChild("Indian Guide");
+        
+        WagonModel  wm       = new WagonModel(app.getStateManager());
+        Ferryman    fm       = new Ferryman(app.getStateManager());
+        IndianGuide ig       = new IndianGuide(app.getStateManager());
+
+        wm.setLocalTranslation(wagonNode.getWorldTranslation());
+        fm.setLocalTranslation(ferryManNode.getLocalTranslation());
+        ig.setLocalTranslation(indianGuideNode.getLocalTranslation());
+        
+        wm.attachChild(wagonNode);
+        fm.attachChild(ferryManNode);
+        ig.attachChild(indianGuideNode);
+        
+        interactableNode.attachChild(wm);
+        interactableNode.attachChild(fm);
+        interactableNode.attachChild(ig);
+        
+        wagonNode.setLocalTranslation(0,0,0);
+        ferryManNode.setLocalTranslation(0,0,0);
+        indianGuideNode.setLocalTranslation(0,0,0);
+        
+        wm.checkOxen();
+        
     }
     
     private void animateScene(AppStateManager stateManager) {
@@ -71,8 +99,43 @@ public class RiverSceneManager {
         
     }
     
+    private void checkProximity(Interactable actor) {
+
+        if (actor.getLocalTranslation().distance(player.getLocalTranslation()) < 2.5f) {
+            
+            actor.whileInProx();
+            
+            if(!actor.inProx()) 
+            actor.enterProximity(); 
+            
+        }
+        
+        else {
+        
+            if(actor.inProx())
+            actor.exitProximity();
+            
+        }
+        
+    }
+    
     public void update(float tpf) {
+    
         player.getChaseControl().update(tpf);
-    }    
+        
+        for (int i = 0; i < interactableNode.getQuantity(); i++) {
+            
+            try {
+                Interactable currentActor =  (Interactable) interactableNode.getChild(i);
+                checkProximity(currentActor);
+            }
+            
+            catch(ClassCastException e) {
+            }
+            
+            
+        }
+        
+    }   
     
 }

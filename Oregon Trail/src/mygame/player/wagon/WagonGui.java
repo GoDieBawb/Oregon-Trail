@@ -97,6 +97,12 @@ public class WagonGui extends Gui {
                     player.getHud().getLeftStick().hide();
                     
                 }
+                
+                else if (player.getSituation().get("Setting").equals("River")) {
+                
+                    
+                    
+                }
             
             }
         
@@ -107,10 +113,19 @@ public class WagonGui extends Gui {
         moveButton.setPosition(getScreen().getWidth()/2 - moveButton.getWidth()/2, getScreen().getHeight()/2 + moveButton.getHeight()*2);
         moveButton.hide();
         moveButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
-        moveButton.setText("Hit the Trail");
         getElements().add(moveButton);
         moveButton.setFont("Interface/Fonts/UnrealTournament.fnt");
         moveButton.setZOrder(-1);
+        
+        Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
+        
+        if (player.getSituation().get("Setting").equals("River")) {
+            moveButton.setText("Ford the River");
+        }
+        
+        else {
+            moveButton.setText("Hit the Trail");
+        }
         
     }
     
@@ -136,10 +151,11 @@ public class WagonGui extends Gui {
                 
                 String setInfo;
                 
-                if(setting.equals("Town"))
-                setInfo = "in the " + setting + " of " + setName;
+                if(setting.equals("Town") || setting.equals("River"))
+                    setInfo = "in the " + setting + " of " + setName;
+                
                 else
-                setInfo = "on the trail to "  +goalName;
+                    setInfo = "on the trail to "  +goalName;
                 
                 String info = "You are " + setInfo +  "." + System.getProperty("line.separator")
                               + "You have traveled a total of " + milesTraveled + " miles in " + day + " days." + System.getProperty("line.separator")

@@ -29,13 +29,13 @@ public abstract class Interactable extends Node {
     public void enterProximity() {
         inProx = true;
         stateManager.getState(PlayerManager.class).getPlayer().getHud().getInfoText().getButtonOk().hide();
-    };
+    }
     
     public void exitProximity() {
         inProx = false;
         stateManager.getState(PlayerManager.class).getPlayer().getHud().getInfoText().hide();
         stateManager.getState(PlayerManager.class).getPlayer().getHud().getInfoText().getButtonOk().show();
-    };
+    }
     
     public void whileInProx() {
     }

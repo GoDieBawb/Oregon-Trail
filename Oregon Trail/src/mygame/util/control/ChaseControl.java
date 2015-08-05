@@ -49,6 +49,10 @@ public class ChaseControl extends InteractionControl {
         camLeft.set(app.getCamera().getLeft()).multLocal(10.0f);
         walkDirection.set(0, 0, 0);
         
+        if(player.getNoMove()) {
+            return;
+        }
+        
         if (up) {
             walkDirection.addLocal(camDir);
             player.run();
