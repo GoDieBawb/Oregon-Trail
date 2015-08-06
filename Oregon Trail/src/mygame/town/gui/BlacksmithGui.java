@@ -13,6 +13,7 @@ import com.jme3.font.LineWrapMode;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import mygame.player.Player;
@@ -112,6 +113,8 @@ public class BlacksmithGui extends Gui {
                 player.setNoMove(true);
                 player.getModel().removeControl(player.getChaseControl().getCameraManager().getChaseCam());
                 wagon.addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,0,0).add(0, 1f, 0));
+                player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(5);
                 endInteractButton.show();
                 wagonHealth.show();
                 interactButton.hide();
@@ -144,6 +147,8 @@ public class BlacksmithGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setNoMove(false);
                 player.getModel().addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,0,0).add(0, .5f, 0));
+                player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(3);
                 player.getHud().getLeftStick().show();
                 endInteractButton.hide();
                 wagonHealth.hide();

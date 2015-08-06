@@ -8,9 +8,11 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import mygame.river.RiverBoatControl;
 import mygame.util.Gui;
 import tonegod.gui.controls.buttons.ButtonAdapter;
 import tonegod.gui.core.Element;
@@ -28,6 +30,16 @@ public class FerrymanGui extends Gui {
     
     public FerrymanGui(AppStateManager stateManager) {
         super(stateManager);
+    }
+    
+    private void crossRiver() {
+         Player player = getStateManager().getState(PlayerManager.class).getPlayer();
+         Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("River");
+         Node   stat   = ((Node) scene.getChild("Static"));
+         
+         ((Node)stat.getChild("Ferry")).attachChild(player.getWagon().getModel());
+         ((Node)stat.getChild("Ferry")).getControl(RiverBoatControl.class).cross();
+         
     }
     
     @Override
@@ -59,7 +71,20 @@ public class FerrymanGui extends Gui {
             public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
                 
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
+                
+                int money = (Integer) player.getInventory().get("Money");
+                
+                if (money < 25) {
+                    player.getHud().showAlert("Money", "You don't have enough money!");
+                    return;
+                }
+                
                 selectedItem.addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                crossRiver();
+                
+                yesButton.hide();
+                noButton.hide();
+                player.getHud().getInfoText().hide();
                 
             }
             
@@ -91,6 +116,8 @@ public class FerrymanGui extends Gui {
                 player.setNoMove(false);
                 player.getHud().getLeftStick().show();
                 player.getModel().addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,0,0).add(0, .5f, 0));
+                player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(3);
                 noButton.hide();
                 yesButton.hide();
                 player.getHud().getInfoText().hide();
@@ -127,7 +154,8 @@ public class FerrymanGui extends Gui {
                 yesButton.show();
                 noButton.show();
                 interactButton.hide();
-                
+                player.getChaseControl().getCameraManager().getChaseCam().setLookAtOffset(new Vector3f(0,0,0).add(0, 1f, 0));
+                player.getChaseControl().getCameraManager().getChaseCam().setDefaultDistance(5);
                 player.getModel().removeControl(player.getChaseControl().getCameraManager().getChaseCam());
                 selectedItem.addControl(player.getChaseControl().getCameraManager().getChaseCam());
                 showInfo();

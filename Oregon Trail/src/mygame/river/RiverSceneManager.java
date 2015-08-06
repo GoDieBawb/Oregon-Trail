@@ -68,6 +68,9 @@ public class RiverSceneManager {
         ferryManNode.setLocalTranslation(0,0,0);
         indianGuideNode.setLocalTranslation(0,0,0);
         
+        RiverBoatControl rbc = new RiverBoatControl();
+        ((Node)scene.getChild("Static")).getChild("Ferry").addControl(rbc);
+        
         wm.checkOxen();
         
     }
