@@ -39,7 +39,6 @@ public class FerrymanGui extends Gui {
          
          ((Node)stat.getChild("Ferry")).attachChild(player.getWagon().getModel());
          ((Node)stat.getChild("Ferry")).getControl(RiverBoatControl.class).cross();
-         
     }
     
     @Override

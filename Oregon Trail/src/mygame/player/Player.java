@@ -7,6 +7,7 @@ package mygame.player;
 import mygame.player.wagon.Wagon;
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
+import com.jme3.animation.SkeletonControl;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.bullet.control.BetterCharacterControl;
@@ -121,6 +122,9 @@ public class Player extends Node {
     }
     
     private void createAnimControl() {
+        SkeletonControl skelControl = model.getChild("Person").getControl(SkeletonControl.class);
+        skelControl.setHardwareSkinningPreferred(true);
+        
         animControl = model.getChild("Person").getControl(AnimControl.class);
         armChannel  = animControl.createChannel();
         legChannel  = animControl.createChannel();
