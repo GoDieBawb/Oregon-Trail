@@ -1,0 +1,9 @@
+Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
+     MaterialParameters {
+        ColorMap : 3d_objects/plants/grass/textures/bittergrass_green/D.png
+        AlphaDiscardThreshold : 0.5
+     }
+    AdditionalRenderState {
+      Blend Alpha
+    }
+}

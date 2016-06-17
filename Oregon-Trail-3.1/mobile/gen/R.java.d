@@ -1,0 +1,21 @@
+/home/bob/Documents/Oregon-Trail-3.1/mobile/gen/com/bigbawb/oregontrail/R.java \
+ : /home/bob/Documents/Oregon-Trail-3.1/mobile/res/values/integers.xml \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/values/strings.xml \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-hdpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-hdpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-ldpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-ldpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-xhdpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-xhdpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/layout/main.xml \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-mdpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/res/drawable-mdpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-hdpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-hdpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-ldpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-ldpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-xhdpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-xhdpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-mdpi/splash.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/res/drawable-mdpi/icon.png \
+/home/bob/Documents/Oregon-Trail-3.1/mobile/bin/AndroidManifest.xml \

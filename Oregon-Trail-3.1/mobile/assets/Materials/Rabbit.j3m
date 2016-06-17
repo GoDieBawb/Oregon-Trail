@@ -1,0 +1,7 @@
+Material My Material : tonegod/gui/shaders/Unshaded.j3md {
+     MaterialParameters {
+        ColorMap : 3d_objects/creatures/rabbit/textures/D.png
+     }
+    AdditionalRenderState {
+    }
+}

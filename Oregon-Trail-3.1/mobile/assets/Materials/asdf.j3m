@@ -1,0 +1,6 @@
+Material My Material : Common/MatDefs/Terrain/Terrain.j3md {
+     MaterialParameters {
+     }
+    AdditionalRenderState {
+    }
+}
