@@ -1,0 +1,7 @@
+Material Paper : tonegod/gui/shaders/Unshaded.j3md {
+     MaterialParameters {
+        ColorMap : 3d_objects/structures/textures/rezpa_stained_walls/D.png
+     }
+    AdditionalRenderState {
+    }
+}
