@@ -1,6 +1,0 @@
-Material My Material : Common/MatDefs/Post/CartoonEdge.j3md {
-     MaterialParameters {
-     }
-    AdditionalRenderState {
-    }
-}

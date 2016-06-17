@@ -1,7 +1,0 @@
-Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
-     MaterialParameters {
-        ColorMap : Flip Models/Person/ShopKeeper.png
-     }
-    AdditionalRenderState {
-    }
-}

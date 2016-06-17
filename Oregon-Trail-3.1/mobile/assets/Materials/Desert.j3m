@@ -1,8 +1,0 @@
-Material My Material : Common/MatDefs/Terrain/Terrain.j3md {
-     MaterialParameters {
-        Tex1 : Textures/Sand.jpg
-        Tex2 : Textures/dirt.jpg
-     }
-    AdditionalRenderState {
-    }
-}
