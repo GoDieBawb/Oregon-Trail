@@ -66,7 +66,7 @@ public class Player extends Node {
         if(oxCount > 2)
             oxCount = 2;
         
-        wagonSpeed  = wagonSpeed*oxCount;
+        wagonSpeed = wagonSpeed*oxCount;
         return wagonSpeed;
         
     }

@@ -66,9 +66,8 @@ public class RiverSceneManager {
         WagonModel  wm       = new WagonModel(app.getStateManager());
         Ferryman    fm       = new Ferryman(app.getStateManager());
         IndianGuide ig       = new IndianGuide(app.getStateManager());
-
-        Node ox1 = (Node) wagonNode.getChild("RightCow");
-        Node ox2 = (Node) wagonNode.getChild("LeftCow");
+        Node        ox1      = (Node) wagonNode.getChild("RightCow");
+        Node        ox2      = (Node) wagonNode.getChild("LeftCow");
         
         wm.setLocalTranslation(wagonNode.getWorldTranslation());
         fm.setLocalTranslation(ferryManNode.getLocalTranslation());
@@ -80,6 +79,12 @@ public class RiverSceneManager {
         
         sf.findAnimControl(ig).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(fm).createChannel().setAnim("ArmIdle");
+        
+        ferryManNode.setMaterial(app.getAssetManager().loadMaterial("Materials/FerryMan.j3m"));
+        ferryManNode.getChild("Hat").setMaterial(app.getAssetManager().loadMaterial("Materials/Hay.j3m"));
+        
+        indianGuideNode.setMaterial(app.getAssetManager().loadMaterial("Materials/Indian.j3m"));
+        indianGuideNode.getChild("Feather").setMaterial(app.getAssetManager().loadMaterial("Materials/Feather.j3m"));
         
         sf.findAnimControl(ox1).clearChannels();
         sf.findAnimControl(ox2).clearChannels();
@@ -218,7 +223,6 @@ public class RiverSceneManager {
         RiverBoatControl rbc =  ((Node)scene.getChild("Static")).getChild("Ferry").getControl
                                     (RiverBoatControl.class);
         
-        
         if (!isCrossing) {
             
             if (fc.isCrossing() || rbc.isCrossing()) {
@@ -237,13 +241,10 @@ public class RiverSceneManager {
                     dewagonizePlayer();
                 }
                 
-                else {
-                    deferryPlayer();
-                }
-                
+                deferryPlayer();
                 player.getSituation().put("Setting", "Trail");
                 app.getStateManager().getState(GameManager.class).initTrail();
-                    
+                
             }
             
         }
