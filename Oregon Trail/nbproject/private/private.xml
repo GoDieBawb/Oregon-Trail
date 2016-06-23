@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/bob/Documents/Github/oregon-trail/Oregon%20Trail/src/mygame/river/RiverSceneManager.java</file>
+            <file>file:/home/bob/Documents/Github/oregon-trail/Oregon%20Trail/src/mygame/GameManager.java</file>
+            <file>file:/home/bob/Documents/Github/oregon-trail/Oregon%20Trail/src/mygame/player/Player.java</file>
+            <file>file:/home/bob/Documents/Github/oregon-trail/Oregon%20Trail/src/mygame/player/party/PartyNpc.java</file>
+            <file>file:/home/bob/Documents/Github/oregon-trail/Oregon%20Trail/src/mygame/player/PlayerManager.java</file>
+            <file>file:/home/bob/Documents/Github/oregon-trail/Oregon%20Trail/src/mygame/player/Hud.java</file>
+            <file>file:/home/bob/Documents/Github/oregon-trail/Oregon%20Trail/src/mygame/player/party/Party.java</file>
         </group>
     </open-files>
 </project-private>

@@ -70,13 +70,18 @@ public class TownSceneManager {
     private void animateTown(AppStateManager stateManager) {
         SkeletonFinder sf = stateManager.getState(GameManager.class).getUtilityManager().getSkeletonFinder();
         
-        Node intNode = (Node) scene.getChild("Interactable");
-        Node oxNode  = (Node) scene.getChild("Oxen");
+        Node intNode   = (Node) scene.getChild("Interactable");
+        Node oxNode    = (Node) scene.getChild("Oxen");
+        Node partyNode = (Node) scene.getChild("PartyNode");
         
         Node sk  = (Node) intNode.getChild("ShopKeeper");
         Node bs  = (Node) intNode.getChild("BlackSmith");
         Node wm  = (Node) ((Node) intNode.getChild("Wagon")).getChild(0);
         Node fm  = (Node) intNode.getChild("Farmer");
+        
+        Node mm  = (Node) partyNode.getChild("Mother");
+        Node sn  = (Node) partyNode.getChild("Son");
+        Node dt  = (Node) partyNode.getChild("Daughter");
         
         Node ox1 = (Node) wm.getChild("RightCow");
         Node ox2 = (Node) wm.getChild("LeftCow");
@@ -87,10 +92,17 @@ public class TownSceneManager {
         sf.findAnimControl(sk).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(bs).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(fm).createChannel().setAnim("ArmIdle");
+        
+        sf.findAnimControl(mm).createChannel().setAnim("ArmIdle");
+        sf.findAnimControl(sn).createChannel().setAnim("ArmIdle");
+        sf.findAnimControl(dt).createChannel().setAnim("ArmIdle");
+        
         sf.findAnimControl(ox1).clearChannels();
         sf.findAnimControl(ox2).clearChannels();
+        
         sf.findAnimControl(ox1).createChannel().setAnim("@Moo");
         sf.findAnimControl(ox2).createChannel().setAnim("LookL");
+        
         sf.findAnimControl(ox3).createChannel().setAnim("Sit");
         sf.findAnimControl(ox4).createChannel().setAnim("EatLow");
         

@@ -20,9 +20,8 @@ public class WagonModel extends Interactable {
     
     public WagonModel(AppStateManager stateManager) {
         super(stateManager);
-        gui = new WagonGui(getStateManager());
-        setGui(gui);
-        setName("Wagon");
+        gui = new WagonGui(stateManager);
+        name = "Wagon";
     }    
     
     public void checkOxen() {
@@ -31,20 +30,20 @@ public class WagonModel extends Interactable {
         Node leftOx  = ((Node) ((Node) getChild("Wagon")).getChild("LeftCow"));
         Node rightOx = ((Node) ((Node) getChild("Wagon")).getChild("RightCow"));
         
-        if (oxCount == 0) {
-            leftOx.getChild(0).setLocalTranslation(0,-5,0);
-            rightOx.getChild(0).setLocalTranslation(0,-5,0);        
+        switch (oxCount) {
+            case 0:
+                leftOx.getChild(0).setLocalTranslation(0,-5,0);        
+                rightOx.getChild(0).setLocalTranslation(0,-5,0);
+                break;
+            case 1:
+                leftOx.getChild(0).setLocalTranslation(0,-5,0);
+                rightOx.getChild(0).setLocalTranslation(0,0,0);
+                break;
+            default:
+                leftOx.getChild(0).setLocalTranslation(0,0,0);
+                rightOx.getChild(0).setLocalTranslation(0,0,0);
+                break;
         }
-        
-        else if (oxCount == 1) {
-            leftOx.getChild(0).setLocalTranslation(0,-5,0);
-            rightOx.getChild(0).setLocalTranslation(0,0,0);
-        }
-        
-        else {
-            leftOx.getChild(0).setLocalTranslation(0,0,0);
-            rightOx.getChild(0).setLocalTranslation(0,0,0);
-        } 
         
     }
     

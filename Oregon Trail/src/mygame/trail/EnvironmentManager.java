@@ -68,10 +68,10 @@ public class EnvironmentManager {
         int negMult    = 1;
         
         if (negChance1 == 1)
-        negMult1 = -1;
+            negMult1 = -1;
         
         if (negChance == 1)
-        negMult = -1;
+            negMult = -1;
         
         if(object.getName().equals("Tree"))
             ySpot = -2;

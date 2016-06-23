@@ -16,6 +16,8 @@ import com.jme3.math.Ray;
 import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
+import mygame.player.party.Party;
+import mygame.player.party.PartyMember;
 import mygame.trail.TrailState;
 import mygame.util.AndroidManager;
 import mygame.util.Gui;
@@ -25,7 +27,7 @@ import mygame.util.control.ChaseControl;
  *
  * @author Bawb
  */
-public class Player extends Node {
+public class Player extends Node implements PartyMember {
     
     private HashMap         inventory;
     private Wagon           wagon;
@@ -44,8 +46,10 @@ public class Player extends Node {
     private boolean         isAiming;
     private boolean         hasWon;
     private ChaseControl    chaseControl;
-    private BetterCharacterControl phys;
-    private final AppStateManager  stateManager;
+    private HashMap         condition;
+    private Party           party;
+    private BetterCharacterControl  phys;
+    private final AppStateManager   stateManager;
     
     public Player(AppStateManager stateManager) {
         this.stateManager = stateManager;
@@ -56,6 +60,45 @@ public class Player extends Node {
         speedMult  = 2f;
         strafeMult = .5f;
         name       = "Player";
+    }
+    
+    public void initParty() {
+        
+        party = new Party(stateManager, filePath);
+        party.loadParty();
+        
+    }
+    
+    public void initCondition() {
+        
+        condition = (HashMap) stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "PartySave.yml").get("Player");
+        
+        if (condition == null) {
+            generate();
+        }
+    
+        party.getInfo().put("Player", condition);
+        party.saveParty();
+    
+    }
+    
+    
+    private void generate() {
+        
+        condition         = new HashMap();
+        String  firstName = party.randomMaleName();
+        boolean starving  = false;
+        boolean dysentary = false;
+        boolean measles   = false;
+        boolean tired     = false;
+        
+        condition.put("Name",      firstName);
+        condition.put("Starving",  starving);
+        condition.put("Dysentary", dysentary);
+        condition.put("Measles",   measles);
+        condition.put("Tired",     tired);
+        party.getInfo().put("Player", condition);
+        
     }
     
     public int getWagonSpeed() {
@@ -75,6 +118,8 @@ public class Player extends Node {
         isDead = false;
         createSituation();
         createInventory();
+        generate();
+        party.createParty();
         getWagon().makeNewWagon(stateManager, filePath);
         saveAll();
     }
@@ -82,6 +127,7 @@ public class Player extends Node {
     public void saveAll(){
         saveInventory();
         saveSituation();
+        party.saveParty();
         wagon.save(stateManager, filePath);
     }
     
@@ -124,6 +170,7 @@ public class Player extends Node {
     }
     
     private void createAnimControl() {
+        
         SkeletonControl skelControl = model.getChild("Person").getControl(SkeletonControl.class);
         skelControl.setHardwareSkinningPreferred(true);
         
@@ -161,6 +208,7 @@ public class Player extends Node {
         
     }
     
+    @Override
     public void setModel(Node model) {
     
         this.model = model;
@@ -236,17 +284,20 @@ public class Player extends Node {
         return wagon;
     }
     
+    @Override
     public Node getModel() {
         return model;
     }
     
     private void createPhys() {
+        
         phys = new BetterCharacterControl(.3f, 1.1f, 100);
         
         if ("Dalvik".equals(System.getProperty("java.vm.name"))) 
             phys = new BetterCharacterControl(.11f, .8f, 100);
         
         addControl(phys);
+        
     }
     
     public BetterCharacterControl getPhys() {
@@ -297,20 +348,21 @@ public class Player extends Node {
         
         String deathInfo = "You've died of Dysentery";
         
-        if (reason.equals("Starvation")) {
-            deathInfo = "You have starved to death";
-        }
-        
-        else if (reason.equals("Stranded")) {
-            deathInfo = "With the death of your last ox you become stranded in the wilderness... You soon run out of supplies and die";
-        }
-        
-        else if (reason.equals("Bear")) {
-            deathInfo = "You've been mauled to death by a bear";
-        }        
-        
-        else if (reason.equals("Broken Wagon")) {
-            deathInfo = "The damage to your wagon has become to great and you become stranded in the wilderness... You soon run out of supplies and die";
+        switch (reason) {
+            case "Starvation":
+                deathInfo = "You have starved to death";
+                break;
+            case "Stranded":
+                deathInfo = "With the death of your last ox you become stranded in the wilderness... You soon run out of supplies and die";
+                break;
+            case "Bear":
+                deathInfo = "You've been mauled to death by a bear";
+                break;
+            case "Broken Wagon":
+                deathInfo = "The damage to your wagon has become to great and you become stranded in the wilderness... You soon run out of supplies and die";
+                break;
+            default:
+                break;
         }
         
         getHud().showAlert("Dead", deathInfo);
@@ -366,6 +418,11 @@ public class Player extends Node {
     
     public ChaseControl getChaseControl() {
         return chaseControl;
+    }
+
+    @Override
+    public HashMap getCondition() {
+        return condition;
     }
     
 }

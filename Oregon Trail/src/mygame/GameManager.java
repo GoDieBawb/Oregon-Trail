@@ -34,7 +34,7 @@ public class GameManager extends AbstractAppState {
     private TrailState        trailState;
     private RiverState        riverState;
     private Long              debugCool;
-    private boolean           isDebug = false;
+    private final boolean     isDebug = false;
     
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -64,22 +64,22 @@ public class GameManager extends AbstractAppState {
         
         String setting = (String) playerManager.getPlayer().getSituation().get("Setting");
         
-        if (setting.equals("Town")) {
-            initTown();
-            townState.setEnabled(true);
+        switch (setting) {
+            case "Town":
+                initTown();
+                townState.setEnabled(true);
+                break;
+            case "Trail":
+                initTrail();
+                trailState.setEnabled(true);
+                break;
+            case "River":
+                initRiver();
+                riverState.setEnabled(true);
+                break;
+            default:
+                break;
         }
-        
-        else if (setting.equals("Trail")) {
-            initTrail();
-            trailState.setEnabled(true);
-        }
-        
-        else if (setting.equals("River")) {
-            initRiver();
-            riverState.setEnabled(true);
-        }
-        
-        //playerManager.getPlayer().getPhys().warp(playerManager.getPlayer().getLocalTranslation().add(0,10,0));
         
     }
     
@@ -128,7 +128,7 @@ public class GameManager extends AbstractAppState {
     private void createRiverState() {
         app.getStateManager().attach(new RiverState(app));
         riverState = app.getStateManager().getState(RiverState.class);
-        riverState.setEnabled(false);;
+        riverState.setEnabled(false);
     }
     
     public void initRiver() {
@@ -166,6 +166,7 @@ public class GameManager extends AbstractAppState {
     
         SceneGraphVisitor sgv = new SceneGraphVisitor() {
             
+            @Override
             public void visit(Spatial spatial) {
             
                 if (spatial instanceof Terrain) {
