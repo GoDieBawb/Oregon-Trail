@@ -28,12 +28,14 @@ public class PartyNpc extends Node implements PartyMember {
         boolean dysentary = false;
         boolean measles   = false;
         boolean tired     = false;
+        boolean dead      = false;
         
         condition.put("Name",      firstName);
         condition.put("Starving",  starving);
         condition.put("Dysentary", dysentary);
         condition.put("Measles",   measles);
         condition.put("Tired",     tired);
+        condition.put("Dead",      dead);
         
     }
     

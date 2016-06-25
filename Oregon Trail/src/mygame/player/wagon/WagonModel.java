@@ -9,6 +9,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import mygame.util.Gui;
 
 /**
  *
@@ -16,11 +17,11 @@ import mygame.player.PlayerManager;
  */
 public class WagonModel extends Interactable {
     
-    private WagonGui gui;
+    private final WagonGui gui;
     
     public WagonModel(AppStateManager stateManager) {
         super(stateManager);
-        gui = new WagonGui(stateManager);
+        gui  = new WagonGui(stateManager);
         name = "Wagon";
     }    
     
@@ -48,6 +49,11 @@ public class WagonModel extends Interactable {
     }
     
     @Override
+    public Gui getGui() {
+        return gui;
+    }
+    
+    @Override
     public void enterProximity() {
         super.enterProximity();
         Player player = getStateManager().getState(PlayerManager.class).getPlayer();
@@ -56,6 +62,7 @@ public class WagonModel extends Interactable {
         gui.getMoveButton().show();
         gui.getSituationButton().show();
         gui.getSuppliesButton().show();
+        gui.getPartyButton().show();
     }
     
     @Override 
@@ -65,6 +72,7 @@ public class WagonModel extends Interactable {
         gui.getMoveButton().hide();
         gui.getSituationButton().hide();
         gui.getSuppliesButton().hide();
+        gui.getPartyButton().hide();
         if(!player.getInWagon()  && player.getSituation().get("Setting").equals("Trail"))
             player.getHud().getAimButton().show();
         

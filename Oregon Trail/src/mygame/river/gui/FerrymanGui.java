@@ -53,7 +53,7 @@ public class FerrymanGui extends Gui {
     
     private void setSelectedItem() {
         
-         Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("River");
+         Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Scene");
          Node   stat   = ((Node) scene.getChild("Static"));
          selectedItem  = (Node) stat.getChild("Ferry");
          

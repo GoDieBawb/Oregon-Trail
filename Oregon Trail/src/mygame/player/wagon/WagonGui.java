@@ -7,6 +7,7 @@ package mygame.player.wagon;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.event.MouseButtonEvent;
 import com.jme3.math.Vector2f;
+import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
 import mygame.player.Player;
@@ -24,7 +25,9 @@ public class WagonGui extends Gui {
     private ButtonAdapter moveButton;
     private ButtonAdapter situationButton;
     private ButtonAdapter suppliesButton;
+    private ButtonAdapter partyButton;
     private ButtonAdapter stopButton;
+    private int           partySelect;
     
     public WagonGui(AppStateManager stateManager) {
         super(stateManager);
@@ -36,6 +39,7 @@ public class WagonGui extends Gui {
         createMoveButton();
         createSituationButton();
         createSuppliesButton();
+        createPartyButton();
     }
     
     private void createStopButton() {
@@ -226,10 +230,150 @@ public class WagonGui extends Gui {
         
     }
     
+    private void createPartyButton() {
+        
+        partyButton = new ButtonAdapter(getScreen(), "Party Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                Player player     = getStateManager().getState(PlayerManager.class).getPlayer();
+                boolean isTrail   = "Trail".equals((String) player.getSituation().get("Setting"));
+                Node    partyNode = new Node();
+                
+                if (!isTrail) {
+                    Node   sceneParty = (Node) ((Node) player.getParent().getChild("Scene")).getChild("PartyNode");
+                    partyNode  = (Node) ((Node) sceneParty.getChild(0)).getChild(0);
+                }
+                
+                player.getHud().getInfoText().getButtonOk().hide();
+                
+                switch (partySelect) {
+                    
+                    case 0:
+                        player.setNoMove(true);
+                        hideButtons();
+                        show();
+                        if (!isTrail)
+                            partyNode.getChild(0).addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                        this.setText("Next");
+                        printPartyMemberInfo("Wife");
+                        partySelect = 1;
+                        break;
+                        
+                    case 1:
+                        if (!isTrail)
+                            partyNode.getChild(1).addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                        this.setText("Finish");
+                        printPartyMemberInfo("Son");
+                        partySelect = 2;
+                        break;
+                        
+                    case 2:
+                        if (!isTrail)
+                            partyNode.getChild(2).addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                        printPartyMemberInfo("Daughter");
+                        partySelect = 3;
+                        break;
+                        
+                    default:
+                        player.getModel().addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                        player.setNoMove(false);
+                        player.getHud().getInfoText().getButtonOk().show();
+                        player.getHud().getInfoText().hide();
+                        this.setText("Check Party");
+                        hideButtons();
+                        partySelect = 0;
+                        break;
+                        
+                }
+        
+            }
+            
+        };
+        
+        getScreen().addElement(partyButton);        
+        partyButton.setDimensions(getScreen().getWidth()/3, getScreen().getHeight()/10);
+        partyButton.setPosition(getScreen().getWidth()/2 - partyButton.getWidth()/2, getScreen().getHeight()/2 - partyButton.getHeight()*4);
+        partyButton.hide();
+        partyButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        partyButton.setText("Check Party");
+        getElements().add(partyButton);
+        partyButton.setFont("Interface/Fonts/UnrealTournament.fnt");
+        partyButton.setZOrder(-1);
+        
+    }
+    
+    private void printPartyMemberInfo(String memberName) {
+        
+        String  info;
+        Player  player   = getStateManager().getState(PlayerManager.class).getPlayer();
+        HashMap cond     = (HashMap) player.getParty().getInfo().get(memberName);
+        String  name     = (String)  cond.get("Name");
+        String  lastName = (String)  player.getParty().getInfo().get("LastName");
+        boolean starve   = (Boolean) cond.get("Starving");
+        boolean dysent   = (Boolean) cond.get("Dysentary");
+        boolean measle   = (Boolean) cond.get("Measles");
+        boolean tired    = (Boolean) cond.get("Tired");
+        boolean isDead   = (Boolean) cond.get("Dead");
+        
+        String nameInfo  = "Your " + memberName + " " + name + " " + lastName;
+        String illness;
+        String condition;
+        
+        if (dysent || measle) {
+            
+            if (dysent && measle)
+                illness = name + " has dysentary and the measles.";
+            
+            else if (dysent)
+                illness = name + " has dysentary.";
+            
+            else
+                illness = name + " has the measles.";
+        }
+        
+        else {
+            illness = name + " is in good health.";
+        }
+        
+        if (starve || tired) {
+        
+            if (starve && tired) {
+                condition = name + " is tired and starving."; 
+            }
+            
+            else if (starve) {
+                condition = name + " is starving.";
+            }
+            
+            else {
+                condition = name + " is exhausted."; 
+            }
+            
+        }
+        
+        else {
+            condition = name + " is in good condition."; 
+        }
+        
+        if (isDead) {
+            info = nameInfo + " has died.";
+        }
+        
+        else {
+            info = nameInfo + "\n" + illness + "\n" + condition;
+        }
+        
+        player.getHud().showAlert("Party", info);
+        
+    }
+    
     private void hideButtons(){
         moveButton.hide();
         suppliesButton.hide();
         situationButton.hide();
+        partyButton.hide();
     }
     
     public ButtonAdapter getMoveButton() {
@@ -244,8 +388,13 @@ public class WagonGui extends Gui {
         return suppliesButton;
     }
     
+    public ButtonAdapter getPartyButton() {
+        return partyButton;
+    }
+    
     public ButtonAdapter getStopButton() {
         return stopButton;
     }
+    
     
 }

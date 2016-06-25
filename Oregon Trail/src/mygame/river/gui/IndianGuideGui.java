@@ -41,8 +41,8 @@ public class IndianGuideGui extends Gui {
     
     private void setSelectedItem() {
         
-         Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("River");
-         selectedItem  = (Node) scene.getChild("Indian Spot");
+        Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Scene");
+        selectedItem  = (Node) scene.getChild("Indian Spot");
          
     }
     

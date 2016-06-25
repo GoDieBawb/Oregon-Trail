@@ -68,6 +68,7 @@ public class TownSceneManager {
     }
     
     private void animateTown(AppStateManager stateManager) {
+        
         SkeletonFinder sf = stateManager.getState(GameManager.class).getUtilityManager().getSkeletonFinder();
         
         Node intNode   = (Node) scene.getChild("Interactable");

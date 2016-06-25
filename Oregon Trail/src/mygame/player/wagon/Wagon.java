@@ -37,10 +37,10 @@ public class Wagon extends Node {
         currentHealth = (Integer) wagonInfo.get("CurrentHealth");
         
         if (type.equals("Basic")) 
-        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/CoveredWagon/CoveredWagon.j3o");
+            model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/CoveredWagon/CoveredWagon.j3o");
         
         else
-        model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/CoveredWagon/CoveredWagon.j3o");
+            model = (Node) stateManager.getApplication().getAssetManager().loadModel("Models/CoveredWagon/CoveredWagon.j3o");
         
     }
     

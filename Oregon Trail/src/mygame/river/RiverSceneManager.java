@@ -62,12 +62,18 @@ public class RiverSceneManager {
         Node wagonNode       = (Node) interactableNode.getChild("Wagon");
         Node ferryManNode    = (Node) interactableNode.getChild("Ferryman");
         Node indianGuideNode = (Node) interactableNode.getChild("Indian Guide");
+        Node partyNode       = (Node) scene.getChild("PartyNode");
         
         WagonModel  wm       = new WagonModel(app.getStateManager());
         Ferryman    fm       = new Ferryman(app.getStateManager());
         IndianGuide ig       = new IndianGuide(app.getStateManager());
+        
         Node        ox1      = (Node) wagonNode.getChild("RightCow");
         Node        ox2      = (Node) wagonNode.getChild("LeftCow");
+        
+        Node mm  = (Node) partyNode.getChild("Mother");
+        Node sn  = (Node) partyNode.getChild("Son");
+        Node dt  = (Node) partyNode.getChild("Daughter");        
         
         wm.setLocalTranslation(wagonNode.getWorldTranslation());
         fm.setLocalTranslation(ferryManNode.getLocalTranslation());
@@ -79,6 +85,10 @@ public class RiverSceneManager {
         
         sf.findAnimControl(ig).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(fm).createChannel().setAnim("ArmIdle");
+        
+        sf.findAnimControl(mm).createChannel().setAnim("ArmIdle");
+        sf.findAnimControl(sn).createChannel().setAnim("ArmIdle");
+        sf.findAnimControl(dt).createChannel().setAnim("ArmIdle");        
         
         ferryManNode.setMaterial(app.getAssetManager().loadMaterial("Materials/FerryMan.j3m"));
         ferryManNode.getChild("Hat").setMaterial(app.getAssetManager().loadMaterial("Materials/Hay.j3m"));

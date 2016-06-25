@@ -1,0 +1,8 @@
+Material My Material : Common/MatDefs/Misc/Unshaded.j3md {
+     MaterialParameters {
+        GlowMap : Models/Person/FerryMan.png
+        ColorMap : Flip Models/Person/FerryMan.png
+     }
+    AdditionalRenderState {
+    }
+}

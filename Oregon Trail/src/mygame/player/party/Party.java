@@ -46,9 +46,10 @@ public class Party {
         boy.generate(randomMaleName());
         girl.generate(randomFemaleName());
         
-        partyInfo.put("Mom",  mom.getCondition());
-        partyInfo.put("Boy",  boy.getCondition());
-        partyInfo.put("Girl", girl.getCondition());
+        partyInfo.put("Wife",  mom.getCondition());
+        partyInfo.put("Son",  boy.getCondition());
+        partyInfo.put("Daughter", girl.getCondition());
+        partyInfo.put("LastName", randomLastName());
         
         saveParty();
         
@@ -140,6 +141,50 @@ public class Party {
         
         return name;
     }    
+    
+    private String randomLastName() {
+        
+        String name = "";
+        int    rand = randInt(1,10);
+        
+        switch(rand) {
+        
+            case 1:
+                name = "Smith";
+                break;
+            case 2:
+                name = "Jones";
+                break;
+            case 3:
+                name = "Davis";
+                break;
+            case 4:
+                name = "Miller";
+                break;
+            case 5:
+                name = "Jackson";
+                break;
+            case 6:
+                name = "Walker";
+                break;
+            case 7:
+                name = "Brown";
+                break;
+            case 8:
+                name = "White";
+                break;
+            case 9:
+                name = "Harris";
+                break;
+            case 10:
+                name = "Clark";
+                break;
+            
+        }
+        
+        return name;
+        
+    }
     
     private int randInt(int min, int max) {
         Random rand   = new Random();

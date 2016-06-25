@@ -91,7 +91,7 @@ public class TrailSceneManager {
         ((WagonModel) interactableNode.getChild(0)).checkOxen();
         
         if(!scaledGrass)
-        scaleGrassTexture();
+            scaleGrassTexture();
     
     }
     
@@ -200,7 +200,7 @@ public class TrailSceneManager {
     }
     
     private void checkProximity(Interactable actor) {
-
+        
         if (actor.getLocalTranslation().distance(player.getLocalTranslation()) < 2.5f) {
             
             actor.whileInProx();
@@ -372,13 +372,14 @@ public class TrailSceneManager {
         String  goalName        = (String)  goalMap.get("Name");
         String goalType         = (String)  goalMap.get("Type");
         
-        dewagonizePlayer();
+
         
         if (goalName.equals("Oregon")) {
             player.finishGame();
             return;
         }
-        
+
+        System.out.println(currentActor);
         ((WagonGui) currentActor.getGui()).getStopButton().hide();
         player.getSituation().put("Setting Name", goalName);
         player.getSituation().put("Goals Reached", goalCount);
@@ -390,6 +391,7 @@ public class TrailSceneManager {
         player.getHud().getInfoText().getButtonOk().show();
         player.getHud().getLeftStick().show();
         player.getChaseControl().getCameraManager().getChaseCam().setEnabled(true);
+        dewagonizePlayer();
         
     }
     

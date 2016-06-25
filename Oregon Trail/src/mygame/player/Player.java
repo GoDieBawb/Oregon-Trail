@@ -69,6 +69,10 @@ public class Player extends Node implements PartyMember {
         
     }
     
+    public Party getParty() {
+        return party;
+    }
+    
     public void initCondition() {
         
         condition = (HashMap) stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "PartySave.yml").get("Player");
@@ -92,12 +96,13 @@ public class Player extends Node implements PartyMember {
         boolean measles   = false;
         boolean tired     = false;
         
-        condition.put("Name",      firstName);
-        condition.put("Starving",  starving);
-        condition.put("Dysentary", dysentary);
-        condition.put("Measles",   measles);
-        condition.put("Tired",     tired);
-        party.getInfo().put("Player", condition);
+        condition.put("Name",           firstName);
+        condition.put("Starving",       starving);
+        condition.put("Dysentary",      dysentary);
+        condition.put("Measles",        measles);
+        condition.put("Tired",          tired);
+        
+        party.getInfo().put("Player",   condition);
         
     }
     
@@ -349,6 +354,7 @@ public class Player extends Node implements PartyMember {
         String deathInfo = "You've died of Dysentery";
         
         switch (reason) {
+            
             case "Starvation":
                 deathInfo = "You have starved to death";
                 break;
@@ -359,10 +365,11 @@ public class Player extends Node implements PartyMember {
                 deathInfo = "You've been mauled to death by a bear";
                 break;
             case "Broken Wagon":
-                deathInfo = "The damage to your wagon has become to great and you become stranded in the wilderness... You soon run out of supplies and die";
+                deathInfo = "The damage to your wagon has become too great and you become stranded in the wilderness... You soon run out of supplies and die";
                 break;
             default:
                 break;
+                
         }
         
         getHud().showAlert("Dead", deathInfo);
