@@ -67,7 +67,7 @@ public class IndianGuideGui extends Gui {
                 player.setInWagon(true);
                 player.setNoMove(true);
                 fordControl.setEnabled(true);
-                fordControl.cross();
+                fordControl.cross(true);
                 
             }
             

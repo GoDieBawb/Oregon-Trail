@@ -73,21 +73,8 @@ public class Player extends Node implements PartyMember {
         return party;
     }
     
-    public void initCondition() {
-        
-        condition = (HashMap) stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "PartySave.yml").get("Player");
-        
-        if (condition == null) {
-            generate();
-        }
     
-        party.getInfo().put("Player", condition);
-        party.saveParty();
-    
-    }
-    
-    
-    private void generate() {
+    public void generate() {
         
         condition         = new HashMap();
         String  firstName = party.randomMaleName();
@@ -101,8 +88,8 @@ public class Player extends Node implements PartyMember {
         condition.put("Dysentary",      dysentary);
         condition.put("Measles",        measles);
         condition.put("Tired",          tired);
-        
-        party.getInfo().put("Player",   condition);
+        condition.put("Dead",           false);
+        condition.put("Cause",          "Murder");
         
     }
     
@@ -123,7 +110,6 @@ public class Player extends Node implements PartyMember {
         isDead = false;
         createSituation();
         createInventory();
-        generate();
         party.createParty();
         getWagon().makeNewWagon(stateManager, filePath);
         saveAll();
@@ -366,6 +352,9 @@ public class Player extends Node implements PartyMember {
                 break;
             case "Broken Wagon":
                 deathInfo = "The damage to your wagon has become too great and you become stranded in the wilderness... You soon run out of supplies and die";
+                break;
+            case "Drown":
+                    deathInfo = "You sink to the bottom of the river. Dooming you and your party to a watery grave.";
                 break;
             default:
                 break;

@@ -28,9 +28,9 @@ import mygame.util.SkeletonFinder;
  */
 public class TrailSceneManager {
     
-    private SimpleApplication        app;
+    private final SimpleApplication  app;
     private Node                     scene;
-    private float                    sceneMult;
+    private final float              sceneMult;
     private Player                   player;
     private WagonInteractionManager  wagIntMan;
     private Node                     interactableNode;
@@ -271,7 +271,7 @@ public class TrailSceneManager {
     
         if (System.currentTimeMillis()/1000 - updateWait > 5) {
         
-            int speedMod      = 1;
+            int speedMod          = 1;
             
             if (player.getInventory().get("Oxen").equals(1))
                 speedMod          = 2;
@@ -291,6 +291,7 @@ public class TrailSceneManager {
             
             player.getInventory().put("Hay", newHay);
             player.getInventory().put("Food", newFood);
+            
             player.saveAll();
             
             if(newHay <= 0) {
@@ -308,10 +309,10 @@ public class TrailSceneManager {
                 
                 player.getInventory().put("Food", 0);
                 
-                if(randInt(1,5) == 5){
-                    killPlayer("Starvation");
-                    return;
-                }
+                //if(randInt(1,5) == 5){
+                    //killPlayer("Starvation");
+                    //return;
+                //}
                 
             }    
             
@@ -322,7 +323,14 @@ public class TrailSceneManager {
                 
             }
             
-            showSituation(); 
+            showSituation();
+            player.getParty().updateCondition();
+            
+            if (player.getIsDead()) {
+                killPlayer((String) player.getCondition().get("Cause"));
+            }
+            
+            player.saveAll();
             
         }
         
@@ -379,7 +387,6 @@ public class TrailSceneManager {
             return;
         }
 
-        System.out.println(currentActor);
         ((WagonGui) currentActor.getGui()).getStopButton().hide();
         player.getSituation().put("Setting Name", goalName);
         player.getSituation().put("Goals Reached", goalCount);

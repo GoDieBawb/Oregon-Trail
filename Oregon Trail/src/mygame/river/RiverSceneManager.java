@@ -10,6 +10,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.Random;
 import mygame.GameManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
@@ -28,6 +29,7 @@ public class RiverSceneManager {
     private Player  player;
     private boolean wagonized;
     private boolean isCrossing;
+    private Long    lastCrash;
     private SimpleApplication   app;
     
     public void initScene(SimpleApplication app) {
@@ -237,12 +239,37 @@ public class RiverSceneManager {
             
             if (fc.isCrossing() || rbc.isCrossing()) {
                 isCrossing = true;
+                lastCrash = System.currentTimeMillis();
             }
             
         }
         
         else {
         
+            if (fc.isCrossing() && fc.canCrash()) {
+            
+                int crashCooldown                = 3;
+                if (fc.isIndian()) crashCooldown = 5;
+                
+                if (System.currentTimeMillis() / 1000 - lastCrash / 1000 > crashCooldown-1) {
+                    
+                    lastCrash       = System.currentTimeMillis();
+                    Random rand     = new Random();
+                    int crashChance = rand.nextInt((6 - 1) + 1) + 1;
+                    
+                    if (crashChance == 6) {
+                        fc.setEnabled(false);
+                        player.die("Drown");
+                        player.setNoMove(false);
+                        dewagonizePlayer();
+                        deferryPlayer();
+                        return;
+                    }
+                    
+                }
+                
+            }
+            
             if (!fc.isCrossing() && !rbc.isCrossing()) {
                 
                 isCrossing = false;
@@ -254,6 +281,7 @@ public class RiverSceneManager {
                 deferryPlayer();
                 player.getSituation().put("Setting", "Trail");
                 app.getStateManager().getState(GameManager.class).initTrail();
+                return;
                 
             }
             

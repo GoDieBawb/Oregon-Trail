@@ -41,7 +41,6 @@ public class PlayerManager extends AbstractAppState {
     public void loadPlayerInfo() {
         player.load();
         player.initParty();
-        player.initCondition();
     }
     
     public Player getPlayer() {

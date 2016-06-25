@@ -34,12 +34,12 @@ public class FerrymanGui extends Gui {
     
     private void crossRiver() {
         
-         Player player = getStateManager().getState(PlayerManager.class).getPlayer();
-         Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("River");
-         Node   stat   = ((Node) scene.getChild("Static"));
+        Player player = getStateManager().getState(PlayerManager.class).getPlayer();
+        Node   scene  = (Node) ((SimpleApplication) getStateManager().getApplication()).getRootNode().getChild("Scene");
+        Node   stat   = ((Node) scene.getChild("Static"));
 
-         ((Node)stat.getChild("Ferry")).attachChild(player.getWagon().getModel());
-         ((Node)stat.getChild("Ferry")).getControl(RiverBoatControl.class).cross();
+        ((Node)stat.getChild("Ferry")).attachChild(player.getWagon().getModel());
+        ((Node)stat.getChild("Ferry")).getControl(RiverBoatControl.class).cross();
          
     }
     
@@ -80,6 +80,7 @@ public class FerrymanGui extends Gui {
                     return;
                 }
                 
+                player.getInventory().put("Money", money-25);
                 crossRiver();
                 yesButton.hide();
                 noButton.hide();

@@ -109,7 +109,7 @@ public class WagonGui extends Gui {
                     player.setNoMove(true);                    
                     FordControl fordControl = player.getWagon().getModel().getControl(FordControl.class); 
                     fordControl.setEnabled(true);
-                    fordControl.cross();
+                    fordControl.cross(false);
                     
                 }
             

@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @author root
  */
-public class PartyNpc extends Node implements PartyMember {
+public class PartyNpc implements PartyMember {
 
     private Node    model;
     private HashMap condition;

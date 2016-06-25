@@ -17,13 +17,24 @@ public class FordControl extends AbstractControl {
 
     private boolean isCrossing;
     private boolean goDown;
+    private boolean drunkinjundrivinriveraftinfuntime;
+    private boolean canCrash;
     
-    public void cross() {
+    public void cross(boolean isIndian) {
+        drunkinjundrivinriveraftinfuntime = isIndian;
         isCrossing = true;
     }
     
     public boolean isCrossing() {
         return isCrossing;
+    }
+    
+    public boolean canCrash() {
+        return canCrash;
+    }
+    
+    public boolean isIndian() {
+        return drunkinjundrivinriveraftinfuntime;
     }
     
     @Override
@@ -49,6 +60,8 @@ public class FordControl extends AbstractControl {
         
         if (getSpatial().getLocalTranslation().z > 6 && getSpatial().getLocalTranslation().z < 28) {
         
+            canCrash = true;
+            
             if (goDown && getSpatial().getLocalTranslation().y < -1.65) {
                 goDown = false;
             }
@@ -60,6 +73,8 @@ public class FordControl extends AbstractControl {
         }
         
         else {
+            
+            canCrash = false;
             
             if (getSpatial().getLocalTranslation().z > 4 && getSpatial().getLocalTranslation().z < 6f)
                 getSpatial().move(0,-1f*tpf,0);
