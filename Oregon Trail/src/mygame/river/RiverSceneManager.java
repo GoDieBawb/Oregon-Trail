@@ -10,6 +10,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import java.util.HashMap;
 import java.util.Random;
 import mygame.GameManager;
 import mygame.player.Player;
@@ -91,6 +92,26 @@ public class RiverSceneManager {
         sf.findAnimControl(mm).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(sn).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(dt).createChannel().setAnim("ArmIdle");        
+        
+        boolean  mDead = (Boolean) ((HashMap)player.getParty().getInfo().get("Wife")).get("Dead");
+        boolean  sDead = (Boolean) ((HashMap)player.getParty().getInfo().get("Son")).get("Dead");
+        boolean  dDead = (Boolean) ((HashMap)player.getParty().getInfo().get("Daughter")).get("Dead");
+        AppStateManager stateManager = app.getStateManager();
+        
+        if (!mDead)
+            mm.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Female.j3m"));
+        else
+            mm.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Ghost.j3m"));
+        
+        if (!dDead)
+            dt.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Female.j3m"));
+        else
+            dt.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Ghost.j3m"));
+        
+        if (!sDead)
+            sn.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/FerryMan.j3m"));
+        else
+            sn.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Ghost.j3m"));        
         
         ferryManNode.setMaterial(app.getAssetManager().loadMaterial("Materials/FerryMan.j3m"));
         ferryManNode.getChild("Hat").setMaterial(app.getAssetManager().loadMaterial("Materials/Hay.j3m"));
@@ -258,6 +279,8 @@ public class RiverSceneManager {
                     int crashChance = rand.nextInt((6 - 1) + 1) + 1;
                     
                     if (crashChance == 6) {
+                        fc.getSpatial().setLocalTranslation(0,0,0);
+                        fc.getSpatial().removeControl(fc);
                         fc.setEnabled(false);
                         player.die("Drown");
                         player.setNoMove(false);

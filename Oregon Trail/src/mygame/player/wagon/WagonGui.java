@@ -253,27 +253,32 @@ public class WagonGui extends Gui {
                     case 0:
                         player.setNoMove(true);
                         hideButtons();
-                        show();
-                        if (!isTrail)
-                            partyNode.getChild(0).addControl(player.getChaseControl().getCameraManager().getChaseCam());
                         this.setText("Next");
-                        printPartyMemberInfo("Wife");
+                        show();
+                        printPartyMemberInfo("Player");
                         partySelect = 1;
                         break;
-                        
+                    
                     case 1:
-                        if (!isTrail)
-                            partyNode.getChild(1).addControl(player.getChaseControl().getCameraManager().getChaseCam());
-                        this.setText("Finish");
-                        printPartyMemberInfo("Son");
+                        show();                        if (!isTrail)
+                            partyNode.getChild(0).addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                        printPartyMemberInfo("Wife");
                         partySelect = 2;
                         break;
                         
                     case 2:
                         if (!isTrail)
+                            partyNode.getChild(1).addControl(player.getChaseControl().getCameraManager().getChaseCam());
+                        printPartyMemberInfo("Son");
+                        partySelect = 3;
+                        break;
+                        
+                    case 3:
+                        this.setText("Finish");
+                        if (!isTrail)
                             partyNode.getChild(2).addControl(player.getChaseControl().getCameraManager().getChaseCam());
                         printPartyMemberInfo("Daughter");
-                        partySelect = 3;
+                        partySelect = 4;
                         break;
                         
                     default:

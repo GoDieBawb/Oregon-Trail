@@ -73,6 +73,9 @@ public class Player extends Node implements PartyMember {
         return party;
     }
     
+    public void setCondition(HashMap condition) {
+        this.condition = condition;
+    }
     
     public void generate() {
         
@@ -356,6 +359,12 @@ public class Player extends Node implements PartyMember {
             case "Drown":
                     deathInfo = "You sink to the bottom of the river. Dooming you and your party to a watery grave.";
                 break;
+            case "Exhaustion":
+                    deathInfo = "Without the energy to continue on you collapse. You have died of exhaustion";
+                break;
+            case "Measles":
+                    deathInfo = "You have died of the Measles.";
+                    break;
             default:
                 break;
                 

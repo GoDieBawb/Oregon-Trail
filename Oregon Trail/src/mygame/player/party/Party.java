@@ -29,7 +29,7 @@ public class Party {
     
     public void loadParty() {
         
-        partyInfo =  stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "PartySave.yml");
+        partyInfo = stateManager.getState(GameManager.class).getUtilityManager().getYamlManager().loadYaml(filePath + "PartySave.yml");
     
         if (partyInfo == null) {
            createParty();
@@ -38,6 +38,7 @@ public class Party {
     }
     
     public void createParty() {
+        
         Player  player = stateManager.getState(PlayerManager.class).getPlayer();
         partyInfo      = new HashMap();
         PartyNpc mom   = new PartyNpc();
@@ -60,7 +61,7 @@ public class Party {
     }
     
     public void updateCondition () {
-        String info     = "";
+        String info       = "";
         String playerInfo = calculateCondition("Player") + "\n";
         String wifeInfo   = calculateCondition("Wife") + "\n";
         String sonInfo    = calculateCondition("Son")  + "\n";
@@ -80,6 +81,7 @@ public class Party {
         
         if (info.contains("now"))
             stateManager.getState(PlayerManager.class).getPlayer().getHud().showAlert("Party", info);
+        
     }
     
     
@@ -327,7 +329,8 @@ public class Party {
             
             if (memberName.equals("Player")) {
                 player.setIsDead(true);
-                player.getCondition().put("Cause", cause);
+                player.setCondition(condition);
+                condition.put("Cause", cause);
                 return "";
             }
             

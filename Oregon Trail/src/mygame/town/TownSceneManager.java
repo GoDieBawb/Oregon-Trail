@@ -8,8 +8,10 @@ import mygame.player.wagon.WagonModel;
 import mygame.util.Interactable;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.material.Material;
 import com.jme3.math.Quaternion;
 import com.jme3.scene.Node;
+import java.util.HashMap;
 import mygame.GameManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
@@ -90,6 +92,25 @@ public class TownSceneManager {
         Node ox3 = (Node) oxNode.getChild(0);
         Node ox4 = (Node) oxNode.getChild(1);
 
+        boolean  mDead = (Boolean) ((HashMap)player.getParty().getInfo().get("Wife")).get("Dead");
+        boolean  sDead = (Boolean) ((HashMap)player.getParty().getInfo().get("Son")).get("Dead");
+        boolean  dDead = (Boolean) ((HashMap)player.getParty().getInfo().get("Daughter")).get("Dead");
+        
+        if (!mDead)
+            mm.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Female.j3m"));
+        else
+            mm.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Ghost.j3m"));
+        
+        if (!dDead)
+            dt.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Female.j3m"));
+        else
+            dt.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Ghost.j3m"));
+        
+        if (!sDead)
+            sn.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/FerryMan.j3m"));
+        else
+            sn.setMaterial(stateManager.getApplication().getAssetManager().loadMaterial("Materials/Ghost.j3m"));
+        
         sf.findAnimControl(sk).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(bs).createChannel().setAnim("ArmIdle");
         sf.findAnimControl(fm).createChannel().setAnim("ArmIdle");
