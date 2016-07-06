@@ -27,7 +27,7 @@ public class WagonModel extends Interactable {
     
     public void checkOxen() {
         
-        int oxCount = (Integer) getStateManager().getState(PlayerManager.class).getPlayer().getInventory().get("Oxen");
+        int oxCount  = (Integer) getStateManager().getState(PlayerManager.class).getPlayer().getInventory().get("Oxen");
         Node leftOx  = ((Node) ((Node) getChild("Wagon")).getChild("LeftCow"));
         Node rightOx = ((Node) ((Node) getChild("Wagon")).getChild("RightCow"));
         

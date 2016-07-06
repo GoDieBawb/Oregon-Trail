@@ -5,6 +5,7 @@
 package mygame.util;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.TextureKey;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.Vector3f;
@@ -32,9 +33,10 @@ public class MaterialManager {
       
         SceneGraphVisitor sgv = new SceneGraphVisitor() {
  
+            @Override
             public void visit(Spatial spatial) {
         
-                    if (spatial instanceof Geometry) {
+                if (spatial instanceof Geometry) {
           
                     Geometry geom = (Geometry) spatial;
                     Material mat  = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -44,11 +46,19 @@ public class MaterialManager {
         
                     else if (geom.getMaterial().getTextureParam("DiffuseMap_1") != null) {
             
-                        tat.setTexture("Alpha", geom.getMaterial().getTextureParam("AlphaMap").getTextureValue());
+                        String     alTexPath  = geom.getMaterial().getTextureParam("AlphaMap").getTextureValue().getName().substring(1);
+                        TextureKey alkey      = new TextureKey(alTexPath, false);
+                        Texture    alTex      = assetManager.loadTexture(alkey);     
+          
+                        tat.setTexture("Alpha", alTex);
           
                         if (geom.getMaterial().getTextureParam("DiffuseMap") != null) {
            
-                            tat.setTexture("Tex1", geom.getMaterial().getTextureParam("DiffuseMap").getTextureValue());
+                            String     d1TexPath  = geom.getMaterial().getTextureParam("DiffuseMap").getTextureValue().getName();
+                            TextureKey d1key      = new TextureKey(d1TexPath, false);
+                            Texture    d1Tex      = assetManager.loadTexture(d1key);             
+                        
+                            tat.setTexture("Tex1", d1Tex);
                             tat.getTextureParam("Tex1").getTextureValue().setWrap(Texture.WrapMode.Repeat);
                             tat.setFloat("Tex1Scale", Float.valueOf(geom.getMaterial().getParam("DiffuseMap_0_scale").getValueAsString()));
           
@@ -56,7 +66,11 @@ public class MaterialManager {
         
                         if (geom.getMaterial().getTextureParam("DiffuseMap_1") != null) {
               
-                            tat.setTexture("Tex2", geom.getMaterial().getTextureParam("DiffuseMap_1").getTextureValue());
+                            String     d2TexPath  = geom.getMaterial().getTextureParam("DiffuseMap_1").getTextureValue().getName();
+                            TextureKey d2key      = new TextureKey(d2TexPath, false);
+                            Texture    d2Tex      = assetManager.loadTexture(d2key);                     
+                        
+                            tat.setTexture("Tex2", d2Tex);
                             tat.getTextureParam("Tex2").getTextureValue().setWrap(Texture.WrapMode.Repeat);
                             tat.setFloat("Tex2Scale", Float.valueOf(geom.getMaterial().getParam("DiffuseMap_1_scale").getValueAsString()));
           
@@ -64,7 +78,11 @@ public class MaterialManager {
         
                         if (geom.getMaterial().getTextureParam("DiffuseMap_2") != null) {
               
-                            tat.setTexture("Tex3", geom.getMaterial().getTextureParam("DiffuseMap_2").getTextureValue());
+                            String     d3TexPath  = geom.getMaterial().getTextureParam("DiffuseMap_2").getTextureValue().getName();
+                            TextureKey d3key      = new TextureKey(d3TexPath, false);
+                            Texture    d3Tex      = assetManager.loadTexture(d3key);              
+            
+                            tat.setTexture("Tex3", d3Tex);
                             tat.getTextureParam("Tex3").getTextureValue().setWrap(Texture.WrapMode.Repeat);
                             tat.setFloat("Tex3Scale", Float.valueOf(geom.getMaterial().getParam("DiffuseMap_2_scale").getValueAsString()));
           
