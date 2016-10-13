@@ -274,7 +274,7 @@ public class EnvironmentManager {
             else if (player.getInWagon()) {
                 
                 CollisionResults results = new CollisionResults();
-                Node wm = (Node) stateManager.getState(TrailState.class).getTrailSceneManager().getInteractableNode().getChild("Wagon");
+                WagonModel wm = (WagonModel) stateManager.getState(TrailState.class).getTrailSceneManager().getInteractableNode().getChild("Wagon");
                 
                 try {
                     currentObject.collideWith(wm.getWorldBound(), results);
@@ -291,7 +291,21 @@ public class EnvironmentManager {
                     ((WagonModel) wm).getGui().setWagonHealth();
                     
                     if(player.getWagon().getCurrentHealth() <= 0) {
-                        stateManager.getState(TrailState.class).getTrailSceneManager().killPlayer("Broken Wagon");
+                        
+                        int toolCount = (Integer) player.getInventory().get("Tools");
+                        
+                        if (toolCount > 0) {
+                            int newTools = (Integer) player.getInventory().get("Tools") - 1;
+                            player.getInventory().put("Tools", newTools);
+                            player.getWagon().setCurrentHealth(player.getWagon().getMaxHealth());
+                            player.getHud().showAlert("Repair", "You use your set of tools to repair your wagon.");
+                            wm.getGui().setWagonHealth();
+                        }
+                        
+                        else {
+                            stateManager.getState(TrailState.class).getTrailSceneManager().killPlayer("Broken Wagon");
+                        }
+                        
                     }
                     
                 }
