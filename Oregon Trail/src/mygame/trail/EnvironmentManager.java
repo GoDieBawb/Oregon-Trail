@@ -300,6 +300,7 @@ public class EnvironmentManager {
                             player.getWagon().setCurrentHealth(player.getWagon().getMaxHealth());
                             player.getHud().showAlert("Repair", "You use your set of tools to repair your wagon.");
                             wm.getGui().setWagonHealth();
+                            player.saveInventory();
                         }
                         
                         else {
