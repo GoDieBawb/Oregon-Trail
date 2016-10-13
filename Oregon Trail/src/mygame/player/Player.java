@@ -96,18 +96,31 @@ public class Player extends Node implements PartyMember {
         
     }
     
-    public int getWagonSpeed() {
+    
+    public String getPace() {
         
-        int wagonSpeed = wagon.getMoveSpeed()/2;
-        int oxCount    = (Integer) inventory.get("Oxen");
+        String pace = "Error";
         
-        if(oxCount > 2)
-            oxCount = 2;
+        switch (wagon.getMoveSpeed()) {
         
-        wagonSpeed = wagonSpeed*oxCount;
-        return wagonSpeed;
+            case 3:
+                pace = "Slow";
+                break;
+                
+            case 6:
+                pace = "Normal";
+                break;
+                
+            case 9:
+                pace = "Fast";
+                break;
+            
+        }
+        
+        return pace;
         
     }
+    
     
     public void reset() {
         isDead = false;

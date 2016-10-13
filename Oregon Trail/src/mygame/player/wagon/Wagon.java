@@ -58,7 +58,7 @@ public class Wagon extends Node {
         wagonInfo = new HashMap();
         wagonInfo.put("Model", "Basic");
         wagonInfo.put("TurnSpeed", 7);
-        wagonInfo.put("MoveSpeed", 9);
+        wagonInfo.put("MoveSpeed", 6);
         wagonInfo.put("MaxHealth", 20);
         wagonInfo.put("CurrentHealth", 20);
         wagonInfo.put("Upgrades", "None");
@@ -76,6 +76,11 @@ public class Wagon extends Node {
     
     public int getMoveSpeed() {
         return moveSpeed;
+    }
+    
+    public void setMoveSpeed(int newSpeed) {
+        wagonInfo.put("MoveSpeed", newSpeed);
+        moveSpeed = (Integer) wagonInfo.get("MoveSpeed");
     }
     
     public int getTurnSpeed() {

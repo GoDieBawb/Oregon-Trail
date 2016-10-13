@@ -49,7 +49,7 @@ public class WagonModel extends Interactable {
     }
     
     @Override
-    public Gui getGui() {
+    public WagonGui getGui() {
         return gui;
     }
     

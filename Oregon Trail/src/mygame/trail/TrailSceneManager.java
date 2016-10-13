@@ -39,6 +39,7 @@ public class TrailSceneManager {
     private boolean                  wagonized;
     private Long                     updateWait;
     private boolean                  scaledGrass;
+    private WagonModel               wm;
     
     public TrailSceneManager(SimpleApplication app) {
     
@@ -88,7 +89,7 @@ public class TrailSceneManager {
         initInteractableWagon();
         player.saveAll();
         player.getHud().getAimButton().show();
-        ((WagonModel) interactableNode.getChild(0)).checkOxen();
+        wm.checkOxen();
         
         if(!scaledGrass)
             scaleGrassTexture();
@@ -114,7 +115,7 @@ public class TrailSceneManager {
     
     private void initInteractableWagon() {
         Node a        = (Node) interactableNode.getChild(0);
-        WagonModel wm = new WagonModel(app.getStateManager());
+        wm            = new WagonModel(app.getStateManager());
         wm.setName("Wagon");
         wm.setLocalTranslation(a.getWorldTranslation());
         wm.attachChild(a);
@@ -162,7 +163,7 @@ public class TrailSceneManager {
         Node sn = ((Node) scene.getChild("Scene Node"));
         Node t1 = (Node)  sn.getChild("t1");
         Node t2 = (Node)  sn.getChild("t2");
-        int  ms = player.getWagonSpeed();
+        int  ms = player.getWagon().getMoveSpeed();
         
         t1.move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
         t2.move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
@@ -206,14 +207,14 @@ public class TrailSceneManager {
             actor.whileInProx();
             
             if(!actor.inProx()) 
-            actor.enterProximity(); 
+                actor.enterProximity(); 
             
         }
         
         else {
         
             if(actor.inProx())
-            actor.exitProximity();
+                actor.exitProximity();
             
         }
         
@@ -230,6 +231,7 @@ public class TrailSceneManager {
         animateWagon(app.getStateManager());
         player.getHud().getInfoText().getButtonOk().hide();
         player.setLocalScale(.1f);
+        showSituation();
     }
     
     private void dewagonizePlayer() {
@@ -255,13 +257,15 @@ public class TrailSceneManager {
        
         String goalName   = (String) goalMap.get("Name");
         int    goalDist   = ((Integer) goalMap.get("At")) - milesTraveled;
+        String paceInfo   = "Current Pace: " + player.getPace() + "\n";
         String foodInfo   = "Current Food: " + food + " pounds" + System.getProperty("line.separator");
         String hayInfo    = "Current Hay: " + hay + " pounds" + System.getProperty("line.separator");
                 
         String info       = "Goal: " + goalName + System.getProperty("line.separator")
                             + "Distance Remaining: " + goalDist + System.getProperty("line.separator")
-                                + foodInfo
-                                    + hayInfo;
+                                + paceInfo
+                                    + foodInfo
+                                        + hayInfo;
                 
         player.getHud().showAlert("Situation", info);
          
@@ -269,22 +273,33 @@ public class TrailSceneManager {
     
     private void updateSituation() {
     
-        if (System.currentTimeMillis()/1000 - updateWait > 5) {
+        if (System.currentTimeMillis()/1000 - updateWait > 8) {
         
-            int speedMod          = 1;
-            
-            if (player.getInventory().get("Oxen").equals(1))
-                speedMod          = 2;
+            int speedMod = 0;
+            switch (player.getPace()) {
+                
+                case "Slow":
+                    speedMod = 3;
+                    break;
+                    
+                case "Normal":
+                    speedMod = 2;
+                    break;
+                    
+                case "Fast":
+                    speedMod = 1;
+                    
+            }
             
             updateWait        = System.currentTimeMillis()/1000;
-            int     newMiles  = (Integer) player.getSituation().get("Total Distance")+randInt(4/speedMod,8/speedMod);
-            int     newHay    = (Integer) player.getInventory().get("Hay")-randInt(1,3);
-            int     newFood   = (Integer) player.getInventory().get("Food")-randInt(1,3); 
+            int     newMiles  = (Integer) player.getSituation().get("Total Distance")+randInt(6/speedMod,12/speedMod);
+            int     newHay    = (Integer) player.getInventory().get("Hay")-randInt(3/speedMod,9/speedMod);
+            int     newFood   = (Integer) player.getInventory().get("Food")-randInt(3/speedMod,9/speedMod); 
             HashMap goals     = (HashMap) app.getAssetManager().loadAsset("Yaml/Goals.yml");
             int     goalCount = (Integer) player.getSituation().get("Goals Reached");
             HashMap goalMap   = (HashMap) goals.get(goalCount+1);
             int     goalDist  = ((Integer) goalMap.get("At")) - newMiles;
-            int     newDay    = (Integer) player.getSituation().get("Day Number")+randInt(0,1);
+            int     newDay    = (Integer) player.getSituation().get("Day Number")+1;
             
             player.getSituation().put("Total Distance", newMiles);
             player.getSituation().put("Day Number", newDay);
@@ -308,11 +323,6 @@ public class TrailSceneManager {
             if(newFood <= 0){
                 
                 player.getInventory().put("Food", 0);
-                
-                //if(randInt(1,5) == 5){
-                    //killPlayer("Starvation");
-                    //return;
-                //}
                 
             }    
             
@@ -338,11 +348,12 @@ public class TrailSceneManager {
     
     public void killPlayer(String reason) {
         dewagonizePlayer();
-        WagonModel wm = (WagonModel) interactableNode.getChild("Wagon");
+        wm = (WagonModel) interactableNode.getChild("Wagon");
         player.getHud().endHunt();
         envMan.getEnvNode().detachAllChildren();
         anMan.getAnimalNode().detachAllChildren();
         ((WagonGui) wm.getGui()).getStopButton().hide();
+        wm.getGui().hideButtons();
         player.die(reason);
     }
     
@@ -357,7 +368,10 @@ public class TrailSceneManager {
        player.getInventory().put("Food", newFood);
        
        if(newOxCount == 1) {
-           oxWarn = "You are down to one ox, your speed is cut in half.";
+           oxWarn = "You are down to one ox, you can only travel slowly.";
+           wm.getGui().getFastButton().hide();
+           wm.getGui().getSlowButton().hide();
+           player.getWagon().setMoveSpeed(3);
            ((WagonModel)interactableNode.getChild("Wagon")).checkOxen();
        }
        
@@ -387,7 +401,6 @@ public class TrailSceneManager {
             return;
         }
 
-        ((WagonGui) currentActor.getGui()).getStopButton().hide();
         player.getSituation().put("Setting Name", goalName);
         player.getSituation().put("Goals Reached", goalCount);
         player.getSituation().put("Setting", goalType);
@@ -397,6 +410,7 @@ public class TrailSceneManager {
         app.getStateManager().getState(GameManager.class).loadSituation();
         player.getHud().getInfoText().getButtonOk().show();
         player.getHud().getLeftStick().show();
+        wm.getGui().hideButtons();
         player.getChaseControl().getCameraManager().getChaseCam().setEnabled(true);
         dewagonizePlayer();
         

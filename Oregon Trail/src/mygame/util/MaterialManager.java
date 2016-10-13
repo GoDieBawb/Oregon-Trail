@@ -29,7 +29,7 @@ public class MaterialManager {
         
     }
     
-    public void makeUnshaded(Node node) {
+    public Node makeUnshaded(Node node) {
       
         SceneGraphVisitor sgv = new SceneGraphVisitor() {
  
@@ -112,6 +112,8 @@ public class MaterialManager {
     
     node.depthFirstTraversal(sgv);
     
-    }       
+    return node;
+    
+    }
     
 }

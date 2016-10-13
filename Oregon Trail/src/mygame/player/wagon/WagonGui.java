@@ -5,8 +5,12 @@
 package mygame.player.wagon;
 
 import com.jme3.app.state.AppStateManager;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.LineWrapMode;
 import com.jme3.input.event.MouseButtonEvent;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector4f;
 import com.jme3.scene.Node;
 import java.util.HashMap;
 import mygame.GameManager;
@@ -15,6 +19,7 @@ import mygame.player.PlayerManager;
 import mygame.river.FordControl;
 import mygame.util.Gui;
 import tonegod.gui.controls.buttons.ButtonAdapter;
+import tonegod.gui.controls.extras.Indicator;
 
 /**
  *
@@ -27,6 +32,9 @@ public class WagonGui extends Gui {
     private ButtonAdapter suppliesButton;
     private ButtonAdapter partyButton;
     private ButtonAdapter stopButton;
+    private ButtonAdapter fastButton;
+    private ButtonAdapter slowButton;
+    private Indicator     wagonHealth;
     private int           partySelect;
     
     public WagonGui(AppStateManager stateManager) {
@@ -40,6 +48,9 @@ public class WagonGui extends Gui {
         createSituationButton();
         createSuppliesButton();
         createPartyButton();
+        createWagonHealth();
+        createIncreaseSpeedButton();
+        createDecreaseSpeedButton();
     }
     
     private void createStopButton() {
@@ -52,6 +63,9 @@ public class WagonGui extends Gui {
                 Player player = getStateManager().getState(PlayerManager.class).getPlayer();
                 player.setInWagon(false);
                 stopButton.hide();
+                wagonHealth.hide();
+                fastButton.hide();
+                slowButton.hide();
                 player.getHud().getLeftStick().show();
                 
             }
@@ -65,8 +79,143 @@ public class WagonGui extends Gui {
         stopButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
         stopButton.setText("Stop");
         getElements().add(stopButton);
-        stopButton.setFont("Interface/Fonts/UnrealTournament.fnt");         
+        stopButton.setFont("Interface/Fonts/UnrealTournament.fnt");      
         
+    }
+    
+    private void createIncreaseSpeedButton() {
+    
+        fastButton = new ButtonAdapter(getScreen(), "Increase Speed Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                    Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
+                   
+                    switch (player.getPace()) {
+                            
+                        case "Slow":
+                            player.getWagon().setMoveSpeed(6);
+                            break;
+                        
+                        case "Normal":
+                            player.getWagon().setMoveSpeed(9);
+                            break;
+                        
+                    }                    
+                    
+                    switch (player.getPace()) {
+                            
+                        case "Normal":
+                            fastButton.show();
+                            slowButton.show();
+                            break;
+                            
+                        case "Fast":
+                            slowButton.show();
+                            fastButton.hide();
+                            break;
+                        
+                    }
+                
+            }
+        
+        };        
+        
+        getScreen().addElement(fastButton);        
+        fastButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
+        fastButton.setPosition(getScreen().getWidth() - fastButton.getWidth()*1.5f, fastButton.getHeight()*2.5f);
+        fastButton.hide();
+        fastButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        getElements().add(fastButton);
+        fastButton.setTextAlign(BitmapFont.Align.Center);
+        fastButton.setFont("Interface/Fonts/UnrealTournament.fnt");   
+        fastButton.setFontSize(50);
+        fastButton.setText("+");
+        
+    }    
+    
+    private void createDecreaseSpeedButton() {
+    
+        slowButton = new ButtonAdapter(getScreen(), "Decrase Speed Button", new Vector2f(12,12)) {
+        
+            @Override
+            public void onButtonMouseLeftUp(MouseButtonEvent evt, boolean isPressed) {
+                
+                    Player player  = getStateManager().getState(PlayerManager.class).getPlayer();
+                   
+                    switch (player.getPace()) {
+                            
+                        case "Normal":
+                            player.getWagon().setMoveSpeed(3);
+                            break;
+                            
+                        case "Fast":
+                            player.getWagon().setMoveSpeed(6);
+                            break;
+                        
+                    }                    
+                    
+                    switch (player.getPace()) {
+                    
+                        case "Slow":
+                            fastButton.show();
+                            slowButton.hide();
+                            break;
+                            
+                        case "Normal":
+                            fastButton.show();
+                            slowButton.show();
+                            break;
+                        
+                    }
+                
+            }
+        
+        };        
+        
+        getScreen().addElement(slowButton);        
+        slowButton.setDimensions(getScreen().getWidth()/10, getScreen().getHeight()/10);
+        slowButton.setPosition(getScreen().getWidth() - slowButton.getWidth()*1.5f, 0 + slowButton.getHeight()*.5f);
+        slowButton.hide();
+        slowButton.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        getElements().add(slowButton);
+        slowButton.setTextAlign(BitmapFont.Align.Center);
+        slowButton.setFont("Interface/Fonts/UnrealTournament.fnt");   
+        slowButton.setFontSize(50);
+        slowButton.setText("-");
+        
+    }      
+    
+    private void createWagonHealth() {
+    
+        wagonHealth = new Indicator(getScreen(), "Wagon Trail Health", new Vector2f(12,12), Indicator.Orientation.HORIZONTAL) {
+        
+            @Override
+            public void onChange(float currentValue, float currentPercentage) {
+            }
+        
+        };
+        
+        getScreen().addElement(wagonHealth);
+        wagonHealth.setIndicatorColor(ColorRGBA.Red);
+        wagonHealth.setTextWrap(LineWrapMode.NoWrap);
+        wagonHealth.setTextVAlign(BitmapFont.VAlign.Center);
+        wagonHealth.setTextAlign(BitmapFont.Align.Center);
+        wagonHealth.setBaseImage(getScreen().getStyle("Window").getString("defaultImg"));
+        wagonHealth.setIndicatorPadding(new Vector4f(7,7,7,7));
+        wagonHealth.setX(0 + wagonHealth.getWidth()/2);
+        wagonHealth.setY(0 + wagonHealth.getHeight()*4);
+        wagonHealth.hide();
+        setWagonHealth();
+        
+    }
+    
+    public void setWagonHealth() {
+        Wagon wagon = getStateManager().getState(PlayerManager.class).getPlayer().getWagon();
+        wagonHealth.setMaxValue(wagon.getMaxHealth());
+        wagonHealth.setCurrentValue(wagon.getCurrentHealth());
+        wagonHealth.getTextDisplayElement().setText(wagon.getCurrentHealth() + " / " + wagon.getMaxHealth());
     }
     
     private void createMoveButton() {
@@ -99,7 +248,34 @@ public class WagonGui extends Gui {
                     situationButton.hide();
                     player.setInWagon(true);
                     stopButton.show();
+                    wagonHealth.show();
+                    
                     player.getHud().getLeftStick().hide();
+
+                    switch (player.getPace()) {
+                    
+                        case "Slow":
+                            fastButton.show();
+                            break;
+                            
+                        case "Normal":
+                            fastButton.show();
+                            slowButton.show();
+                            break;
+                            
+                        case "Fast":
+                            slowButton.show();
+                            break;
+                        
+                    }
+                    
+                    int oxCount = (Integer) player.getInventory().get("Oxen");
+                    
+                    if (oxCount == 1) {
+                        fastButton.hide();
+                        slowButton.hide();
+                        player.getWagon().setMoveSpeed(3);
+                    }
                     
                 }
                 
@@ -374,11 +550,15 @@ public class WagonGui extends Gui {
         
     }
     
-    private void hideButtons(){
+    public void hideButtons(){
         moveButton.hide();
         suppliesButton.hide();
         situationButton.hide();
         partyButton.hide();
+        wagonHealth.hide();
+        slowButton.hide();
+        fastButton.hide();
+        stopButton.hide();
     }
     
     public ButtonAdapter getMoveButton() {
@@ -401,5 +581,12 @@ public class WagonGui extends Gui {
         return stopButton;
     }
     
+    public ButtonAdapter getFastButton() {
+        return fastButton;
+    }    
+    
+    public ButtonAdapter getSlowButton() {
+        return slowButton;
+    }    
     
 }

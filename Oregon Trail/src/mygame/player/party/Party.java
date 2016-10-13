@@ -61,6 +61,7 @@ public class Party {
     }
     
     public void updateCondition () {
+        
         String info       = "";
         String playerInfo = calculateCondition("Player") + "\n";
         String wifeInfo   = calculateCondition("Wife") + "\n";
@@ -189,6 +190,23 @@ public class Party {
         String  name      = (String) condition.get("Name");
         String  lname     = (String) partyInfo.get("LastName");
         
+        int speedMod = 0;
+        
+        switch (player.getPace()) {
+
+            case "Slow":
+                speedMod = 1;
+                break;
+
+            case "Normal":
+                speedMod = 2;
+                break;
+
+            case "Fast":
+                speedMod = 3;
+
+        }        
+        
         String infoPrefix = "Your " + memberName + " " + name + " " + lname + " now has ";
         
         if (memberName.equals("Player"))
@@ -197,8 +215,9 @@ public class Party {
         if (starve || tired) {
         
 
-            int dysDiv     = 2;
-            int measDiv    = 2;
+            int dysDiv     = speedMod;
+            int measDiv    = speedMod;
+            
             int dysChance  = randInt(1,4);
             int measChance = randInt(1,4);
             
@@ -277,8 +296,27 @@ public class Party {
         boolean dysent      = (Boolean) condition.get("Dysentary");
         boolean measles     = (Boolean) condition.get("Measles");
         boolean hasDied     = false;
-        int     deathChance = 0;
         String  cause       = "";
+        Player  player      = stateManager.getState(PlayerManager.class).getPlayer();
+        
+        int speedMod = 0;
+        
+        switch (player.getPace()) {
+
+            case "Slow":
+                speedMod = 1;
+                break;
+
+            case "Normal":
+                speedMod = 2;
+                break;
+
+            case "Fast":
+                speedMod = 3;
+
+        }          
+        
+        int deathChance = speedMod;
         
         if (dysent)
             deathChance += 1;
@@ -292,9 +330,9 @@ public class Party {
         if (tired)
             deathChance += 1;
         
-        if (deathChance > 0) {
+        if (deathChance > speedMod) {
             
-            if (randInt(0+deathChance, 4) == 4) {
+            if (randInt(0+deathChance, 8) == 8) {
                 
                 hasDied = true;
                 
@@ -314,16 +352,15 @@ public class Party {
             
         }
         
-        deathChance = randInt(1,100);
+        deathChance = randInt(1,500);
         
-        if (deathChance == 100) {
+        if (deathChance == 500) {
             hasDied = true;
             cause   = randomDeath();
         }
         
         if (hasDied) {
-        
-            Player player = stateManager.getState(PlayerManager.class).getPlayer();
+
             String name   = (String) condition.get("Name");
             String lname  = (String) partyInfo.get("LastName");
             

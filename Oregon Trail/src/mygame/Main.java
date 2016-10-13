@@ -9,7 +9,7 @@ import com.jme3.system.AppSettings;
  * @author normenhansen
  */
 public class Main extends SimpleApplication {
-
+    
     public static void main(String[] args) {
         Main app = new Main();
         app.start();

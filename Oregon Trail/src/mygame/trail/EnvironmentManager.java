@@ -13,6 +13,7 @@ import java.util.Random;
 import mygame.GameManager;
 import mygame.player.Player;
 import mygame.player.PlayerManager;
+import mygame.player.wagon.WagonModel;
 
 /**
  *
@@ -37,23 +38,82 @@ public class EnvironmentManager {
     }
     
     private void createObject() {
+        
+        //Special Minus makes sure no special objects are generated on initial fill
+        int specMinus = 0;
+        
+        if (initialFill)
+            specMinus = 1;
+        
+        switch (randInt(1,25-specMinus)) {
+            
+            case 25:
+                createSpecialObject();
+                break;
+                
+            default:
+                createEnvironmentalObject();
+                break;
+                
+        }
+        
+    }
+    
+    private void createSpecialObject() {
+    
         Node object;
         
-        if(randInt(1,25) == 25) {
-            object = (Node) app.getAssetManager().loadModel("Models/Plants/GrassPatch.j3o");
-            object.scale(.5f);  
-            object.setName("Grass");
-        }
-        
-        else {
-            object = (Node) app.getAssetManager().loadModel("Models/Plants/Maple.j3o");
-            object.scale(.25f);
-            object.setName("Tree");
-        }
+        switch (randInt(1, 10)) {
+            
+            case 10:
+                object = (Node) app.getAssetManager().loadModel("Models/TeePee/TeePee Group.j3o");
+                object.scale(.75f);
+                object.setName("TeePee");
+                break;            
+            
+            case 5:
+                object = (Node) app.getAssetManager().loadModel("Models/CoveredWagon/BrokenWagon.j3o");
+                object.scale(1.5f);
+                object.setName("Broken Wagon");
+                break;                     
+                
+            default:
+                object = (Node) app.getAssetManager().loadModel("Models/Plants/GrassPatch.j3o");
+                object.scale(.5f);
+                object.setName("Grass");
+                break;
+                
+        }        
         
         envNode.attachChild(object);   
         placeObject(object);
-        stateManager.getState(GameManager.class).getUtilityManager().getMaterialManager().makeUnshaded(object);
+        stateManager.getState(GameManager.class).getUtilityManager().getMaterialManager().makeUnshaded(object);        
+        
+    }
+    
+    private void createEnvironmentalObject() {
+        
+        Node object;
+        
+        switch (randInt(1,5)) {
+            
+            case 5:
+                object = (Node) app.getAssetManager().loadModel("Models/Misc/moraf_boulders_clusters.j3o");
+                object.scale(.5f);
+                object.setName("Rock");
+                break;              
+            
+            default:
+                object = (Node) app.getAssetManager().loadModel("Models/Plants/Maple.j3o");
+                object.scale(.25f);
+                object.setName("Tree");
+                break;
+                
+        }    
+        
+        envNode.attachChild(object);   
+        placeObject(object);
+        stateManager.getState(GameManager.class).getUtilityManager().getMaterialManager().makeUnshaded(object);        
         
     }
     
@@ -61,7 +121,7 @@ public class EnvironmentManager {
         
         int xSpot      = randInt(minX,96);
         int ySpot      = 0;
-        int zSpot      = randInt(1,64);
+        int zSpot      = randInt(0,64);
         int negChance  = randInt(1,2);
         int negChance1 = randInt(1,2);
         int negMult1   = 1;
@@ -88,18 +148,25 @@ public class EnvironmentManager {
     }       
     
     private void envMove(float tpf) {
-        int  ms = stateManager.getState(PlayerManager.class).getPlayer().getWagonSpeed();
+        
+        Player player  = stateManager.getState(PlayerManager.class).getPlayer();
+        int wagonSpeed = player.getWagon().getMoveSpeed();
+
         WagonInteractionManager wagIntMan = stateManager.getState(TrailState.class).getTrailSceneManager().getWagonInteractionManager();
+        
         for (int i = 0; i< envNode.getQuantity(); i++) {
-            envNode.getChild(i).move(-ms*tpf,0,wagIntMan.getTurnValue()*tpf);
+            envNode.getChild(i).move(-wagonSpeed*tpf,0,wagIntMan.getTurnValue()*tpf);
         }
         
     }
     
     public void setInitialFill(boolean newVal) {
+        
         initialFill = newVal;
+        
         if(initialFill)
-            minX = 1;
+            minX = 0;
+        
     }
     
     private void envActionCheck() {
@@ -108,15 +175,15 @@ public class EnvironmentManager {
         
         for (int i = 0; i < envNode.getQuantity(); i++) {
         
-            Node plant = (Node) envNode.getChild(i);
+            Node currentObject = (Node) envNode.getChild(i);
             
-            if(plant.getName().equals("Grass")) {
+            if(currentObject.getName().equals("Grass")) {
                 
-                float distance = player.getWorldTranslation().distance(plant.getWorldTranslation());
+                float distance = player.getWorldTranslation().distance(currentObject.getWorldTranslation());
                         
-                if ( distance < 5) {
+                if (distance < 5) {
                     
-                    plant.removeFromParent();
+                    currentObject.removeFromParent();
                     int feedWeight = randInt(3,17);
                     int newFeed    = ((Integer) player.getInventory().get("Hay")) + feedWeight;
                     player.getInventory().put("Hay", newFeed);
@@ -126,13 +193,91 @@ public class EnvironmentManager {
                 
             }
             
+            else if(currentObject.getName().equals("TeePee")) {
+                
+                float distance = player.getWorldTranslation().distance(currentObject.getWorldTranslation());
+                        
+                if (distance < 5) {
+                    
+                    String rewardType;
+                    String info = "This friendly tribe provides you with ";
+                    int    rewardAmount;
+                    int    rewardChance = randInt(1,10);
+                    
+                    switch (rewardChance) {
+                    
+                        case 10:
+                            rewardType   = "Oxen";
+                            rewardAmount = randInt(1,2);
+                            info += rewardAmount + " oxen.";
+                            break;
+                            
+                        default:
+                            rewardType   = "Food";
+                            rewardAmount = randInt(20,50);
+                            info += rewardAmount + " pounds of food.";
+                            break;
+                    
+                    }
+                    
+                    currentObject.removeFromParent();
+                    int newAmount    = ((Integer) player.getInventory().get(rewardType)) + rewardAmount;
+                    player.getInventory().put(rewardType, newAmount);
+                    player.getHud().showAlert("Tribe", info);
+                    
+                }
+                
+            }            
+            
+            else if(currentObject.getName().equals("Broken Wagon")) {
+                
+                float distance = player.getWorldTranslation().distance(currentObject.getWorldTranslation());
+                        
+                if (distance < 5) {
+                    
+                    String rewardType;
+                    String info = "Searching the broken wagon yields ";
+                    int    rewardAmount;
+                    int    rewardChance = randInt(1,10);
+                    
+                    switch (rewardChance) {
+                    
+                        case 10:
+                            rewardType   = "Money";
+                            rewardAmount = randInt(20,200);
+                            info += rewardAmount + "$ in cash.";
+                            break;
+                            
+                        case 9:
+                            rewardType   = "Tools";
+                            rewardAmount = 1;
+                            info += " a set of tools.";
+                            break;                            
+                            
+                        default:
+                            rewardType   = "Bullets";
+                            rewardAmount = randInt(3,11);
+                            info += rewardAmount + " bullets.";
+                            break;
+                    
+                    }
+                    
+                    currentObject.removeFromParent();
+                    int newAmount    = ((Integer) player.getInventory().get(rewardType)) + rewardAmount;
+                    player.getInventory().put(rewardType, newAmount);
+                    player.getHud().showAlert("Tribe", info);
+                    
+                }
+                
+            }            
+            
             else if (player.getInWagon()) {
                 
                 CollisionResults results = new CollisionResults();
                 Node wm = (Node) stateManager.getState(TrailState.class).getTrailSceneManager().getInteractableNode().getChild("Wagon");
                 
                 try {
-                    plant.collideWith(wm.getWorldBound(), results);
+                    currentObject.collideWith(wm.getWorldBound(), results);
                 }
                 catch (UnsupportedCollisionException e) {
                     return;
@@ -141,8 +286,9 @@ public class EnvironmentManager {
                 if (results.size() > 0) {
                     
                     //stateManager.getState(GameManager.class).getUtilityManager().getPhysicsManager().getPhysics().getPhysicsSpace().remove(plant);
-                    plant.removeFromParent();
+                    currentObject.removeFromParent();
                     player.getWagon().setCurrentHealth(player.getWagon().getCurrentHealth()-5);
+                    ((WagonModel) wm).getGui().setWagonHealth();
                     
                     if(player.getWagon().getCurrentHealth() <= 0) {
                         stateManager.getState(TrailState.class).getTrailSceneManager().killPlayer("Broken Wagon");
@@ -175,7 +321,7 @@ public class EnvironmentManager {
         
         else if (initialFill) {
             initialFill = false;
-            minX        = 16;
+            minX        = 50;
         }
         
         for (int i = 0; i < envNode.getQuantity(); i++) {
