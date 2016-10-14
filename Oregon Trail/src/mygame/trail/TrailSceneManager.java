@@ -39,6 +39,7 @@ public class TrailSceneManager {
     private boolean                  wagonized;
     private Long                     updateWait;
     private boolean                  scaledGrass;
+    private boolean                  oxStarve;
     private WagonModel               wm;
     
     public TrailSceneManager(SimpleApplication app) {
@@ -313,11 +314,22 @@ public class TrailSceneManager {
                 
                 player.getInventory().put("Hay", 0);
                 
-                if(randInt(1,5) == 5) {
+                if (!oxStarve) {
+                    oxStarve = true;
+                    player.getHud().showAlert("Oxen Starving", "You are now out of hay. Your oxen are starving.");
+                    return;
+                }
+                
+                //If traveling slower oxen less likely to die
+                else if(randInt(1,4+speedMod) == +speedMod) {
                     killOx();
                     return;
                 }
                 
+            }
+            
+            else {
+                oxStarve = false;
             }
             
             if(newFood <= 0){
