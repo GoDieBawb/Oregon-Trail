@@ -462,8 +462,12 @@ public class WagonGui extends Gui {
                         player.setNoMove(false);
                         player.getHud().getInfoText().getButtonOk().show();
                         player.getHud().getInfoText().hide();
-                        this.setText("Check Party");
                         hideButtons();
+                        getMoveButton().show();
+                        getSituationButton().show();
+                        getSuppliesButton().show();
+                        getPartyButton().show();
+                        setText("Check Party");
                         partySelect = 0;
                         break;
                         

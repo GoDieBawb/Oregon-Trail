@@ -343,6 +343,7 @@ public class Hud extends Gui {
                         ((WagonGui)wm.getGui()).getMoveButton().show();
                         ((WagonGui)wm.getGui()).getSituationButton().show();
                         ((WagonGui)wm.getGui()).getSuppliesButton().show();
+                        ((WagonGui)wm.getGui()).getPartyButton().show();
                     }
                   
                 }
@@ -356,7 +357,12 @@ public class Hud extends Gui {
         };
         
         infoText.setMaterial(getStateManager().getApplication().getAssetManager().loadMaterial("Materials/Paper.j3m"));
+        infoText.getTextArea().getScrollableArea().setFont("Interface/Impact.fnt");
+        infoText.getDragBar().setFont("Interface/Impact.fnt");
         infoText.getButtonOk().setFont("Interface/Impact.fnt");
+        
+        infoText.getTextArea().getScrollableArea().setFontSize(infoText.getTextArea().getScrollableArea().getFontSize()-2);
+        
         infoText.setWindowTitle("Welcome");
         infoText.setMsg("Welcome to Townyville.");
         infoText.setButtonOkText("Ok");
@@ -364,6 +370,8 @@ public class Hud extends Gui {
         infoText.setClippingLayer(infoText);
         //infoText.setDimensions(new Vector2f(getScreen().getWidth()/10, getScreen().getHeight()/10));
         infoText.setIsResizable(false);
+        infoText.getTextArea().getVerticalScrollBar().removeFromParent();
+        infoText.getTextArea().getHorizontalScrollBar().removeFromParent();
         getScreen().addElement(infoText);
         infoText.hide();
         
